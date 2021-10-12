@@ -16,7 +16,7 @@ public interface CoinNewsRetrofit {
     Call<CoinViewModel.FormerData> getCoinData(@Path("order_currency") String order_currency, @Path("payment_currency") String payment_currency);
 
     @GET("ticker/{order_currency}_{payment_currency}")
-    Call<CoinViewModel.NewData> getNewCoinData(@Path("order_currency") String order_currency, @Path("payment_currency") String payment_currency);
+    Call<CoinViewModel.NewTickerData> getNewCoinData(@Path("order_currency") String order_currency, @Path("payment_currency") String payment_currency);
 
 
     static CoinNewsRetrofit create() {

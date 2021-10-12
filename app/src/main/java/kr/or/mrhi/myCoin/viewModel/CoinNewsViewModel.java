@@ -14,14 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kr.or.mrhi.myCoin.retrofit.CoinNewsRetrofit;
-import kr.or.mrhi.myCoin.POJO.Data;
+import kr.or.mrhi.myCoin.POJO.TickerData;
 import kr.or.mrhi.myCoin.POJO.FormerCoinData;
 import retrofit2.Response;
 
 public class CoinNewsViewModel extends ViewModel {
 
     private MutableLiveData<List<FormerCoinData>> formerCoinData;
-    private MutableLiveData<List<Data>> newCoinData;
+    private MutableLiveData<List<TickerData>> newCoinData;
     private FormerData formerData = new FormerData();
     private NewData newData = new NewData();
 
@@ -34,9 +34,9 @@ public class CoinNewsViewModel extends ViewModel {
         return formerCoinData;
     }
 
-    public MutableLiveData<List<Data>> getNewCoinData() {
+    public MutableLiveData<List<TickerData>> getNewCoinData() {
         if (newCoinData == null) {
-            newCoinData = new MutableLiveData<List<Data>>();
+            newCoinData = new MutableLiveData<List<TickerData>>();
         }
         newData.refreshCoinData();
 
@@ -85,7 +85,7 @@ public class CoinNewsViewModel extends ViewModel {
 
         @SerializedName("data")
         @Expose
-        private Data newData;
+        private TickerData newTickerData;
 
         private void refreshCoinData() {
             CoinNewsRetrofit.create()
@@ -94,14 +94,14 @@ public class CoinNewsViewModel extends ViewModel {
         }
 
         @NonNull
-        private List<Data> makeNewcoinList(@NonNull Response<NewData> response) {
-            List<Data> list = new ArrayList<>();
+        private List<TickerData> makeNewcoinList(@NonNull Response<NewData> response) {
+            List<TickerData> list = new ArrayList<>();
             list.add(response.body().getNewData());
             return list;
         }
 
-        private Data getNewData() {
-            return newData;
+        private TickerData getNewData() {
+            return newTickerData;
         }
     }
 }

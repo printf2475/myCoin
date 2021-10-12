@@ -16,7 +16,10 @@ public interface CoinRetrofit {
     Call<CoinViewModel.FormerData> getCoinData(@Path("order_currency") String order_currency, @Path("payment_currency") String payment_currency, @Path("chart_intervals") String chart_intervals);
 
     @GET("ticker/{order_currency}_{payment_currency}")
-    Call<CoinViewModel.NewData> getNewCoinData(@Path("order_currency") String order_currency, @Path("payment_currency") String payment_currency);
+    Call<CoinViewModel.NewTickerData> getTickerCoinData(@Path("order_currency") String order_currency, @Path("payment_currency") String payment_currency);
+
+    @GET("orderbook/{order_currency}_{payment_currency}")
+    Call<CoinViewModel.NewOrderBookData> getOrderBookCoinData(@Path("order_currency") String order_currency, @Path("payment_currency") String payment_currency);
 
 
     static CoinRetrofit create() {

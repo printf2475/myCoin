@@ -13,8 +13,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+import kr.or.mrhi.myCoin.POJO.OrderBookData;
 import kr.or.mrhi.myCoin.retrofit.CoinRetrofit;
-import kr.or.mrhi.myCoin.POJO.Data;
+import kr.or.mrhi.myCoin.POJO.TickerData;
 import kr.or.mrhi.myCoin.POJO.FormerCoinData;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,9 +24,11 @@ import retrofit2.Response;
 public class CoinViewModel extends ViewModel {
 
     private MutableLiveData<List<FormerCoinData>> formerCoinData;
-    private MutableLiveData<List<Data>> newCoinData;
+    private MutableLiveData<List<TickerData>> tickerCoinData;
+    private MutableLiveData<List<OrderBookData>> orderbookCoinData;
     private FormerData formerData = new FormerData();
-    private NewData newData = new NewData();
+    private NewTickerData newTickerData = new NewTickerData();
+    private NewOrderBookData orderBookData = new NewOrderBookData();
 
     public LiveData<List<FormerCoinData>> getLastCoinData(String coinName, String intervals) {
         if (formerCoinData == null) {
@@ -36,20 +39,30 @@ public class CoinViewModel extends ViewModel {
         return formerCoinData;
     }
 
-    public MutableLiveData<List<Data>> getNewCoinData() {
-        if (newCoinData == null) {
-            newCoinData = new MutableLiveData<List<Data>>();
+    public MutableLiveData<List<TickerData>> getNewCoinData() {
+        if (tickerCoinData == null) {
+            tickerCoinData = new MutableLiveData<List<TickerData>>();
         }
-        newData.refreshCoinData();
+        newTickerData.refreshCoinData();
 
-        return newCoinData;
+        return tickerCoinData;
+    }
+
+
+    public MutableLiveData<List<OrderBookData>> getOrderBookCoinData() {
+        if (orderbookCoinData == null) {
+            orderbookCoinData = new MutableLiveData<List<OrderBookData>>();
+        }
+        orderBookData.refreshOrderBookCoinData();
+
+        return orderbookCoinData;
     }
 
 
     public void refrashNewCoinDataThread(){
       Thread thread = new Thread(()->{
             while (true){
-                newData.refreshCoinData();
+                newTickerData.refreshCoinData();
                 try {
                     Thread.sleep(200);
                 } catch (InterruptedException e) {
@@ -110,41 +123,81 @@ public class CoinViewModel extends ViewModel {
 
     }
 
-    public class NewData {
+    public class NewTickerData {
         @SerializedName("status")
         @Expose
         private String status;
 
         @SerializedName("data")
         @Expose
-        private Data newData;
+        private TickerData TickerData;
 
         private void refreshCoinData() {
             CoinRetrofit.create()
-                    .getNewCoinData("ALL", "KRW")
-                    .enqueue(new Callback<NewData>() {
+                    .getTickerCoinData("ALL", "KRW")
+                    .enqueue(new Callback<NewTickerData>() {
                         @Override
-                        public void onResponse(Call<NewData> call, Response<NewData> response) {
-                            newCoinData.setValue(makeNewcoinList(response));
-                            Log.i("현재코인", newCoinData.getValue().get(0).getBtc().getMaxPrice());
+                        public void onResponse(Call<NewTickerData> call, Response<NewTickerData> response) {
+                            tickerCoinData.setValue(makeNewcoinList(response));
+                            Log.i("현재코인", tickerCoinData.getValue().get(0).getBtc().getMaxPrice());
                         }
 
                         @Override
-                        public void onFailure(Call<NewData> call, Throwable t) {
+                        public void onFailure(Call<NewTickerData> call, Throwable t) {
                             Log.i("현재코인", "실패 : " + t.fillInStackTrace());
                         }
                     });
         }
 
         @NonNull
-        private List<Data> makeNewcoinList(@NonNull Response<NewData> response) {
-            List<Data> list = new ArrayList<>();
+        private List<TickerData> makeNewcoinList(@NonNull Response<NewTickerData> response) {
+            List<TickerData> list = new ArrayList<>();
             list.add(response.body().getNewData());
             return list;
         }
 
-        private Data getNewData() {
-            return newData;
+        private TickerData getNewData() {
+            return TickerData;
         }
     }
+
+    public class NewOrderBookData {
+
+        @SerializedName("status")
+        @Expose
+        private String status;
+        @SerializedName("data")
+        @Expose
+        private OrderBookData orderBookData;
+
+        private void refreshOrderBookCoinData() {
+            CoinRetrofit.create()
+                    .getOrderBookCoinData("ALL", "KRW")
+                    .enqueue(new Callback<NewOrderBookData>() {
+                        @Override
+                        public void onResponse(Call<NewOrderBookData> call, Response<NewOrderBookData> response) {
+                            orderbookCoinData.setValue(makeNewcoinList(response));
+                            Log.i("현재코인", orderbookCoinData.getValue().get(0).getBtc().getAsks().get(0).getPrice().toString());
+                        }
+
+                        @Override
+                        public void onFailure(Call<NewOrderBookData> call, Throwable t) {
+                            Log.i("현재코인", "실패 : " + t.fillInStackTrace());
+                        }
+                    });
+        }
+
+        @NonNull
+        private List<OrderBookData> makeNewcoinList(@NonNull Response<NewOrderBookData> response) {
+            List<OrderBookData> list = new ArrayList<>();
+            list.add(response.body().getNewData());
+            return list;
+        }
+
+        private OrderBookData getNewData() {
+            return orderBookData;
+        }
+
+    }
+
 }
