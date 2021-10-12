@@ -1,4 +1,4 @@
-package kr.or.mrhi.myapplication;
+package kr.or.mrhi.myapplication.POJO;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

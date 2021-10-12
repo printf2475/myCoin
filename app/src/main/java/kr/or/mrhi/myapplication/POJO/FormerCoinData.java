@@ -1,4 +1,4 @@
-package kr.or.mrhi.myapplication;
+package kr.or.mrhi.myapplication.POJO;
 
 public class FormerCoinData {
     private String date;

@@ -1,4 +1,4 @@
-package kr.or.mrhi.myapplication;
+package kr.or.mrhi.myapplication.viewModel;
 
 import android.util.Log;
 
@@ -13,11 +13,12 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
+import kr.or.mrhi.myapplication.retrofit.CoinNewsRetrofit;
+import kr.or.mrhi.myapplication.POJO.Data;
+import kr.or.mrhi.myapplication.POJO.FormerCoinData;
 import retrofit2.Response;
 
-public class CoinViewModel extends ViewModel {
+public class CoinNewsViewModel extends ViewModel {
 
     private MutableLiveData<List<FormerCoinData>> formerCoinData;
     private MutableLiveData<List<Data>> newCoinData;
@@ -54,19 +55,9 @@ public class CoinViewModel extends ViewModel {
 
         private void refreshCoinData(@NonNull String coinName) {
 
-            RetrofitService.create()
+            CoinNewsRetrofit.create()
                     .getCoinData(coinName.toUpperCase(), "KRW")
-                    .enqueue(new Callback<FormerData>() {
-                        @Override
-                        public void onResponse(Call<FormerData> call, Response<FormerData> response) {
-                            formerCoinData.setValue(makeCoinList(response));
-                        }
-
-                        @Override
-                        public void onFailure(Call<FormerData> call, Throwable t) {
-                            Log.i("이전코인", "실패 : " + t.fillInStackTrace());
-                        }
-                    });
+                    .enqueue(null);
         }
 
         @NonNull
@@ -97,20 +88,9 @@ public class CoinViewModel extends ViewModel {
         private Data newData;
 
         private void refreshCoinData() {
-            RetrofitService.create()
+            CoinNewsRetrofit.create()
                     .getNewCoinData("ALL", "KRW")
-                    .enqueue(new Callback<NewData>() {
-                        @Override
-                        public void onResponse(Call<NewData> call, Response<NewData> response) {
-                            newCoinData.setValue(makeNewcoinList(response));
-                            Log.i("현재코인", newCoinData.getValue().get(0).getBtc().getMaxPrice());
-                        }
-
-                        @Override
-                        public void onFailure(Call<NewData> call, Throwable t) {
-                            Log.i("현재코인", "실패 : " + t.fillInStackTrace());
-                        }
-                    });
+                    .enqueue(null);
         }
 
         @NonNull
