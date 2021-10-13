@@ -107,7 +107,7 @@ public class CoinViewModel extends ViewModel {
         private void refreshCoinData(@NonNull String coinName, String intervals) {
 
             CoinRetrofit.create()
-                    .getCoinData(coinName.toUpperCase(), "KRW", intervals)
+                    .getCandlestickCoinData(coinName.toUpperCase(), "KRW", intervals)
                     .enqueue(new Callback<FormerData>() {
                         @Override
                         public void onResponse(Call<FormerData> call, Response<FormerData> response) {
