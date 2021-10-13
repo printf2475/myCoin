@@ -3,7 +3,7 @@ package kr.or.mrhi.myCoin.POJO;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import kr.or.mrhi.myCoin.orderBookCoins.*;
+import kr.or.mrhi.myCoin.POJO.orderBookCoins.*;
 
 public class OrderBookData {
     @SerializedName("BTC")

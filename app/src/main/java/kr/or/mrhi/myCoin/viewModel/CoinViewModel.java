@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kr.or.mrhi.myCoin.POJO.OrderBookData;
+import kr.or.mrhi.myCoin.POJO.TransactionData;
 import kr.or.mrhi.myCoin.retrofit.CoinRetrofit;
 import kr.or.mrhi.myCoin.POJO.TickerData;
 import kr.or.mrhi.myCoin.POJO.FormerCoinData;
@@ -26,9 +27,19 @@ public class CoinViewModel extends ViewModel {
     private MutableLiveData<List<FormerCoinData>> formerCoinData;
     private MutableLiveData<List<TickerData>> tickerCoinData;
     private MutableLiveData<List<OrderBookData>> orderbookCoinData;
-    private FormerData formerData = new FormerData();
-    private NewTickerData newTickerData = new NewTickerData();
-    private NewOrderBookData orderBookData = new NewOrderBookData();
+    private MutableLiveData<List<TransactionData>> transactionCoinData;
+
+    private FormerData formerData;
+    private NewTickerData newTickerData;
+    private NewOrderBookData orderBookData;
+    private NewTransactionData newTransactionData;
+
+    public CoinViewModel() {
+        this.formerData = new FormerData();
+        this.newTickerData = new NewTickerData();
+        this.orderBookData = new NewOrderBookData();
+        this.newTransactionData = new NewTransactionData();
+    }
 
     public LiveData<List<FormerCoinData>> getLastCoinData(String coinName, String intervals) {
         if (formerCoinData == null) {
@@ -48,7 +59,6 @@ public class CoinViewModel extends ViewModel {
         return tickerCoinData;
     }
 
-
     public MutableLiveData<List<OrderBookData>> getOrderBookCoinData() {
         if (orderbookCoinData == null) {
             orderbookCoinData = new MutableLiveData<List<OrderBookData>>();
@@ -58,6 +68,14 @@ public class CoinViewModel extends ViewModel {
         return orderbookCoinData;
     }
 
+    public MutableLiveData<List<TransactionData>> getTransactionCoinData(String coinName) {
+        if (transactionCoinData == null) {
+            transactionCoinData = new MutableLiveData<List<TransactionData>>();
+        }
+        newTransactionData.refreshTransactionCoinData(coinName);
+
+        return transactionCoinData;
+    }
 
     public void refrashNewCoinDataThread(){
       Thread thread = new Thread(()->{
@@ -74,8 +92,6 @@ public class CoinViewModel extends ViewModel {
       thread.setDaemon(true);
       thread.start();
     }
-
-
 
 
     public class FormerData {
@@ -196,6 +212,46 @@ public class CoinViewModel extends ViewModel {
 
         private OrderBookData getNewData() {
             return orderBookData;
+        }
+
+    }
+
+    public class NewTransactionData {
+
+        @SerializedName("status")
+        @Expose
+        private String status;
+        @SerializedName("data")
+        @Expose
+        private List<TransactionData> data = null;
+
+
+        private void refreshTransactionCoinData(String coinName) {
+            CoinRetrofit.create()
+                    .getTransactionCoinData(coinName)
+                    .enqueue(new Callback<NewTransactionData>() {
+                        @Override
+                        public void onResponse(Call<NewTransactionData> call, Response<NewTransactionData> response) {
+                            transactionCoinData.setValue(makeNewcoinList(response));
+                            Log.i("현재코인", transactionCoinData.getValue().get(0).getPrice());
+                        }
+
+                        @Override
+                        public void onFailure(Call<NewTransactionData> call, Throwable t) {
+                            Log.i("현재코인", "실패 : " + t.fillInStackTrace());
+                        }
+                    });
+        }
+
+        @NonNull
+        private List<TransactionData> makeNewcoinList(@NonNull Response<NewTransactionData> response) {
+            List<TransactionData> list = new ArrayList<>();
+            list = response.body().getNewData();
+            return list;
+        }
+
+        private List<TransactionData> getNewData() {
+            return data;
         }
 
     }

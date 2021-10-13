@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
 //        model.getNewCoinData().observe(this, observer);
 //        model.refrashNewCoinDataThread();
-        //model.getLastCoinData(COINNAME, INTERVALS).getValue();
+//        model.getLastCoinData(COINNAME, INTERVALS).getValue();
 
 //        DBController controller = new DBController(this);
 //        controller.insertTransaction(new Transaction(
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //        Log.i("디비", controller.getTransactionList().get(0).toString()) ;
 
-        model.getOrderBookCoinData();
+//        model.getTransactionCoinData("BTC");
 
     }
 }
