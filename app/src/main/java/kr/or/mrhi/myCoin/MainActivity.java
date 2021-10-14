@@ -1,11 +1,16 @@
 package kr.or.mrhi.myCoin;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Map;
 import java.util.Set;
@@ -15,43 +20,67 @@ import kr.or.mrhi.myCoin.POJO.tickerCoins.True;
 import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
 
 public class MainActivity extends AppCompatActivity {
-    static final String COINNAME = "DOGE", INTERVALS = "5m";
-    public static final String[] strings = new String[]{"BTC", "ETH", "BCH", "LTC", "BSV", "AXS", "BTG", "STRK",
-            "ETC", "NEO", "DOT", "ATOM", "WAVES", "LINK", "REP", "FLOW", "OMG", "QTUM", "TON", "GAS", "SRM",
-            "SBD", "XTZ", "THETA", "KAVA", "EOS", "AQT", "LSK", "DAWN", "MTL", "SXP", "STX", "STRAX", "ADA",
-            "ARK", "ICX", "KNC", "PUNDIX", "ENJ", "IOTA", "STORJ", "MLK", "GRS", "ONT", "XLM", "CHZ", "DOGE",
-            "XEC", "BTT", "AHT", "QKC"};
-    public static Boolean TRANSACTIONFLAG=false;
+
+    private BottomNavigationView bottomNavigationView;
+    private RecyclerView recyclerViewMain;
+
+    //    static final String COINNAME = "DOGE", INTERVALS = "5m";
+    public static final String[] strings = new String[]{"BTC", "ETH", "BCH", "LTC", "BSV", "AXS", "BTG",
+            "ETC", "DOT", "ATOM", "WAVES", "LINK", "REP", "OMG", "QTUM",};
+    public static Boolean TRANSACTIONFLAG = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TRANSACTIONFLAG=true;
+        TRANSACTIONFLAG = true;
 
-        CoinViewModel model = new ViewModelProvider(this).get(CoinViewModel.class);
+        bottomNavigationView = findViewById(R.id.bottomNavi);
 
 
-        model.getTransactionCoinData("BTC").observe(this, new Observer<Map<String, TransactionData>>() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onChanged(Map<String, TransactionData> transactionDataMap) {
-                for (int i = 0; i < strings.length; i++) {
-                    if (transactionDataMap.containsKey(strings[i])) {
-                        Log.i(strings[i], transactionDataMap.get(strings[i]).toString());
-                    }
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    //item을 클릭시 id값을 가져와 FrameLayout에 fragment.xml띄우기
+                    case R.id.fragment1:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment_Coins()).commit();
+                        break;
+                    case R.id.fragment2:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment2()).commit();
+                        break;
+                    case R.id.fragment3:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment3()).commit();
+                        break;
+                    default:
+                        finish();
                 }
-
+                return true;
             }
         });
-
-        model.refrashTransactionDataThread(strings);
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        TRANSACTIONFLAG=false;
+//        CoinViewModel model = new ViewModelProvider(this).get(CoinViewModel.class);
+//
+//
+//        model.getTransactionCoinData("BTC").observe(this, new Observer<Map<String, TransactionData>>() {
+//            @Override
+//            public void onChanged(Map<String, TransactionData> transactionDataMap) {
+//                for (int i = 0; i < strings.length; i++) {
+//                    if (transactionDataMap.containsKey(strings[i])) {
+//                        Log.i(strings[i], transactionDataMap.get(strings[i]).toString());
+//                    }
+//                }
+//
+//            }
+//        });
+//
+//        model.refrashTransactionDataThread(strings);
+//
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        TRANSACTIONFLAG=false;
 
 //        model.getLastCoinData(COINNAME, INTERVALS);
     }
