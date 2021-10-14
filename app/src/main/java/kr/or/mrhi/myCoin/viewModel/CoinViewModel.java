@@ -1,5 +1,7 @@
 package kr.or.mrhi.myCoin.viewModel;
 
+import static kr.or.mrhi.myCoin.MainActivity.TRANSACTIONFLAG;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -11,7 +13,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import kr.or.mrhi.myCoin.POJO.OrderBookData;
 import kr.or.mrhi.myCoin.POJO.TransactionData;
@@ -26,7 +30,7 @@ public class CoinViewModel extends ViewModel {
     private MutableLiveData<List<CandleCoinData>> candleCoinData;
     private MutableLiveData<TickerData> tickerCoinData;
     private MutableLiveData<List<OrderBookData>> orderbookCoinData;
-    private MutableLiveData<TransactionData> transactionCoinData;
+    private MutableLiveData<Map<String, TransactionData>> transactionCoinData;
 
     private NewCandleData newCandleData;
     private NewTickerData newTickerData;
@@ -70,31 +74,33 @@ public class CoinViewModel extends ViewModel {
         return orderbookCoinData;
     }
 
-    public MutableLiveData<TransactionData> getTransactionCoinData(String coinName) {
+    public MutableLiveData<Map<String, TransactionData>> getTransactionCoinData(String coinName) {
         if (transactionCoinData == null) {
-            transactionCoinData = new MutableLiveData<TransactionData>();
+            transactionCoinData = new MutableLiveData<Map<String, TransactionData>>();
         }
         newTransactionData.refreshTransactionCoinData(coinName);
 
         return transactionCoinData;
     }
 
-    public void refrashTransactionDataThread(String coinName) {
-        Thread thread = new Thread(() -> {
-            while (true) {
-                newTransactionData.refreshTransactionCoinData(coinName);
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+    public void refrashTransactionDataThread(String[] coinNames) {
+        Thread thread=new Thread(() -> {
+            while (TRANSACTIONFLAG) {
+                for (int i = 0; i < 50; i++) {
+                    synchronized (this) {
+                       newTransactionData.refreshTransactionCoinData(coinNames[i]);
+                    }
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
-
         thread.setDaemon(true);
         thread.start();
     }
-
 
     public class NewCandleData {
 
@@ -228,7 +234,7 @@ public class CoinViewModel extends ViewModel {
                     .enqueue(new Callback<NewTransactionData>() {
                         @Override
                         public void onResponse(Call<NewTransactionData> call, Response<NewTransactionData> response) {
-                            transactionCoinData.setValue(response.body().getNewData().get(LATELYDATA));
+                            transactionCoinData.setValue(makeMapData(coinName, response));
                         }
 
                         @Override
@@ -238,6 +244,14 @@ public class CoinViewModel extends ViewModel {
                     });
 
 
+        }
+
+        private Map<String, TransactionData> makeMapData(String coinName, Response<NewTransactionData> response) {
+            Map<String, TransactionData> dataMap = new HashMap<>();
+            if (response.body()!=null){
+                dataMap.put(coinName, response.body().getNewData().get(LATELYDATA));
+            }
+            return dataMap;
         }
 
 
