@@ -17,42 +17,44 @@ import kr.or.mrhi.myCoin.POJO.OrderBookData;
 import kr.or.mrhi.myCoin.POJO.TransactionData;
 import kr.or.mrhi.myCoin.retrofit.CoinRetrofit;
 import kr.or.mrhi.myCoin.POJO.TickerData;
-import kr.or.mrhi.myCoin.POJO.FormerCoinData;
+import kr.or.mrhi.myCoin.POJO.CandleCoinData;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CoinViewModel extends ViewModel {
-
-    private MutableLiveData<List<FormerCoinData>> formerCoinData;
-    private MutableLiveData<List<TickerData>> tickerCoinData;
+    private MutableLiveData<List<CandleCoinData>> candleCoinData;
+    private MutableLiveData<TickerData> tickerCoinData;
     private MutableLiveData<List<OrderBookData>> orderbookCoinData;
-    private MutableLiveData<List<TransactionData>> transactionCoinData;
+    private MutableLiveData<TransactionData> transactionCoinData;
 
-    private FormerData formerData;
+    private NewCandleData newCandleData;
     private NewTickerData newTickerData;
     private NewOrderBookData orderBookData;
     private NewTransactionData newTransactionData;
+    private static final int LATELYDATA = 19;
+
 
     public CoinViewModel() {
-        this.formerData = new FormerData();
+        this.newCandleData = new NewCandleData();
         this.newTickerData = new NewTickerData();
         this.orderBookData = new NewOrderBookData();
         this.newTransactionData = new NewTransactionData();
+
     }
 
-    public LiveData<List<FormerCoinData>> getLastCoinData(String coinName, String intervals) {
-        if (formerCoinData == null) {
-            formerCoinData = new MutableLiveData<List<FormerCoinData>>();
+
+    public LiveData<List<CandleCoinData>> getLastCoinData(String coinName, String intervals) {
+        if (candleCoinData == null) {
+            candleCoinData = new MutableLiveData<List<CandleCoinData>>();
         }
-        formerData.refreshCoinData(coinName, intervals);
-
-        return formerCoinData;
+        newCandleData.refreshCoinData(coinName, intervals);
+        return candleCoinData;
     }
 
-    public MutableLiveData<List<TickerData>> getNewCoinData() {
+    public MutableLiveData<TickerData> getNewCoinData() {
         if (tickerCoinData == null) {
-            tickerCoinData = new MutableLiveData<List<TickerData>>();
+            tickerCoinData = new MutableLiveData<TickerData>();
         }
         newTickerData.refreshCoinData();
 
@@ -68,19 +70,19 @@ public class CoinViewModel extends ViewModel {
         return orderbookCoinData;
     }
 
-    public MutableLiveData<List<TransactionData>> getTransactionCoinData(String coinName) {
+    public MutableLiveData<TransactionData> getTransactionCoinData(String coinName) {
         if (transactionCoinData == null) {
-            transactionCoinData = new MutableLiveData<List<TransactionData>>();
+            transactionCoinData = new MutableLiveData<TransactionData>();
         }
         newTransactionData.refreshTransactionCoinData(coinName);
 
         return transactionCoinData;
     }
 
-    public void refrashNewCoinDataThread(){
-      Thread thread = new Thread(()->{
-            while (true){
-                newTickerData.refreshCoinData();
+    public void refrashTransactionDataThread(String coinName) {
+        Thread thread = new Thread(() -> {
+            while (true) {
+                newTransactionData.refreshTransactionCoinData(coinName);
                 try {
                     Thread.sleep(200);
                 } catch (InterruptedException e) {
@@ -89,12 +91,12 @@ public class CoinViewModel extends ViewModel {
             }
         });
 
-      thread.setDaemon(true);
-      thread.start();
+        thread.setDaemon(true);
+        thread.start();
     }
 
 
-    public class FormerData {
+    public class NewCandleData {
 
         @SerializedName("status")
         @Expose
@@ -104,39 +106,38 @@ public class CoinViewModel extends ViewModel {
         @Expose
         private List<List<String>> data = null;
 
-        private void refreshCoinData(@NonNull String coinName, String intervals) {
+        public void refreshCoinData(@NonNull String coinName, String intervals) {
 
             CoinRetrofit.create()
                     .getCoinData(coinName.toUpperCase(), "KRW", intervals)
-                    .enqueue(new Callback<FormerData>() {
+                    .enqueue(new Callback<NewCandleData>() {
                         @Override
-                        public void onResponse(Call<FormerData> call, Response<FormerData> response) {
-                            formerCoinData.setValue(makeCoinList(response));
+                        public void onResponse(Call<NewCandleData> call, Response<NewCandleData> response) {
+                            candleCoinData.setValue(makeCoinList(response));
                         }
 
                         @Override
-                        public void onFailure(Call<FormerData> call, Throwable t) {
+                        public void onFailure(Call<NewCandleData> call, Throwable t) {
                             Log.i("이전코인", "실패 : " + t.fillInStackTrace());
                         }
                     });
         }
 
         @NonNull
-        private List<FormerCoinData> makeCoinList(@NonNull Response<FormerData> response) {
-            List<FormerCoinData> formerCoinList = new ArrayList<>();
+        private List<CandleCoinData> makeCoinList(@NonNull Response<NewCandleData> response) {
+            List<CandleCoinData> formerCoinList = new ArrayList<>();
             for (List<String> list : response.body().getData()) {
-                FormerCoinData coin = new FormerCoinData(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5));
+                CandleCoinData coin = new CandleCoinData(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5));
                 formerCoinList.add(coin);
                 Log.i("이전코인", coin.toString());
             }
-            Log.i("이전코인", formerCoinList.size()+"");
+            Log.i("이전코인", formerCoinList.size() + "");
             return formerCoinList;
         }
 
         private List<List<String>> getData() {
             return data;
         }
-
     }
 
     public class NewTickerData {
@@ -154,8 +155,8 @@ public class CoinViewModel extends ViewModel {
                     .enqueue(new Callback<NewTickerData>() {
                         @Override
                         public void onResponse(Call<NewTickerData> call, Response<NewTickerData> response) {
-                            tickerCoinData.setValue(makeNewcoinList(response));
-                            Log.i("현재코인", tickerCoinData.getValue().get(0).getBtc().getMaxPrice());
+                            tickerCoinData.setValue(response.body().getNewData());
+                            Log.i("현재코인", tickerCoinData.getValue().getBtc().getName());
                         }
 
                         @Override
@@ -165,12 +166,6 @@ public class CoinViewModel extends ViewModel {
                     });
         }
 
-        @NonNull
-        private List<TickerData> makeNewcoinList(@NonNull Response<NewTickerData> response) {
-            List<TickerData> list = new ArrayList<>();
-            list.add(response.body().getNewData());
-            return list;
-        }
 
         private TickerData getNewData() {
             return TickerData;
@@ -227,13 +222,13 @@ public class CoinViewModel extends ViewModel {
 
 
         private void refreshTransactionCoinData(String coinName) {
+
             CoinRetrofit.create()
                     .getTransactionCoinData(coinName)
                     .enqueue(new Callback<NewTransactionData>() {
                         @Override
                         public void onResponse(Call<NewTransactionData> call, Response<NewTransactionData> response) {
-                            transactionCoinData.setValue(makeNewcoinList(response));
-                            Log.i("현재코인", transactionCoinData.getValue().get(0).getPrice());
+                            transactionCoinData.setValue(response.body().getNewData().get(LATELYDATA));
                         }
 
                         @Override
@@ -241,14 +236,10 @@ public class CoinViewModel extends ViewModel {
                             Log.i("현재코인", "실패 : " + t.fillInStackTrace());
                         }
                     });
+
+
         }
 
-        @NonNull
-        private List<TransactionData> makeNewcoinList(@NonNull Response<NewTransactionData> response) {
-            List<TransactionData> list = new ArrayList<>();
-            list = response.body().getNewData();
-            return list;
-        }
 
         private List<TransactionData> getNewData() {
             return data;

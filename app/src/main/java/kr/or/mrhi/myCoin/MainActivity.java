@@ -1,13 +1,16 @@
 package kr.or.mrhi.myCoin;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.util.Log;
 
+import kr.or.mrhi.myCoin.POJO.TransactionData;
 import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     static final String COINNAME = "DOGE", INTERVALS = "5m";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,29 +18,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         CoinViewModel model = new ViewModelProvider(this).get(CoinViewModel.class);
-//
-//        Observer<List<Data>> observer = new Observer<List<Data>>() {
-//
-//            @Override
-//            public void onChanged(List<Data> data) {
-//                Log.i("옵져버", ""+data.get(data.size()-1).getBtc().getAccTradeValue());
-//            }
-//        };
 
+        for (int i=0; i<2; i++){
+            model.getTransactionCoinData("BTC").observe(this, new Observer<TransactionData>() {
+                @Override
+                public void onChanged(TransactionData transactionData) {
+                    Log.i("트랜", transactionData.getPrice());
+                }
+            });
+        }
 
-//        model.getNewCoinData().observe(this, observer);
-//        model.refrashNewCoinDataThread();
-//        model.getLastCoinData(COINNAME, INTERVALS).getValue();
+        model.refrashTransactionDataThread("BTC");
 
-//        DBController controller = new DBController(this);
-//        controller.insertTransaction(new Transaction(
-//                "BTC", "true", null, 10L, 1000L, 3000L));
-//
-//        Log.i("디비", controller.getTransactionList().get(0).toString()) ;
-
-//        model.getTransactionCoinData("BTC");
-
+        model.getLastCoinData(COINNAME, INTERVALS);
     }
+
+
 }
 
 
