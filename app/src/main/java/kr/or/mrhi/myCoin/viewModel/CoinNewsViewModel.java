@@ -15,19 +15,19 @@ import java.util.List;
 
 import kr.or.mrhi.myCoin.retrofit.CoinNewsRetrofit;
 import kr.or.mrhi.myCoin.POJO.TickerData;
-import kr.or.mrhi.myCoin.POJO.FormerCoinData;
+import kr.or.mrhi.myCoin.POJO.CandleCoinData;
 import retrofit2.Response;
 
 public class CoinNewsViewModel extends ViewModel {
 
-    private MutableLiveData<List<FormerCoinData>> formerCoinData;
+    private MutableLiveData<List<CandleCoinData>> formerCoinData;
     private MutableLiveData<List<TickerData>> newCoinData;
     private FormerData formerData = new FormerData();
     private NewData newData = new NewData();
 
-    public LiveData<List<FormerCoinData>> getLastCoinData(String coinName) {
+    public LiveData<List<CandleCoinData>> getLastCoinData(String coinName) {
         if (formerCoinData == null) {
-            formerCoinData = new MutableLiveData<List<FormerCoinData>>();
+            formerCoinData = new MutableLiveData<List<CandleCoinData>>();
         }
         formerData.refreshCoinData(coinName);
 
@@ -61,10 +61,10 @@ public class CoinNewsViewModel extends ViewModel {
         }
 
         @NonNull
-        private List<FormerCoinData> makeCoinList(@NonNull Response<FormerData> response) {
-            List<FormerCoinData> formerCoinList = new ArrayList<>();
+        private List<CandleCoinData> makeCoinList(@NonNull Response<FormerData> response) {
+            List<CandleCoinData> formerCoinList = new ArrayList<>();
             for (List<String> list : response.body().getData()) {
-                FormerCoinData coin = new FormerCoinData(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5));
+                CandleCoinData coin = new CandleCoinData(list.get(0), list.get(1), list.get(2), list.get(3), list.get(4), list.get(5));
                 formerCoinList.add(coin);
                 Log.i("이전코인", coin.toString());
             }

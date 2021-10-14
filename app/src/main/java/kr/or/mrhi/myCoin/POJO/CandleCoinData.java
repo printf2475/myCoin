@@ -1,6 +1,6 @@
 package kr.or.mrhi.myCoin.POJO;
 
-public class FormerCoinData {
+public class CandleCoinData {
     private String date;
     private String openingPrice;
     private String closingPrice;
@@ -8,7 +8,7 @@ public class FormerCoinData {
     private String minPrice;
     private String unitsTraded;
 
-    public FormerCoinData(String date, String openingPrice, String closingPrice, String maxPrice, String minPrice, String unitsTraded) {
+    public CandleCoinData(String date, String openingPrice, String closingPrice, String maxPrice, String minPrice, String unitsTraded) {
         this.date = date;
         this.openingPrice = openingPrice;
         this.closingPrice = closingPrice;

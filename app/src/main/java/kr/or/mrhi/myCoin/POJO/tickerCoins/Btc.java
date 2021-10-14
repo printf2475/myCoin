@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class Btc {
 
+    private String name = "비트코인";
+
+
+
     @SerializedName("opening_price")
     @Expose
     private String openingPrice;
@@ -38,6 +42,10 @@ public class Btc {
     @SerializedName("fluctate_rate_24H")
     @Expose
     private String fluctateRate24H;
+
+    public String getName() {
+        return name;
+    }
 
     public String getOpeningPrice() {
         return openingPrice;

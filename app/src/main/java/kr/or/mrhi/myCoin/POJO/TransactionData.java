@@ -59,4 +59,15 @@ public class TransactionData {
     public void setTotal(String total) {
         this.total = total;
     }
+
+    @Override
+    public String toString() {
+        return "TransactionData{" +
+                "transactionDate='" + transactionDate + '\'' +
+                ", type='" + type + '\'' +
+                ", unitsTraded='" + unitsTraded + '\'' +
+                ", price='" + price + '\'' +
+                ", total='" + total + '\'' +
+                '}';
+    }
 }
