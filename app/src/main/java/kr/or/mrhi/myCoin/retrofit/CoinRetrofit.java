@@ -18,6 +18,10 @@ public interface CoinRetrofit {
     @GET("ticker/{order_currency}_{payment_currency}")
     Call<CoinViewModel.NewTickerData> getTickerCoinData(@Path("order_currency") String order_currency, @Path("payment_currency") String payment_currency);
 
+    @GET("ticker/{order_currency}_KRW")
+    Call<CoinViewModel.TickerDTO> getTickerDTO(@Path("order_currency") String order_currency);
+
+
     @GET("orderbook/{order_currency}_{payment_currency}")
     Call<CoinViewModel.NewOrderBookData> getOrderBookCoinData(@Path("order_currency") String order_currency, @Path("payment_currency") String payment_currency);
 

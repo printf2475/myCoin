@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import kr.or.mrhi.myCoin.POJO.TickerData;
+import kr.or.mrhi.myCoin.POJO.TickerPOJODATA;
 import kr.or.mrhi.myCoin.POJO.TransactionData;
 import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
 
@@ -55,7 +56,7 @@ public class Fragment_AllCoins extends Fragment {
         mainCoinAdapter = new MainCoinAdapter(priceList , ticker);
         recyclerView2.setAdapter(mainCoinAdapter);
 
-        model.getNewCoinData().observe(requireActivity(), new Observer<TickerData>() {
+        model.getTickerCoinData().observe(requireActivity(), new Observer<TickerData>() {
             @Override
             public void onChanged(TickerData tickerData) {
                 ticker=tickerData;
@@ -73,10 +74,17 @@ public class Fragment_AllCoins extends Fragment {
             }
         });
 
+        model.getTickerDTO("BTC").observe(requireActivity(), new Observer<TickerPOJODATA>() {
+            @Override
+            public void onChanged(TickerPOJODATA tickerPOJODATA) {
+
+            }
+        });
+
 
 
         model.refrashTransactionDataThread(strings);
-
+        model.getTickerDTO("BTC");
 
         return view;
 

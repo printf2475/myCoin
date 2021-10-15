@@ -20,6 +20,7 @@ import java.util.Map;
 
 import kr.or.mrhi.myCoin.POJO.OrderBookData;
 import kr.or.mrhi.myCoin.POJO.TransactionData;
+import kr.or.mrhi.myCoin.POJO.TickerPOJODATA;
 import kr.or.mrhi.myCoin.retrofit.CoinRetrofit;
 import kr.or.mrhi.myCoin.POJO.TickerData;
 import kr.or.mrhi.myCoin.POJO.CandleCoinData;
@@ -30,6 +31,7 @@ import retrofit2.Response;
 public class CoinViewModel extends ViewModel {
     private MutableLiveData<List<CandleCoinData>> candleCoinData;
     private MutableLiveData<TickerData> tickerCoinData;
+    private MutableLiveData<TickerPOJODATA> tickerDTOData;
     private MutableLiveData<List<OrderBookData>> orderbookCoinData;
     private MutableLiveData<List<String>> transactionCoinData;
 
@@ -37,6 +39,7 @@ public class CoinViewModel extends ViewModel {
     private NewTickerData newTickerData;
     private NewOrderBookData orderBookData;
     private NewTransactionData newTransactionData;
+    private TickerDTO tickerDTO;
     private static final int LATELYDATA = 19;
     private List<String> priceList;
 
@@ -46,13 +49,14 @@ public class CoinViewModel extends ViewModel {
         this.newTickerData = new NewTickerData();
         this.orderBookData = new NewOrderBookData();
         this.newTransactionData = new NewTransactionData();
+        this.tickerDTO = new TickerDTO();
         this.priceList= new ArrayList<>();
         for (int i=0; i<strings.length; i++){
             priceList.add("0.00");
         }
     }
 
-    public LiveData<List<CandleCoinData>> getLastCoinData(String coinName, String intervals) {
+    public LiveData<List<CandleCoinData>> getCandleCoinData(String coinName, String intervals) {
         if (candleCoinData == null) {
             candleCoinData = new MutableLiveData<List<CandleCoinData>>();
         }
@@ -60,13 +64,22 @@ public class CoinViewModel extends ViewModel {
         return candleCoinData;
     }
 
-    public MutableLiveData<TickerData> getNewCoinData() {
+    public MutableLiveData<TickerData> getTickerCoinData() {
         if (tickerCoinData == null) {
             tickerCoinData = new MutableLiveData<TickerData>();
         }
         newTickerData.refreshCoinData();
 
         return tickerCoinData;
+    }
+
+    public MutableLiveData<TickerPOJODATA> getTickerDTO(String coinName) {
+        if (tickerDTOData == null) {
+            tickerDTOData = new MutableLiveData<TickerPOJODATA>();
+        }
+        tickerDTO.refreshTickerDTO(coinName);
+
+        return tickerDTOData;
     }
 
     public MutableLiveData<List<OrderBookData>> getOrderBookCoinData() {
@@ -177,6 +190,8 @@ public class CoinViewModel extends ViewModel {
         }
 
 
+
+
         private TickerData getNewData() {
             return TickerData;
         }
@@ -190,6 +205,7 @@ public class CoinViewModel extends ViewModel {
         @SerializedName("data")
         @Expose
         private OrderBookData orderBookData;
+
 
         private void refreshOrderBookCoinData() {
             CoinRetrofit.create()
@@ -277,5 +293,37 @@ public class CoinViewModel extends ViewModel {
 
     }
 
+
+    public class TickerDTO {
+
+        @SerializedName("status")
+        @Expose
+        private String status;
+        @SerializedName("data")
+        @Expose
+        private TickerPOJODATA data;
+
+        private void refreshTickerDTO(String coinName) {
+            CoinRetrofit.create()
+                    .getTickerDTO(coinName)
+                    .enqueue(new Callback<TickerDTO>() {
+                        @Override
+                        public void onResponse(Call<TickerDTO> call, Response<TickerDTO> response) {
+                            tickerDTOData.setValue(response.body().getData());
+                            Log.i("현재코인", tickerDTOData.getValue().toString());
+                        }
+
+                        @Override
+                        public void onFailure(Call<TickerDTO> call, Throwable t) {
+                            Log.i("현재코인", "실패 : " + t.fillInStackTrace());
+                        }
+                    });
+        }
+
+        public TickerPOJODATA getData() {
+            return data;
+        }
+
+    }
 
 }

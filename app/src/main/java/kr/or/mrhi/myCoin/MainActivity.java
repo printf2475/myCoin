@@ -59,16 +59,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        model.refrashTransactionDataThread(strings);
-
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        TRANSACTIONFLAG=false;
-
-//        model.getLastCoinData(COINNAME, INTERVALS);
     }
 
 
