@@ -1,6 +1,7 @@
 package kr.or.mrhi.myCoin.viewModel;
 
 import static kr.or.mrhi.myCoin.MainActivity.TRANSACTIONFLAG;
+import static kr.or.mrhi.myCoin.MainActivity.strings;
 
 import android.util.Log;
 
@@ -30,13 +31,14 @@ public class CoinViewModel extends ViewModel {
     private MutableLiveData<List<CandleCoinData>> candleCoinData;
     private MutableLiveData<TickerData> tickerCoinData;
     private MutableLiveData<List<OrderBookData>> orderbookCoinData;
-    private MutableLiveData<Map<String, TransactionData>> transactionCoinData;
+    private MutableLiveData<List<String>> transactionCoinData;
 
     private NewCandleData newCandleData;
     private NewTickerData newTickerData;
     private NewOrderBookData orderBookData;
     private NewTransactionData newTransactionData;
     private static final int LATELYDATA = 19;
+    private List<String> priceList;
 
 
     public CoinViewModel() {
@@ -44,9 +46,11 @@ public class CoinViewModel extends ViewModel {
         this.newTickerData = new NewTickerData();
         this.orderBookData = new NewOrderBookData();
         this.newTransactionData = new NewTransactionData();
-
+        this.priceList= new ArrayList<>();
+        for (int i=0; i<strings.length; i++){
+            priceList.add("0.00");
+        }
     }
-
 
     public LiveData<List<CandleCoinData>> getLastCoinData(String coinName, String intervals) {
         if (candleCoinData == null) {
@@ -74,9 +78,9 @@ public class CoinViewModel extends ViewModel {
         return orderbookCoinData;
     }
 
-    public MutableLiveData<Map<String, TransactionData>> getTransactionCoinData(String coinName) {
+    public MutableLiveData<List<String>> getTransactionCoinData(String coinName) {
         if (transactionCoinData == null) {
-            transactionCoinData = new MutableLiveData<Map<String, TransactionData>>();
+            transactionCoinData = new MutableLiveData<List<String>>();
         }
         newTransactionData.refreshTransactionCoinData(coinName);
 
@@ -84,14 +88,14 @@ public class CoinViewModel extends ViewModel {
     }
 
     public void refrashTransactionDataThread(String[] coinNames) {
-        Thread thread=new Thread(() -> {
+        Thread thread = new Thread(() -> {
             while (TRANSACTIONFLAG) {
-                for (int i = 0; i < 50; i++) {
+                for (int i = 0; i < coinNames.length; i++) {
                     synchronized (this) {
-                       newTransactionData.refreshTransactionCoinData(coinNames[i]);
+                        newTransactionData.refreshTransactionCoinData(coinNames[i]);
                     }
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -246,12 +250,24 @@ public class CoinViewModel extends ViewModel {
 
         }
 
-        private Map<String, TransactionData> makeMapData(String coinName, Response<NewTransactionData> response) {
-            Map<String, TransactionData> dataMap = new HashMap<>();
-            if (response.body()!=null){
-                dataMap.put(coinName, response.body().getNewData().get(LATELYDATA));
+        private List<String> makeMapData(String coinName, Response<NewTransactionData> response) {
+            Map<String, Integer> map = new HashMap<>();
+
+
+
+            for (int i = 0; i < strings.length; i++) {
+                map.put(strings[i], i);
             }
-            return dataMap;
+
+            if (response.body() != null) {
+                priceList.set(map.get(coinName), response.body().getNewData().get(LATELYDATA).getPrice());
+            }
+
+
+
+
+
+            return priceList;
         }
 
 
@@ -260,5 +276,6 @@ public class CoinViewModel extends ViewModel {
         }
 
     }
+
 
 }
