@@ -10,6 +10,7 @@ import android.util.Log;
 import java.util.Map;
 import java.util.Set;
 
+import kr.or.mrhi.myCoin.POJO.TickerData;
 import kr.or.mrhi.myCoin.POJO.TransactionData;
 import kr.or.mrhi.myCoin.POJO.tickerCoins.True;
 import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
             "ARK", "ICX", "KNC", "PUNDIX", "ENJ", "IOTA", "STORJ", "MLK", "GRS", "ONT", "XLM", "CHZ", "DOGE",
             "XEC", "BTT", "AHT", "QKC"};
     public static Boolean TRANSACTIONFLAG=false;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +48,15 @@ public class MainActivity extends AppCompatActivity {
 
         model.refrashTransactionDataThread(strings);
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        TRANSACTIONFLAG=false;
+        model.getNewCoinData().observe(this, new Observer<TickerData>() {
+            @Override
+            public void onChanged(TickerData tickerData) {
+                name=tickerData.getBtc().getName();
+            }
+        });
+        Log.i("메인", name);
+
+        model.getNewCoinData();
 
 //        model.getLastCoinData(COINNAME, INTERVALS);
     }
