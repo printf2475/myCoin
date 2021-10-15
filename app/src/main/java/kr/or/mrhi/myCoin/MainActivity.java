@@ -22,21 +22,20 @@ import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
-    private RecyclerView recyclerViewMain;
 
-    //    static final String COINNAME = "DOGE", INTERVALS = "5m";
-    public static final String[] strings = new String[]{"BTC", "ETH", "BCH", "LTC", "BSV", "AXS", "BTG",
+    public static final String[] stringSymbol = new String[]{"BTC", "ETH", "BCH", "LTC", "BSV", "AXS", "BTG",
             "ETC", "DOT", "ATOM", "WAVES", "LINK", "REP", "OMG", "QTUM",};
-    public static Boolean TRANSACTIONFLAG = false;
+
+    public static final String[] stringName = new String[]{"비트코인", "이더리움", "비트코인캐시", "라이트코인",
+            "비트코인SV", "엑시인피니티", "비트코인골드","이더리움클래식", "폴카닷", "코스모스", "웨이브",
+            "체인링크", "어거", "오미세고", "퀀텀"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TRANSACTIONFLAG = true;
 
         bottomNavigationView = findViewById(R.id.bottomNavi);
-
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -58,10 +57,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
     }
-
-
 }
 
 

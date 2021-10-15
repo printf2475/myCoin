@@ -1,7 +1,6 @@
 package kr.or.mrhi.myCoin.viewModel;
 
-import static kr.or.mrhi.myCoin.MainActivity.TRANSACTIONFLAG;
-import static kr.or.mrhi.myCoin.MainActivity.strings;
+import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 
 import android.util.Log;
 
@@ -13,6 +12,7 @@ import androidx.lifecycle.ViewModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +42,7 @@ public class CoinViewModel extends ViewModel {
     private TickerDTO tickerDTO;
     private static final int LATELYDATA = 19;
     private List<String> priceList;
-
+    private boolean stopFlag;
 
     public CoinViewModel() {
         this.newCandleData = new NewCandleData();
@@ -50,10 +50,11 @@ public class CoinViewModel extends ViewModel {
         this.orderBookData = new NewOrderBookData();
         this.newTransactionData = new NewTransactionData();
         this.tickerDTO = new TickerDTO();
-        this.priceList= new ArrayList<>();
-        for (int i=0; i<strings.length; i++){
+        this.priceList= new ArrayList<>(20);
+        for (int i=0; i<stringSymbol.length; i++){
             priceList.add("0.00");
         }
+        stopFlag=false;
     }
 
     public LiveData<List<CandleCoinData>> getCandleCoinData(String coinName, String intervals) {
@@ -101,8 +102,9 @@ public class CoinViewModel extends ViewModel {
     }
 
     public void refrashTransactionDataThread(String[] coinNames) {
+        stopFlag=true;
         Thread thread = new Thread(() -> {
-            while (TRANSACTIONFLAG) {
+            while (!stopFlag) {
                 for (int i = 0; i < coinNames.length; i++) {
                     synchronized (this) {
                         newTransactionData.refreshTransactionCoinData(coinNames[i]);
@@ -117,6 +119,10 @@ public class CoinViewModel extends ViewModel {
         });
         thread.setDaemon(true);
         thread.start();
+    }
+
+    public void stopThread() {
+        this.stopFlag = false;
     }
 
     public class NewCandleData {
@@ -170,7 +176,7 @@ public class CoinViewModel extends ViewModel {
 
         @SerializedName("data")
         @Expose
-        private TickerData TickerData;
+        private TickerData tickerData;
 
         private void refreshCoinData() {
             CoinRetrofit.create()
@@ -179,7 +185,6 @@ public class CoinViewModel extends ViewModel {
                         @Override
                         public void onResponse(Call<NewTickerData> call, Response<NewTickerData> response) {
                             tickerCoinData.setValue(response.body().getNewData());
-                            Log.i("현재코인", tickerCoinData.getValue().getBtc().getName());
                         }
 
                         @Override
@@ -193,7 +198,7 @@ public class CoinViewModel extends ViewModel {
 
 
         private TickerData getNewData() {
-            return TickerData;
+            return tickerData;
         }
     }
 
@@ -269,20 +274,13 @@ public class CoinViewModel extends ViewModel {
         private List<String> makeMapData(String coinName, Response<NewTransactionData> response) {
             Map<String, Integer> map = new HashMap<>();
 
-
-
-            for (int i = 0; i < strings.length; i++) {
-                map.put(strings[i], i);
+            for (int i = 0; i < stringSymbol.length; i++) {
+                map.put(stringSymbol[i], i);
             }
 
             if (response.body() != null) {
                 priceList.set(map.get(coinName), response.body().getNewData().get(LATELYDATA).getPrice());
             }
-
-
-
-
-
             return priceList;
         }
 

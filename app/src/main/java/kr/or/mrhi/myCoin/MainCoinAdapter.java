@@ -1,6 +1,7 @@
 package kr.or.mrhi.myCoin;
 
-import static kr.or.mrhi.myCoin.MainActivity.strings;
+
+import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +23,8 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
     private List<String> transactionCoin;
     private TickerData tickerCoin;
 
-    public MainCoinAdapter(List<String> transactionCoin ,TickerData tickerData) {
+    public MainCoinAdapter(List<String> transactionCoin) {
         this.transactionCoin = transactionCoin;
-        this.tickerCoin = tickerData;
-
     }
 
     @NonNull
@@ -46,6 +46,10 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
         return transactionCoin.size();
     }
 
+    public void setTicker(TickerData tickerData) {
+        this.tickerCoin=tickerData;
+    }
+
     public class ViewHolders extends RecyclerView.ViewHolder {
             TextView coinId,coinCurrentPrice,coinCompareYesterday;
         public ViewHolders(@NonNull View itemView) {
@@ -56,9 +60,11 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
         }
 
         public void onBind(int position) {
-            double currentPrice= Double.parseDouble(transactionCoin.get(position));
-//            double closingPrice= Double.parseDouble(tickerCoin.getBtc().getClosingPrice());
-            coinId.setText(strings[position]);
+            if (tickerCoin!=null){
+                coinCompareYesterday.setText(tickerCoin.getBtc().getAccTradeValue24H());
+
+            }
+            coinId.setText(stringSymbol[position]);
             coinCurrentPrice.setText(transactionCoin.get(position));
 //            coinCompareYesterday.setText(String.valueOf(currentPrice/closingPrice*100-100));
         }
