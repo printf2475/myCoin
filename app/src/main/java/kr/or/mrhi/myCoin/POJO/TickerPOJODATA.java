@@ -1,13 +1,9 @@
-package kr.or.mrhi.myCoin.POJO.tickerCoins;
+package kr.or.mrhi.myCoin.POJO;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Btc {
-
-    private String name = "비트코인";
-
-
+public class TickerPOJODATA {
 
     @SerializedName("opening_price")
     @Expose
@@ -42,10 +38,6 @@ public class Btc {
     @SerializedName("fluctate_rate_24H")
     @Expose
     private String fluctateRate24H;
-
-    public String getName() {
-        return name;
-    }
 
     public String getOpeningPrice() {
         return openingPrice;
@@ -135,4 +127,22 @@ public class Btc {
         this.fluctateRate24H = fluctateRate24H;
     }
 
+    @Override
+    public String toString() {
+        return "TickerDTO{" +
+                "openingPrice='" + openingPrice + '\'' +
+                ", closingPrice='" + closingPrice + '\'' +
+                ", minPrice='" + minPrice + '\'' +
+                ", maxPrice='" + maxPrice + '\'' +
+                ", unitsTraded='" + unitsTraded + '\'' +
+                ", accTradeValue='" + accTradeValue + '\'' +
+                ", prevClosingPrice='" + prevClosingPrice + '\'' +
+                ", unitsTraded24H='" + unitsTraded24H + '\'' +
+                ", accTradeValue24H='" + accTradeValue24H + '\'' +
+                ", fluctate24H='" + fluctate24H + '\'' +
+                ", fluctateRate24H='" + fluctateRate24H + '\'' +
+                '}';
+    }
+
 }
+

@@ -1,6 +1,6 @@
 package kr.or.mrhi.myCoin.viewModel;
 
-import static kr.or.mrhi.myCoin.MainActivity.TRANSACTIONFLAG;
+import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 
 import android.util.Log;
 
@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 import kr.or.mrhi.myCoin.POJO.OrderBookData;
 import kr.or.mrhi.myCoin.POJO.TransactionData;
+import kr.or.mrhi.myCoin.POJO.TickerPOJODATA;
 import kr.or.mrhi.myCoin.retrofit.CoinRetrofit;
 import kr.or.mrhi.myCoin.POJO.TickerData;
 import kr.or.mrhi.myCoin.POJO.CandleCoinData;
@@ -29,26 +31,33 @@ import retrofit2.Response;
 public class CoinViewModel extends ViewModel {
     private MutableLiveData<List<CandleCoinData>> candleCoinData;
     private MutableLiveData<TickerData> tickerCoinData;
+    private MutableLiveData<TickerPOJODATA> tickerDTOData;
     private MutableLiveData<List<OrderBookData>> orderbookCoinData;
-    private MutableLiveData<Map<String, TransactionData>> transactionCoinData;
+    private MutableLiveData<List<String>> transactionCoinData;
 
     private NewCandleData newCandleData;
     private NewTickerData newTickerData;
     private NewOrderBookData orderBookData;
     private NewTransactionData newTransactionData;
+    private TickerDTO tickerDTO;
     private static final int LATELYDATA = 19;
-
+    private List<String> priceList;
+    private boolean stopFlag;
 
     public CoinViewModel() {
         this.newCandleData = new NewCandleData();
         this.newTickerData = new NewTickerData();
         this.orderBookData = new NewOrderBookData();
         this.newTransactionData = new NewTransactionData();
-
+        this.tickerDTO = new TickerDTO();
+        this.priceList= new ArrayList<>(20);
+        for (int i=0; i<stringSymbol.length; i++){
+            priceList.add("0.00");
+        }
+        stopFlag=false;
     }
 
-
-    public LiveData<List<CandleCoinData>> getLastCoinData(String coinName, String intervals) {
+    public LiveData<List<CandleCoinData>> getCandleCoinData(String coinName, String intervals) {
         if (candleCoinData == null) {
             candleCoinData = new MutableLiveData<List<CandleCoinData>>();
         }
@@ -56,13 +65,22 @@ public class CoinViewModel extends ViewModel {
         return candleCoinData;
     }
 
-    public MutableLiveData<TickerData> getNewCoinData() {
+    public MutableLiveData<TickerData> getTickerCoinData() {
         if (tickerCoinData == null) {
             tickerCoinData = new MutableLiveData<TickerData>();
         }
         newTickerData.refreshCoinData();
 
         return tickerCoinData;
+    }
+
+    public MutableLiveData<TickerPOJODATA> getTickerDTO(String coinName) {
+        if (tickerDTOData == null) {
+            tickerDTOData = new MutableLiveData<TickerPOJODATA>();
+        }
+        tickerDTO.refreshTickerDTO(coinName);
+
+        return tickerDTOData;
     }
 
     public MutableLiveData<List<OrderBookData>> getOrderBookCoinData() {
@@ -74,9 +92,9 @@ public class CoinViewModel extends ViewModel {
         return orderbookCoinData;
     }
 
-    public MutableLiveData<Map<String, TransactionData>> getTransactionCoinData(String coinName) {
+    public MutableLiveData<List<String>> getTransactionCoinData(String coinName) {
         if (transactionCoinData == null) {
-            transactionCoinData = new MutableLiveData<Map<String, TransactionData>>();
+            transactionCoinData = new MutableLiveData<List<String>>();
         }
         newTransactionData.refreshTransactionCoinData(coinName);
 
@@ -84,14 +102,15 @@ public class CoinViewModel extends ViewModel {
     }
 
     public void refrashTransactionDataThread(String[] coinNames) {
-        Thread thread=new Thread(() -> {
-            while (TRANSACTIONFLAG) {
-                for (int i = 0; i < 50; i++) {
+        stopFlag=true;
+        Thread thread = new Thread(() -> {
+            while (!stopFlag) {
+                for (int i = 0; i < coinNames.length; i++) {
                     synchronized (this) {
-                       newTransactionData.refreshTransactionCoinData(coinNames[i]);
+                        newTransactionData.refreshTransactionCoinData(coinNames[i]);
                     }
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -100,6 +119,10 @@ public class CoinViewModel extends ViewModel {
         });
         thread.setDaemon(true);
         thread.start();
+    }
+
+    public void stopThread() {
+        this.stopFlag = false;
     }
 
     public class NewCandleData {
@@ -115,7 +138,7 @@ public class CoinViewModel extends ViewModel {
         public void refreshCoinData(@NonNull String coinName, String intervals) {
 
             CoinRetrofit.create()
-                    .getCandlestickCoinData(coinName.toUpperCase(), "KRW", intervals)
+                    .getCoinData(coinName.toUpperCase(), "KRW", intervals)
                     .enqueue(new Callback<NewCandleData>() {
                         @Override
                         public void onResponse(Call<NewCandleData> call, Response<NewCandleData> response) {
@@ -153,7 +176,7 @@ public class CoinViewModel extends ViewModel {
 
         @SerializedName("data")
         @Expose
-        private TickerData TickerData;
+        private TickerData tickerData;
 
         private void refreshCoinData() {
             CoinRetrofit.create()
@@ -162,7 +185,6 @@ public class CoinViewModel extends ViewModel {
                         @Override
                         public void onResponse(Call<NewTickerData> call, Response<NewTickerData> response) {
                             tickerCoinData.setValue(response.body().getNewData());
-                            Log.i("현재코인", tickerCoinData.getValue().getBtc().getName());
                         }
 
                         @Override
@@ -173,8 +195,10 @@ public class CoinViewModel extends ViewModel {
         }
 
 
+
+
         private TickerData getNewData() {
-            return TickerData;
+            return tickerData;
         }
     }
 
@@ -186,6 +210,7 @@ public class CoinViewModel extends ViewModel {
         @SerializedName("data")
         @Expose
         private OrderBookData orderBookData;
+
 
         private void refreshOrderBookCoinData() {
             CoinRetrofit.create()
@@ -246,16 +271,54 @@ public class CoinViewModel extends ViewModel {
 
         }
 
-        private Map<String, TransactionData> makeMapData(String coinName, Response<NewTransactionData> response) {
-            Map<String, TransactionData> dataMap = new HashMap<>();
-            if (response.body()!=null){
-                dataMap.put(coinName, response.body().getNewData().get(LATELYDATA));
+        private List<String> makeMapData(String coinName, Response<NewTransactionData> response) {
+            Map<String, Integer> map = new HashMap<>();
+
+            for (int i = 0; i < stringSymbol.length; i++) {
+                map.put(stringSymbol[i], i);
             }
-            return dataMap;
+
+            if (response.body() != null) {
+                priceList.set(map.get(coinName), response.body().getNewData().get(LATELYDATA).getPrice());
+            }
+            return priceList;
         }
 
 
         private List<TransactionData> getNewData() {
+            return data;
+        }
+
+    }
+
+
+    public class TickerDTO {
+
+        @SerializedName("status")
+        @Expose
+        private String status;
+        @SerializedName("data")
+        @Expose
+        private TickerPOJODATA data;
+
+        private void refreshTickerDTO(String coinName) {
+            CoinRetrofit.create()
+                    .getTickerDTO(coinName)
+                    .enqueue(new Callback<TickerDTO>() {
+                        @Override
+                        public void onResponse(Call<TickerDTO> call, Response<TickerDTO> response) {
+                            tickerDTOData.setValue(response.body().getData());
+                            Log.i("현재코인", tickerDTOData.getValue().toString());
+                        }
+
+                        @Override
+                        public void onFailure(Call<TickerDTO> call, Throwable t) {
+                            Log.i("현재코인", "실패 : " + t.fillInStackTrace());
+                        }
+                    });
+        }
+
+        public TickerPOJODATA getData() {
             return data;
         }
 
