@@ -1,4 +1,4 @@
-package kr.or.mrhi.myCoin;
+package kr.or.mrhi.myCoin.fragment;
 
 import android.os.Bundle;
 
@@ -15,6 +15,7 @@ import java.util.List;
 
 import kr.or.mrhi.myCoin.POJO.TickerData;
 import kr.or.mrhi.myCoin.POJO.TransactionData;
+import kr.or.mrhi.myCoin.R;
 
 
 public class Fragment_LikeCoin extends Fragment {

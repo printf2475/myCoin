@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="5dp"
-    android:orientation="horizontal">
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+    android:padding="5dp">
 
     <TextView
-        android:layout_marginTop="2dp"
         android:id="@+id/coinId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="코인이름"
-        android:layout_marginLeft="30dp"/>
+        android:layout_marginLeft="30dp"
+        android:layout_gravity="center"
+        android:text="코인이름" />
 
     <TextView
-        android:layout_marginTop="2dp"
         android:id="@+id/coinCurrentPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="현재가격"
-        android:layout_marginLeft="60dp"/>
+        android:layout_marginLeft="60dp"
+        android:layout_gravity="center"
+        android:text="현재가격" />
 
     <TextView
-        android:layout_marginTop="2dp"
         android:id="@+id/coinCompareYesterday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="전일대비"
-        android:layout_marginLeft="60dp"/>
+        android:layout_marginLeft="60dp"
+        android:layout_gravity="center"
+        android:text="전일대비" />
 
 </LinearLayout>

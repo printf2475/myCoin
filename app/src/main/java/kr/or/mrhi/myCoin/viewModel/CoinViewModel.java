@@ -20,7 +20,7 @@ import java.util.Map;
 
 import kr.or.mrhi.myCoin.POJO.OrderBookData;
 import kr.or.mrhi.myCoin.POJO.TransactionData;
-import kr.or.mrhi.myCoin.POJO.TickerPOJODATA;
+import kr.or.mrhi.myCoin.POJO.TickerPOJOData;
 import kr.or.mrhi.myCoin.retrofit.CoinRetrofit;
 import kr.or.mrhi.myCoin.POJO.TickerData;
 import kr.or.mrhi.myCoin.POJO.CandleCoinData;
@@ -31,7 +31,7 @@ import retrofit2.Response;
 public class CoinViewModel extends ViewModel {
     private MutableLiveData<List<CandleCoinData>> candleCoinData;
     private MutableLiveData<TickerData> tickerCoinData;
-    private MutableLiveData<TickerPOJODATA> tickerDTOData;
+    private MutableLiveData<TickerPOJOData> tickerDTOData;
     private MutableLiveData<List<OrderBookData>> orderbookCoinData;
     private MutableLiveData<List<String>> transactionCoinData;
 
@@ -73,9 +73,9 @@ public class CoinViewModel extends ViewModel {
         return tickerCoinData;
     }
 
-    public MutableLiveData<TickerPOJODATA> getTickerDTO(String coinName) {
+    public MutableLiveData<TickerPOJOData> getTickerDTO(String coinName) {
         if (tickerDTOData == null) {
-            tickerDTOData = new MutableLiveData<TickerPOJODATA>();
+            tickerDTOData = new MutableLiveData<TickerPOJOData>();
         }
         tickerDTO.refreshTickerDTO(coinName);
 
@@ -108,7 +108,7 @@ public class CoinViewModel extends ViewModel {
                         newTransactionData.refreshTransactionCoinData(coinNames[i]);
                     }
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(200);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -249,6 +249,12 @@ public class CoinViewModel extends ViewModel {
 
         private void refreshTransactionCoinData(String coinName) {
 
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             CoinRetrofit.create()
                     .getTransactionCoinData(coinName)
                     .enqueue(new Callback<NewTransactionData>() {
@@ -264,12 +270,13 @@ public class CoinViewModel extends ViewModel {
                     });
 
 
+
+
+
         }
 
         private List<String> makeMapData(String coinName, Response<NewTransactionData> response) {
             Map<String, Integer> map = new HashMap<>();
-
-
 
             for (int i = 0; i < strings.length; i++) {
                 map.put(strings[i], i);
@@ -278,11 +285,6 @@ public class CoinViewModel extends ViewModel {
             if (response.body() != null) {
                 priceList.set(map.get(coinName), response.body().getNewData().get(LATELYDATA).getPrice());
             }
-
-
-
-
-
             return priceList;
         }
 
@@ -301,7 +303,7 @@ public class CoinViewModel extends ViewModel {
         private String status;
         @SerializedName("data")
         @Expose
-        private TickerPOJODATA data;
+        private TickerPOJOData data;
 
         private void refreshTickerDTO(String coinName) {
             CoinRetrofit.create()
@@ -310,7 +312,7 @@ public class CoinViewModel extends ViewModel {
                         @Override
                         public void onResponse(Call<TickerDTO> call, Response<TickerDTO> response) {
                             tickerDTOData.setValue(response.body().getData());
-                            Log.i("현재코인", tickerDTOData.getValue().toString());
+
                         }
 
                         @Override
@@ -320,7 +322,7 @@ public class CoinViewModel extends ViewModel {
                     });
         }
 
-        public TickerPOJODATA getData() {
+        public TickerPOJOData getData() {
             return data;
         }
 

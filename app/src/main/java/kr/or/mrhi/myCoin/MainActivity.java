@@ -2,22 +2,16 @@ package kr.or.mrhi.myCoin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.Map;
-import java.util.Set;
-
-import kr.or.mrhi.myCoin.POJO.TransactionData;
-import kr.or.mrhi.myCoin.POJO.tickerCoins.True;
-import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
+import kr.or.mrhi.myCoin.fragment.Fragment2;
+import kr.or.mrhi.myCoin.fragment.Fragment3;
+import kr.or.mrhi.myCoin.fragment.Fragment_Coins;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +21,11 @@ public class MainActivity extends AppCompatActivity {
     //    static final String COINNAME = "DOGE", INTERVALS = "5m";
     public static final String[] strings = new String[]{"BTC", "ETH", "BCH", "LTC", "BSV", "AXS", "BTG",
             "ETC", "DOT", "ATOM", "WAVES", "LINK", "REP", "OMG", "QTUM",};
+
+    public static final String[] stringName = new String[]{"비트코인", "이더리움", "비트코인캐시", "라이트코인",
+            "비트코인SV", "엑시인피니티", "비트코인골드","이더리움클래식", "폴카닷", "코스모스", "웨이브",
+            "체인링크", "어거", "오미세고", "퀀텀"};
+
     public static Boolean TRANSACTIONFLAG = false;
 
     @Override

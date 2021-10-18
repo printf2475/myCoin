@@ -5,17 +5,19 @@ public class Transaction {
     private String coinName;
     private String transaction;
     private String transactionTime;
-    private Long quantity;
-    private Long price;
-    private Long balance;
+    private String quantity;
+    private String price;
+    private int balance;
+    private String avgPrice;
 
-    public Transaction(String coinName, String transaction, String transactionTime, Long quantity, Long price, Long balance) {
+    public Transaction(String coinName, String transaction, String transactionTime, String quantity, String price, int balance, String avgPrice) {
         this.coinName = coinName;
         this.transaction = transaction;
         this.transactionTime = transactionTime;
         this.quantity = quantity;
         this.price = price;
         this.balance = balance;
+        this.avgPrice = avgPrice;
     }
 
     public String getCoinName() {
@@ -30,15 +32,15 @@ public class Transaction {
         return transactionTime;
     }
 
-    public Long getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
 
-    public Long getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public Long getBalance() {
+    public int getBalance() {
         return balance;
     }
 
@@ -48,9 +50,10 @@ public class Transaction {
                 "coinName='" + coinName + '\'' +
                 ", transaction='" + transaction + '\'' +
                 ", transactionTime='" + transactionTime + '\'' +
-                ", quantity=" + quantity +
-                ", price=" + price +
+                ", quantity='" + quantity + '\'' +
+                ", price='" + price + '\'' +
                 ", balance=" + balance +
+                ", avgPrice='" + avgPrice + '\'' +
                 '}';
     }
 }

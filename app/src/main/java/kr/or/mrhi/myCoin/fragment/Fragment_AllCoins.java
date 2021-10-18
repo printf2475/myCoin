@@ -1,4 +1,4 @@
-package kr.or.mrhi.myCoin;
+package kr.or.mrhi.myCoin.fragment;
 
 import static kr.or.mrhi.myCoin.MainActivity.strings;
 
@@ -11,19 +11,17 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import kr.or.mrhi.myCoin.MainCoinAdapter;
 import kr.or.mrhi.myCoin.POJO.TickerData;
-import kr.or.mrhi.myCoin.POJO.TickerPOJODATA;
-import kr.or.mrhi.myCoin.POJO.TransactionData;
+import kr.or.mrhi.myCoin.POJO.TickerPOJOData;
+import kr.or.mrhi.myCoin.R;
 import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
 
 
@@ -37,10 +35,7 @@ public class Fragment_AllCoins extends Fragment {
 //    public static Boolean TRANSACTIONFLAG=false;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
         View view = inflater.inflate(R.layout.fragment_fragment1_2, container, false);
@@ -73,18 +68,8 @@ public class Fragment_AllCoins extends Fragment {
                 mainCoinAdapter.notifyDataSetChanged();
             }
         });
-
-        model.getTickerDTO("BTC").observe(requireActivity(), new Observer<TickerPOJODATA>() {
-            @Override
-            public void onChanged(TickerPOJODATA tickerPOJODATA) {
-
-            }
-        });
-
-
-
         model.refrashTransactionDataThread(strings);
-        model.getTickerDTO("BTC");
+
 
         return view;
 

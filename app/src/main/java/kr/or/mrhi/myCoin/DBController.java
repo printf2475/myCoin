@@ -11,46 +11,35 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DBController {
+public class DBController extends SQLiteOpenHelper {
 
-    Context context;
-    OpenHelper openHelper;
-
-    public DBController(Context context) {
-        this.context = context;
-        openHelper = new OpenHelper(context);
+    public DBController(@Nullable Context context) {
+        super(context, "MyCoinDB", null, 1);
     }
 
-    class OpenHelper extends SQLiteOpenHelper {
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        sqLiteDatabase.execSQL("CREATE TABLE TransactionTBL (" +
+                "name text, time time, transactions text, quantity text, price text, balance int );");
+        sqLiteDatabase.execSQL("CREATE TABLE favoritesTBL ( coinName var(5) PRIMARY KEY);");
 
-        public OpenHelper(@Nullable Context context) {
-
-            super(context, "MyCoinDB", null, 1);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase sqLiteDatabase) {
-            sqLiteDatabase.execSQL("CREATE TABLE TransactionTBL (" +
-                    "name var(5), time time, transactions var(4), quantity long, price long, balance long);");
-            sqLiteDatabase.execSQL("CREATE TABLE favoritesTBL ( coinName var(5) PRIMARY KEY);");
-
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
-            onCreate(sqLiteDatabase);
-        }
     }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+        onCreate(sqLiteDatabase);
+    }
+
 
     public void insertTransaction(Transaction transaction) {
-        SQLiteDatabase sqlDB = openHelper.getWritableDatabase();
+        SQLiteDatabase sqlDB = getWritableDatabase();
         try {
             sqlDB.execSQL("INSERT INTO TransactionTBL VALUES ('"
                     + transaction.getCoinName() + "'," +
                     "(SELECT DATETIME('NOW','localtime')),'"
                     + transaction.getTransaction() + "', '"
                     + transaction.getQuantity() + "', '"
-                    + transaction.getPrice()+ "', '"
+                    + transaction.getPrice() + "', '"
                     + transaction.getBalance() + "')");
 
 
@@ -61,9 +50,60 @@ public class DBController {
         }
     }
 
+    public Transaction getCoinTransaction(String coinName) {
+        SQLiteDatabase sqlDB = getReadableDatabase();
+        Cursor cursor = null;
+        Transaction transaction = null;
+        String myCoinName = "null";
+        String transactionTime = "null";
+        String transactionForm = "null";
+        String currentPrice = "null";
+        //현재 산 코인의 값
+        double quantity = 0.00;
+        double price = 0.00;
+        double tradeQualtity = 0.00;
+        int balance = 0;
+        int count = 0;
+        try {
+            cursor = sqlDB.rawQuery("SELECT * FROM TransactionTBL where name = '" + coinName + "';", null);
+            while (cursor.moveToNext()) {
+                myCoinName = cursor.getString(0);
+                transactionTime = cursor.getString(1);
+                transactionForm = cursor.getString(2);//사고 팔고
+                tradeQualtity = Double.parseDouble(cursor.getString(3));//갯수
+                currentPrice = cursor.getString(4);//가격
+
+                if (transactionForm.equals("buy")) {
+                    count++;
+                    price = price + Double.parseDouble(currentPrice);
+                    quantity = quantity + tradeQualtity;
+                } else if (transactionForm.equals("sell")) {
+                    quantity = quantity - tradeQualtity;
+                }
+                //보유수량 ,구매횟수, 구매당시가격, 구매당시가격*갯수
+
+                balance = cursor.getInt(5);//잔액
+
+            }
+
+            double avgPrice = price / count;
+//                quantity 보유수량 price
+            transaction = new Transaction(myCoinName, transactionTime, transactionForm, String.valueOf(quantity), String.valueOf(price), balance, String.valueOf(avgPrice));
+        } catch (Exception e) {
+            Log.e("데이터베이스", "select에러" + e.toString());
+        } finally {
+            sqlDB.close();
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return transaction;
+    }
+
+    //
     public List<Transaction> getTransactionList() {
         List<Transaction> transactionList = new ArrayList<>();
-        SQLiteDatabase sqlDB = openHelper.getReadableDatabase();
+        SQLiteDatabase sqlDB = getReadableDatabase();
         Cursor cursor = null;
         try {
             cursor = sqlDB.rawQuery("SELECT * FROM TransactionTBL;", null);
@@ -71,11 +111,11 @@ public class DBController {
                 String coinName = cursor.getString(0);
                 String transactionTime = cursor.getString(1);
                 String transaction = cursor.getString(2);
-                Long quantity = cursor.getLong(3);
-                Long price = cursor.getLong(4);
-                Long balance = cursor.getLong(5);
+                String quantity = String.valueOf(cursor.getLong(3));
+                String price = String.valueOf(cursor.getLong(4));
+                int balance = cursor.getInt(5);
                 transactionList.add(
-                        new Transaction(coinName, transaction, transactionTime, quantity, price, balance));
+                        new Transaction(coinName, transaction, transactionTime, quantity, price, balance, null));
             }
         } catch (Exception e) {
             Log.e("데이터베이스", "select에러" + e.toString());
@@ -90,7 +130,7 @@ public class DBController {
 
     public List<String> getFavoritesList() {
         List<String> favoritesList = new ArrayList<>();
-        SQLiteDatabase sqlDB = openHelper.getReadableDatabase();
+        SQLiteDatabase sqlDB = getReadableDatabase();
         Cursor cursor = null;
         try {
             cursor = sqlDB.rawQuery("SELECT * FROM favoritesTBL;", null);
@@ -109,7 +149,7 @@ public class DBController {
     }
 
     public void deleteFavoritesList(String coinName) {
-        SQLiteDatabase sqlDB = openHelper.getWritableDatabase();
+        SQLiteDatabase sqlDB = getWritableDatabase();
         try {
             sqlDB.execSQL("delete from favoritesTBL where coinName = " + coinName + ";");
             Log.e("데이터베이스", "delete성공");
@@ -119,4 +159,8 @@ public class DBController {
             sqlDB.close();
         }
     }
+
+    public void getList() {
+    }
+
 }

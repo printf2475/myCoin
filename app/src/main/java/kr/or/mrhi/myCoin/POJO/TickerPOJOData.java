@@ -3,7 +3,7 @@ package kr.or.mrhi.myCoin.POJO;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class TickerPOJODATA {
+public class TickerPOJOData {
 
     @SerializedName("opening_price")
     @Expose

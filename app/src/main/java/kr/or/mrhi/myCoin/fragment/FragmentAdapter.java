@@ -1,16 +1,11 @@
-package kr.or.mrhi.myCoin;
+package kr.or.mrhi.myCoin.fragment;
 
-import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
-
-import java.util.ArrayList;
-
-import kr.or.mrhi.myCoin.POJO.TransactionData;
 
 public class FragmentAdapter extends FragmentStateAdapter {
     private final static int NUM_PAGES = 2;
