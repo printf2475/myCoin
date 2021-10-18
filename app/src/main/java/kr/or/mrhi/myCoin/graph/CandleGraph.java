@@ -27,7 +27,7 @@ public class CandleGraph extends DemoBase {
 
         setTitle("CandleStickChartActivity");
 
-        chart = findViewById(R.id.);
+        chart = findViewById(R.id.combinedChart);
         chart.setBackgroundColor(Color.WHITE);
 
         chart.getDescription().setEnabled(false);

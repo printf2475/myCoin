@@ -1,4 +1,4 @@
-package kr.or.mrhi.myCoin.fragment;
+package kr.or.mrhi.myCoin.adapter;
 
 import android.util.Log;
 
@@ -7,12 +7,15 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-public class FragmentAdapter extends FragmentStateAdapter {
+import kr.or.mrhi.myCoin.fragment.Fragment_AllCoins;
+import kr.or.mrhi.myCoin.fragment.Fragment_LikeCoin;
+
+public class TradingCoinAdapter extends FragmentStateAdapter {
     private final static int NUM_PAGES = 2;
-    public FragmentAdapter(FragmentActivity fa) {
+    public TradingCoinAdapter(FragmentActivity fa) {
         super(fa);
     }
-
+//detail 코인에서 매수 매도 뷰페이저
     @NonNull
     @Override
     public Fragment createFragment(int position) {
@@ -25,7 +28,7 @@ public class FragmentAdapter extends FragmentStateAdapter {
 
             return fragment2;
         } else {
-            Log.d("음악플레이어", "createFragment() 프레그먼트 생성 오류");
+            Log.d("프레그먼트", "createFragment() 프레그먼트 생성 오류");
             return null;
         }
     }
@@ -36,4 +39,3 @@ public class FragmentAdapter extends FragmentStateAdapter {
         return NUM_PAGES;
     }
 }//end of adapter
-

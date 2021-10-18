@@ -1,4 +1,4 @@
-package kr.or.mrhi.myCoin;
+package kr.or.mrhi.myCoin.model;
 
 public class item {
     //보통은 객체지향은 정보의 은닉을 해야하기 때문에, private으로 만든다.

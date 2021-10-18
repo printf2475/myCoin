@@ -1,7 +1,6 @@
 package kr.or.mrhi.myCoin;
 
-import static kr.or.mrhi.myCoin.MainActivity.stringName;
-import static kr.or.mrhi.myCoin.MainActivity.strings;
+import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -15,10 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import kr.or.mrhi.myCoin.POJO.TickerPOJOData;
+import kr.or.mrhi.myCoin.model.Transaction;
 import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
 
 public class CoinMain extends AppCompatActivity implements View.OnClickListener{
@@ -38,7 +37,7 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coin_main);
+        setContentView(R.layout.activity_coin_detail);
         dbController = new DBController(this);
 
         model = new ViewModelProvider(this).get(CoinViewModel.class);
@@ -95,7 +94,7 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener{
                    String buyCoinNumber = edtCoinNumber.getText().toString();
                    String buyCoinPrice = currentCoinPrice.getText().toString();
 //                   String buyingPrice = String.valueOf(Double.parseDouble(buyCoinNumber)*Double.parseDouble(buyCoinPrice));
-                dbController.insertTransaction(new Transaction(strings[position],"buy", "", buyCoinNumber, buyCoinPrice, 100000, null));
+                dbController.insertTransaction(new Transaction(stringSymbol[position],"buy", "", buyCoinNumber, buyCoinPrice, 100000, null));
                 transaction = dbController.getCoinTransaction(mainCoinName);
                 Log.i("DB값", transaction.toString());
                 break;
@@ -105,7 +104,7 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener{
                 String sellCoinNumber = edtCoinNumber.getText().toString();
                 String sellCoinPrice = currentCoinPrice.getText().toString();
 //                String sellPrice = String.valueOf(Double.parseDouble(sellCoinNumber)*Double.parseDouble(sellCoinPrice));
-                dbController.insertTransaction(new Transaction(strings[position],"sell", "", sellCoinNumber, sellCoinPrice, 1020000, null));
+                dbController.insertTransaction(new Transaction(stringSymbol[position],"sell", "", sellCoinNumber, sellCoinPrice, 1020000, null));
                  transaction = dbController.getCoinTransaction(mainCoinName);
                 Log.i("DB값", transaction.toString());
                 break;

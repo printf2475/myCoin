@@ -30,7 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="40sp"
             android:backgroundTint="@android:color/holo_green_dark"
-            android:hint="코인명 또는 심볼 검색" />
+            android:hint="코인명 또는 심볼 검색"
+            tools:ignore="TouchTargetSizeCheck" />
 
     </LinearLayout>
 

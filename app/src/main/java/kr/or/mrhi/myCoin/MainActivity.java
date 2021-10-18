@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -16,10 +17,9 @@ import kr.or.mrhi.myCoin.fragment.Fragment_Coins;
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
-    private RecyclerView recyclerViewMain;
 
     //    static final String COINNAME = "DOGE", INTERVALS = "5m";
-    public static final String[] strings = new String[]{"BTC", "ETH", "BCH", "LTC", "BSV", "AXS", "BTG",
+    public static final String[] stringSymbol = new String[]{"BTC", "ETH", "BCH", "LTC", "BSV", "AXS", "BTG",
             "ETC", "DOT", "ATOM", "WAVES", "LINK", "REP", "OMG", "QTUM",};
 
     public static final String[] stringName = new String[]{"비트코인", "이더리움", "비트코인캐시", "라이트코인",
@@ -34,21 +34,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         TRANSACTIONFLAG = true;
 
-        bottomNavigationView = findViewById(R.id.bottomNavi);
-
-
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     //item을 클릭시 id값을 가져와 FrameLayout에 fragment.xml띄우기
-                    case R.id.fragment1:
+                    case R.id.main:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment_Coins()).commit();
                         break;
-                    case R.id.fragment2:
+                    case R.id.news:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment2()).commit();
                         break;
-                    case R.id.fragment3:
+                    case R.id.sub:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment3()).commit();
                         break;
                     default:
@@ -57,10 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
     }
-
-
 }
 
 

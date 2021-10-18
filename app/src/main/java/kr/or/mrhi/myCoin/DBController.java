@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import kr.or.mrhi.myCoin.model.Transaction;
+
 public class DBController extends SQLiteOpenHelper {
 
     public DBController(@Nullable Context context) {
@@ -90,7 +92,7 @@ public class DBController extends SQLiteOpenHelper {
 //                quantity 보유수량 price
             transaction = new Transaction(myCoinName, transactionTime, transactionForm, String.valueOf(quantity), String.valueOf(price), balance, String.valueOf(avgPrice));
         } catch (Exception e) {
-            Log.e("데이터베이스", "select에러" + e.toString());
+            Log.e("데이터베이스", "select에러3" + e.toString());
         } finally {
             sqlDB.close();
             if (cursor != null) {
@@ -118,7 +120,7 @@ public class DBController extends SQLiteOpenHelper {
                         new Transaction(coinName, transaction, transactionTime, quantity, price, balance, null));
             }
         } catch (Exception e) {
-            Log.e("데이터베이스", "select에러" + e.toString());
+            Log.e("데이터베이스", "select에러1" + e.toString());
         } finally {
             sqlDB.close();
             if (cursor != null) {
@@ -138,7 +140,7 @@ public class DBController extends SQLiteOpenHelper {
                 favoritesList.add(cursor.getString(0));
             }
         } catch (Exception e) {
-            Log.e("데이터베이스", "select에러" + e.toString());
+            Log.e("데이터베이스", "select에러2" + e.toString());
         } finally {
             sqlDB.close();
             if (cursor != null) {
@@ -161,6 +163,31 @@ public class DBController extends SQLiteOpenHelper {
     }
 
     public void getList() {
+    }
+
+    public List<Transaction> getMyWallet() {
+        List<String> list = new ArrayList<>();
+        List<Transaction> transactionList = new ArrayList<>();
+
+        SQLiteDatabase sqlDB = getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = sqlDB.rawQuery("SELECT name From TransactionTBL GROUP BY name ;", null);
+            while (cursor.moveToNext()) {
+                list.add(cursor.getString(0));
+            }
+        } catch (Exception e) {
+            Log.e("데이터베이스", "GROUP BY SELECT에러" + e.toString());
+        } finally {
+            sqlDB.close();
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        for (String str : list) {
+            transactionList.add(getCoinTransaction(str));
+        }
+        return transactionList;
     }
 
 }

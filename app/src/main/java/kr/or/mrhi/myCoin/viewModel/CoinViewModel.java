@@ -103,7 +103,7 @@ public class CoinViewModel extends ViewModel {
     public void refrashTransactionDataThread(String[] coinNames) {
         stopFlag=true;
         Thread thread = new Thread(() -> {
-            while (!stopFlag) {
+            while (stopFlag) {
                 for (int i = 0; i < coinNames.length; i++) {
                     synchronized (this) {
                         newTransactionData.refreshTransactionCoinData(coinNames[i]);

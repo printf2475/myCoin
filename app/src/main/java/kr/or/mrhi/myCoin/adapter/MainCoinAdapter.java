@@ -1,8 +1,7 @@
-package kr.or.mrhi.myCoin;
+package kr.or.mrhi.myCoin.adapter;
 
-import static kr.or.mrhi.myCoin.MainActivity.strings;
+import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,26 +10,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import kr.or.mrhi.myCoin.CoinMain;
 import kr.or.mrhi.myCoin.POJO.TickerData;
-import kr.or.mrhi.myCoin.POJO.TickerPOJOData;
-import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
+import kr.or.mrhi.myCoin.R;
 
 public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHolders> {
     private List<String> transactionCoin;
     private TickerData tickerCoin;
-    private Context context;
-
-
 
     public MainCoinAdapter(List<String> transactionCoin ,TickerData tickerData) {
         this.transactionCoin = transactionCoin;
@@ -74,7 +64,7 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
 //                    for(int position = 0;position<15;position++) {
                         int position = getAdapterPosition();
                         Intent intent = new Intent(view.getContext(), CoinMain.class);
-                        intent.putExtra("CoinID", strings[position]);
+                        intent.putExtra("CoinID", stringSymbol[position]);
                         intent.putExtra("CoinData", transactionCoin.get(position));
                         intent.putExtra("Position", position);
 //                    intent.putExtra("CoinCurrentPrice", String.valueOf(coinCurrentPrice));
@@ -87,7 +77,7 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
 
         public void onBind(int position) {
 
-            coinId.setText(strings[position]);
+            coinId.setText(stringSymbol[position]);
             coinCurrentPrice.setText(transactionCoin.get(position));
 //            coinCompareYesterday.setText(String.valueOf(currentPrice/closingPrice*100-100));
         }

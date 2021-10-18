@@ -1,4 +1,4 @@
-package kr.or.mrhi.myCoin;
+package kr.or.mrhi.myCoin.model;
 
 public class Transaction {
 

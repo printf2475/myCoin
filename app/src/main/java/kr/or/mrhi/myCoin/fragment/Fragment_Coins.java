@@ -16,6 +16,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import kr.or.mrhi.myCoin.R;
+import kr.or.mrhi.myCoin.adapter.CoinListAdapter;
 
 
 public class Fragment_Coins extends Fragment {
@@ -31,11 +32,13 @@ public class Fragment_Coins extends Fragment {
         // Inflate the layout for this fragment
        View view =  inflater.inflate(R.layout.fragment_1, container, false);
 
-        tabLayout = view.findViewById(R.id.tabLayout);
+        tabLayout = view.findViewById(R.id.tabLayoutF1);
         pager = view.findViewById(R.id.pager);
 
-        FragmentAdapter screenSlidePagerAdapter = new FragmentAdapter(getActivity());
+        CoinListAdapter screenSlidePagerAdapter = new CoinListAdapter(getActivity());
         pager.setAdapter(screenSlidePagerAdapter);
+
+
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, pager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {

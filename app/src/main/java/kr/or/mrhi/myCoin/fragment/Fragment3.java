@@ -9,12 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import kr.or.mrhi.myCoin.DBController;
 import kr.or.mrhi.myCoin.R;
-import kr.or.mrhi.myCoin.Transaction;
+import kr.or.mrhi.myCoin.model.Transaction;
 
 public class Fragment3 extends Fragment {
 
@@ -30,7 +29,8 @@ public class Fragment3 extends Fragment {
         Transaction transaction = dbController.getCoinTransaction("BTC");
         Log.i("DB값", transaction.toString());
 
-
+        List<Transaction> list =  dbController.getMyWallet();
+        Log.i("거래내역", list.get(0).toString());
 
         return view;
     }

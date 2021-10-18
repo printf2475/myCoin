@@ -8,10 +8,15 @@
     android:background="#F6F6F6">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout3"
+        android:id="@+id/coinSimpleData"
         android:layout_width="match_parent"
         android:layout_height="120sp"
-        android:background="#DAE8F5E9">
+        android:layout_marginBottom="1dp"
+        android:background="#DAE8F5E9"
+        app:layout_constraintBottom_toTopOf="@+id/combinedChart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <TextView
@@ -106,7 +111,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
+        app:layout_constraintTop_toBottomOf="@+id/coinSimpleData" />
 
     <com.github.mikephil.charting.charts.CombinedChart
         android:id="@+id/combinedChart"
@@ -130,23 +135,28 @@
             android:id="@+id/textView21"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="11dp"
             android:text="KRW"
             android:textColor="@color/black"
             android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:layout_editor_absoluteY="130dp" />
+            app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
         <TextView
             android:id="@+id/textView19"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="4dp"
             android:text="총액"
             android:textColor="@color/black"
             android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="118dp" />
+            app:layout_constraintTop_toBottomOf="@+id/textView23" />
 
         <Button
             android:id="@+id/button"
@@ -167,7 +177,7 @@
             android:layout_height="28dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:background="transparent"
+            android:background="#00ff0000"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -187,23 +197,31 @@
             android:id="@+id/textView20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="176dp"
             android:layout_marginEnd="72dp"
+            android:layout_marginBottom="4dp"
             android:text="210000000"
             android:textColor="@color/black"
             android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:layout_editor_absoluteY="130dp" />
+            app:layout_constraintHorizontal_bias="0.571"
+            app:layout_constraintStart_toEndOf="@+id/textView19" />
 
         <EditText
             android:id="@+id/textView18"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
+            android:layout_marginBottom="1dp"
             android:text="3.2"
             android:textColor="@color/black"
             android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView21"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:layout_editor_absoluteY="91dp" />
+            app:layout_constraintTop_toBottomOf="@+id/textView17"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
             android:id="@+id/textView17"
@@ -220,22 +238,29 @@
         <TextView
             android:layout_width="114dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:gravity="end"
             android:text="300000000"
             android:textColor="@color/black"
             android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView17"
+            app:layout_constraintEnd_toStartOf="@+id/textView17"
             app:layout_constraintTop_toTopOf="@+id/textView17"
-            tools:layout_editor_absoluteX="224dp" />
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
+            android:id="@+id/textView23"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="1dp"
             android:text="수량"
             android:textColor="@color/black"
             android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/textView19"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="91dp" />
+            app:layout_constraintTop_toBottomOf="@+id/textView22" />
 
         <TextView
             android:id="@+id/textView22"
@@ -245,8 +270,10 @@
             android:text="주문가능"
             android:textColor="@color/black"
             android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="56dp" />
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout"
+            app:layout_constraintVertical_bias="0.154" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

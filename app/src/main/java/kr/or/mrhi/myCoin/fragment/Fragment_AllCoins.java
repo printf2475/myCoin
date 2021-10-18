@@ -1,6 +1,6 @@
 package kr.or.mrhi.myCoin.fragment;
 
-import static kr.or.mrhi.myCoin.MainActivity.strings;
+import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +19,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.or.mrhi.myCoin.MainCoinAdapter;
+import kr.or.mrhi.myCoin.adapter.MainCoinAdapter;
 import kr.or.mrhi.myCoin.POJO.TickerData;
-import kr.or.mrhi.myCoin.POJO.TickerPOJOData;
 import kr.or.mrhi.myCoin.R;
 import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
 
@@ -37,13 +37,13 @@ public class Fragment_AllCoins extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
+        Log.i("에러줘", "탭레이아웃 들어옴");
         View view = inflater.inflate(R.layout.fragment_fragment1_2, container, false);
         // Inflate the layout for this fragment
         CoinViewModel model = new ViewModelProvider(requireActivity()).get(CoinViewModel.class);
 
         priceList = new ArrayList<>();
-        for (int i=0; i<strings.length; i++){
+        for (int i = 0; i< stringSymbol.length; i++){
             priceList.add("0.00");
         }
         recyclerView2 = view.findViewById(R.id.recyclerView2);
@@ -59,7 +59,6 @@ public class Fragment_AllCoins extends Fragment {
             }
         });
 
-
         model.getTransactionCoinData("BTC").observe(requireActivity(), new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> transactionData) {
@@ -68,8 +67,7 @@ public class Fragment_AllCoins extends Fragment {
                 mainCoinAdapter.notifyDataSetChanged();
             }
         });
-        model.refrashTransactionDataThread(strings);
-
+        model.refrashTransactionDataThread(stringSymbol);
 
         return view;
 
