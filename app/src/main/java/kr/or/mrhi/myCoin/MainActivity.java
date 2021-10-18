@@ -2,22 +2,11 @@ package kr.or.mrhi.myCoin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.Map;
-import java.util.Set;
-
-import kr.or.mrhi.myCoin.POJO.TransactionData;
-import kr.or.mrhi.myCoin.POJO.tickerCoins.True;
-import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,21 +24,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomNavigationView = findViewById(R.id.bottomNavi);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     //item을 클릭시 id값을 가져와 FrameLayout에 fragment.xml띄우기
-                    case R.id.fragment1:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment_Coins()).commit();
+                    case R.id.main:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment_Main()).commit();
                         break;
-                    case R.id.fragment2:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment2()).commit();
+                    case R.id.news:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new FragmentRss()).commit();
                         break;
-                    case R.id.fragment3:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment3()).commit();
+                    case R.id.wallet:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new FragmentWallet()).commit();
                         break;
                     default:
                         finish();

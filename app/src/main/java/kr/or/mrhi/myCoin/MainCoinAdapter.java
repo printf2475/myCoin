@@ -3,7 +3,6 @@ package kr.or.mrhi.myCoin;
 
 import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
 import kr.or.mrhi.myCoin.POJO.TickerData;
-import kr.or.mrhi.myCoin.POJO.TransactionData;
 
 public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHolders> {
     private List<String> transactionCoin;

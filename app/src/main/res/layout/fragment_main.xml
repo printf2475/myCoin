@@ -2,12 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragmentMain_ConstraintView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="kr.or.mrhi.myCoin.MainActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/linearLayout_SearchCoin"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="8dp"
@@ -20,6 +21,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/ivSearchIcon"
             android:layout_width="24sp"
             android:layout_height="24sp"
             android:layout_margin="8sp"
@@ -27,6 +29,7 @@
             app:tint="@android:color/holo_green_dark" />
 
         <EditText
+            android:id="@+id/edtText_SearchCoin"
             android:layout_width="match_parent"
             android:layout_height="40sp"
             android:backgroundTint="@android:color/holo_green_dark"
@@ -35,16 +38,16 @@
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
+        android:id="@+id/fragmentMain_ConstraintView2"
         android:layout_width="match_parent"
         android:layout_height="52sp"
         android:background="#E8F5E9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_SearchCoin">
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/tvTotalBuy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -59,19 +62,19 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/tvEvaluationProfit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="평가손익"
             android:textColor="@color/black"
             android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView9"
-            app:layout_constraintStart_toStartOf="@+id/textView7"
+            app:layout_constraintBottom_toBottomOf="@+id/tvEvaluationProfitCount"
+            app:layout_constraintStart_toStartOf="@+id/tvYield"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/tvTotalEvaluation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -80,11 +83,10 @@
             android:textColor="@color/black"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/textView4"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/textView7"
+            android:id="@+id/tvYield"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="40dp"
@@ -93,11 +95,11 @@
             android:textColor="@color/black"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textView11"
-            app:layout_constraintTop_toTopOf="@+id/textView11" />
+            app:layout_constraintEnd_toStartOf="@+id/tvYieldCount"
+            app:layout_constraintTop_toTopOf="@+id/tvYieldCount" />
 
         <TextView
-            android:id="@+id/textView8"
+            android:id="@+id/tvTotalBuyCount"
             android:layout_width="110sp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -105,13 +107,12 @@
             android:text="100,000,000"
             android:textColor="@color/black"
             android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView4"
-            app:layout_constraintEnd_toEndOf="@+id/textView10"
-            app:layout_constraintStart_toEndOf="@+id/textView4"
-            app:layout_constraintTop_toTopOf="@+id/textView4" />
+            app:layout_constraintBottom_toBottomOf="@+id/tvTotalBuy"
+            app:layout_constraintStart_toEndOf="@+id/tvTotalBuy"
+            app:layout_constraintTop_toTopOf="@+id/tvTotalBuy" />
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/tvEvaluationProfitCount"
             android:layout_width="110sp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -119,12 +120,12 @@
             android:text="200,000,000"
             android:textColor="@color/black"
             android:textSize="10sp"
-            app:layout_constraintEnd_toEndOf="@+id/textView11"
-            app:layout_constraintStart_toStartOf="@+id/textView11"
+            app:layout_constraintEnd_toEndOf="@+id/tvYieldCount"
+            app:layout_constraintStart_toStartOf="@+id/tvYieldCount"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/tvTotalEvaluationCount"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -134,11 +135,12 @@
             android:textColor="@color/black"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/textView6"
+            app:layout_constraintEnd_toEndOf="@+id/tvTotalBuyCount"
             app:layout_constraintStart_toEndOf="@+id/textView6"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTotalBuyCount" />
 
         <TextView
-            android:id="@+id/textView11"
+            android:id="@+id/tvYieldCount"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -150,15 +152,12 @@
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-
-
+            app:layout_constraintTop_toBottomOf="@+id/tvEvaluationProfitCount" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
+        android:id="@+id/tabLayout2"
         android:layout_width="120sp"
         android:layout_height="28dp"
         android:layout_marginStart="16dp"
@@ -166,12 +165,13 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/fragmentMain_ConstraintView2">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="전체" />
+
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
@@ -190,10 +190,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout">
+        app:layout_constraintTop_toBottomOf="@+id/tabLayout2">
 
 
         <TextView
+            android:id="@+id/tvCoinNameList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="가상자산명"
@@ -203,7 +204,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tvCurrentPriceList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="176dp"
@@ -215,19 +216,19 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tvChangeRateList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="104dp"
             android:text="변동률"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/textView3"
+            app:layout_constraintEnd_toEndOf="@+id/tvTotalVolumeList"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/tvTotalVolumeList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="거래금액"
@@ -251,11 +252,11 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:layout_width="0sp"
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
         android:layout_height="0sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        tools:layout_editor_absoluteX="-56dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
