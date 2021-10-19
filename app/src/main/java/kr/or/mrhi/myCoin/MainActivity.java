@@ -2,13 +2,14 @@ package kr.or.mrhi.myCoin;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import kr.or.mrhi.myCoin.fragment.Fragment2;
 import kr.or.mrhi.myCoin.fragment.Fragment3;
@@ -27,13 +28,20 @@ public class MainActivity extends AppCompatActivity {
             "체인링크", "어거", "오미세고", "퀀텀"};
 
     public static Boolean TRANSACTIONFLAG = false;
-
+    public static Map<String, Integer> namePositionMap = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TRANSACTIONFLAG = true;
+        namePositionMap = new HashMap<>();
+        for (int i = 0; i < stringSymbol.length; i++) {
+            namePositionMap.put(stringSymbol[i], i);
+        }
 
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_frame, new Fragment_Coins())
+                .commit();
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

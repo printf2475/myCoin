@@ -30,7 +30,12 @@ public class Fragment3 extends Fragment {
         Log.i("DB값", transaction.toString());
 
         List<Transaction> list =  dbController.getMyWallet();
-        Log.i("거래내역", list.get(0).toString());
+        if (list.size()!=0){
+            Log.i("거래내역", list.get(0).toString());
+
+        }else{
+            Log.i("거래내역", "없음");
+        }
 
         return view;
     }
