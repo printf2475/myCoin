@@ -21,13 +21,11 @@ public interface CoinRetrofit {
     @GET("ticker/{order_currency}_KRW")
     Call<CoinViewModel.TickerDTO> getTickerDTO(@Path("order_currency") String order_currency);
 
-
     @GET("orderbook/{order_currency}_{payment_currency}")
     Call<CoinViewModel.NewOrderBookData> getOrderBookCoinData(@Path("order_currency") String order_currency, @Path("payment_currency") String payment_currency);
 
     @GET("transaction_history/{order_currency}_KRW")
     Call<CoinViewModel.NewTransactionData> getTransactionCoinData(@Path("order_currency") String order_currency);
-
 
     static CoinRetrofit create() {
         String hostURL = "https://api.bithumb.com/public/";

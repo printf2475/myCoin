@@ -26,14 +26,13 @@ public class MainActivity extends AppCompatActivity {
             "비트코인SV", "엑시인피니티", "비트코인골드","이더리움클래식", "폴카닷", "코스모스", "웨이브",
             "체인링크", "어거", "오미세고", "퀀텀"};
 
-    public static Boolean TRANSACTIONFLAG = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        TRANSACTIONFLAG = true;
 
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment_Coins()).commit();
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

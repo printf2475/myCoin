@@ -51,12 +51,13 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
 
 
     public class ViewHolders extends RecyclerView.ViewHolder {
-            TextView coinId,coinCurrentPrice,coinCompareYesterday;
+            TextView coinId,coinCurrentPrice,coinCompareYesterday, tvTotalVolumeList;
         public ViewHolders(@NonNull View itemView) {
             super(itemView);
-            coinId = itemView.findViewById(R.id.coinId);
-            coinCurrentPrice = itemView.findViewById(R.id.coinCurrentPrice);
-            coinCompareYesterday = itemView.findViewById(R.id.coinCompareYesterday);
+            coinId = itemView.findViewById(R.id.tvCoinNameList);
+            coinCurrentPrice = itemView.findViewById(R.id.tvCurrentPriceList);
+            coinCompareYesterday = itemView.findViewById(R.id.tvChangeRateList);
+            tvTotalVolumeList = itemView.findViewById(R.id.tvTotalVolumeList);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,6 +80,7 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
 
             coinId.setText(stringSymbol[position]);
             coinCurrentPrice.setText(transactionCoin.get(position));
+            tvTotalVolumeList.setText("");
 //            coinCompareYesterday.setText(String.valueOf(currentPrice/closingPrice*100-100));
         }
     }
