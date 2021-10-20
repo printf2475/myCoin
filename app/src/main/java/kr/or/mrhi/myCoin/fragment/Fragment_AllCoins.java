@@ -32,29 +32,31 @@ public class Fragment_AllCoins extends Fragment {
     private List<String> priceList;
     private TickerData ticker;
 
-//    public static Boolean TRANSACTIONFLAG=false;
+    private CoinViewModel model;
 
+    //    public static Boolean TRANSACTIONFLAG=false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
         View view = inflater.inflate(R.layout.fragment_fragment1_2, container, false);
         // Inflate the layout for this fragment
-        CoinViewModel model = new ViewModelProvider(requireActivity()).get(CoinViewModel.class);
+        model = new ViewModelProvider(requireActivity()).get(CoinViewModel.class);
 
         priceList = new ArrayList<>();
-        for (int i = 0; i< stringSymbol.length; i++){
+        for (int i = 0; i < stringSymbol.length; i++) {
             priceList.add("0.00");
         }
         recyclerView2 = view.findViewById(R.id.recyclerView2);
         recyclerView2.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        mainCoinAdapter = new MainCoinAdapter(priceList , ticker);
+        mainCoinAdapter = new MainCoinAdapter(priceList);
         recyclerView2.setAdapter(mainCoinAdapter);
 
         model.getTickerCoinData().observe(requireActivity(), new Observer<TickerData>() {
             @Override
             public void onChanged(TickerData tickerData) {
-                ticker=tickerData;
+//                ticker = tickerData;
+                mainCoinAdapter.setTickerData(tickerData);
                 mainCoinAdapter.notifyDataSetChanged();
             }
         });
@@ -71,5 +73,11 @@ public class Fragment_AllCoins extends Fragment {
 
         return view;
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        model.stopThread();
     }
 }

@@ -22,18 +22,20 @@ import java.util.List;
 import kr.or.mrhi.myCoin.CoinMain;
 import kr.or.mrhi.myCoin.POJO.TickerData;
 import kr.or.mrhi.myCoin.POJO.TickerPOJOData;
+import kr.or.mrhi.myCoin.POJO.orderBookCoins.Btc;
 import kr.or.mrhi.myCoin.R;
 import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
 
 public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHolders> {
     private List<String> transactionCoin;
     private TickerData tickerCoin;
+//    private TickerPOJOData tickerPOJOData;
 
 
 
-    public MainCoinAdapter(List<String> transactionCoin ,TickerData tickerData) {
+    public MainCoinAdapter(List<String> transactionCoin) {
         this.transactionCoin = transactionCoin;
-        this.tickerCoin = tickerData;
+//        this.tickerCoin = tickerData;
     }
 
 
@@ -56,6 +58,9 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
         return transactionCoin.size();
     }
 
+    public void setTickerData(TickerData tickerData) {
+        this.tickerCoin = tickerData;
+    }
 
 
     public class ViewHolders extends RecyclerView.ViewHolder {
@@ -84,17 +89,24 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
         }
 
         public void onBind(int position) {
-            if (position<transactionCoin.size()){
+            if (position<transactionCoin.size() && tickerCoin != null){
                 tvCoinNameList.setText(stringSymbol[position]);
                 tvCurrentPriceList.setText(transactionCoin.get(position));
+                if(tvCoinNameList.getText().equals("BTC")){
+                    Log.i("값이 나오나",tvCoinNameList.getText().toString());
+//                    tvChangeRateList.setText();
+//                    tvTotalVolumeList.setText(transactionCoin.get(position));
+                }else if(tvCoinNameList.getText().equals("ETH")){
+                    tvChangeRateList.setText(String.valueOf(String.format("%.2f",(Double.parseDouble(transactionCoin.get(position)) - Double.parseDouble(tickerCoin.getEth().getPrevClosingPrice()))/ Double.parseDouble(tickerCoin.getEth().getPrevClosingPrice()) * 100)));
+                    tvTotalVolumeList.setText(tickerCoin.getEth().getAccTradeValue24H());
+                }
+
+//                tvChangeRateList.setText(String.valueOf((Double.parseDouble(transactionCoin.get(position)) - Double.parseDouble(tickerPOJOData.getPrevClosingPrice(tvCoinNameList)))/Double.parseDouble(tickerPOJOData.getPrevClosingPrice())*100));
+//                tvTotalVolumeList.setText(tickerPOJOData.getAccTradeValue24H().toString());
+                //                mainChangePrice = Double.parseDouble(stringList.get(position)) - Double.parseDouble(prevClosingPrice);
+//                mainPercent = Double.parseDouble(String.format("%.2f", (mainChangePrice) / Double.parseDouble(prevClosingPrice) * 100));변동률
+                //acc trade value
             }
-
-
-
-
-
-
-
 //            coinCompareYesterday.setText(String.valueOf(currentPrice/closingPrice*100-100));
         }
     }

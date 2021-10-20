@@ -52,12 +52,13 @@
             android:id="@+id/ACD_PriceChange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:text="2742000"
             android:textColor="#DE3E3E"
             app:layout_constraintBottom_toBottomOf="@+id/ACD_Percent"
             app:layout_constraintStart_toEndOf="@+id/ACD_Percent"
-            app:layout_constraintTop_toTopOf="@+id/ACD_Percent" />
+            app:layout_constraintTop_toTopOf="@+id/ACD_Percent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/ACD_tvCompare"
@@ -105,6 +106,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/ACD_CoinPrice"
             app:layout_constraintVertical_bias="0.0" />
+
+        <ImageView
+            android:id="@+id/ivUpDown"
+            android:layout_width="15dp"
+            android:layout_height="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/ACD_PriceChange"
+            app:layout_constraintEnd_toStartOf="@+id/ACD_PriceChange"
+            app:layout_constraintTop_toTopOf="@+id/ACD_PriceChange"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/increase" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -37,7 +37,7 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
     private TextView ACD_CoinName, ACD_PriceChange, ACD_tvCompare, ACD_Percent, ACD_CoinPrice, totalAmountCount, orderAvailableCount;
     private LineChart lineChart;
     private CandleStickChart candleChart;
-    private ImageView btnFavorite;
+    private ImageView btnFavorite,ivUpDown;
     private Button btnSell, btnBuy;
     private EditText orderAmount_edttext;
     private TabLayout tabLayout;
@@ -80,6 +80,7 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
         btnBuy = findViewById(R.id.btnBuy);
         orderAmount_edttext = findViewById(R.id.orderAmount_edttext);
         tabLayout = findViewById(R.id.tabLayout2);
+        ivUpDown = findViewById(R.id.ivUpDown);
 
 //        btnSell.setOnClickListener(this);
 //        btnBuy.setOnClickListener(this);
@@ -137,14 +138,17 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
                     ACD_CoinPrice.setTextColor(Color.BLACK);
                     ACD_Percent.setTextColor(Color.BLACK);
                     ACD_PriceChange.setTextColor(Color.BLACK);
+                    ivUpDown.setVisibility(View.GONE);
                 } else if (mainPercent < 0.00) {
                     ACD_CoinPrice.setTextColor(Color.BLUE);
                     ACD_Percent.setTextColor(Color.BLUE);
                     ACD_PriceChange.setTextColor(Color.BLUE);
+                    ivUpDown.setImageResource(R.drawable.decrease);
                 } else if (mainPercent > 0.00) {
                     ACD_CoinPrice.setTextColor(Color.RED);
                     ACD_Percent.setTextColor(Color.RED);
                     ACD_PriceChange.setTextColor(Color.RED);
+                    ivUpDown.setImageResource(R.drawable.increase);
                 }
                 ACD_Percent.setText(String.valueOf(mainPercent) + "%");
                 ACD_PriceChange.setText(String.valueOf(mainChangePrice));
