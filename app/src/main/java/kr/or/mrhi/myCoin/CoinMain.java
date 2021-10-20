@@ -3,32 +3,36 @@ package kr.or.mrhi.myCoin;
 import static kr.or.mrhi.myCoin.MainActivity.stringName;
 import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.github.mikephil.charting.charts.CandleStickChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.CandleData;
+import com.github.mikephil.charting.data.CandleDataSet;
+import com.github.mikephil.charting.data.CandleEntry;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import kr.or.mrhi.myCoin.POJO.CandleCoinData;
 import kr.or.mrhi.myCoin.POJO.TickerPOJOData;
 import kr.or.mrhi.myCoin.model.Transaction;
 import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
@@ -52,6 +56,7 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
     private static final int DEFAULTVALUE = 1000;
     private String prevClosingPrice = "0.00";
     private int count = 0, tabLayoutPosition = 0;
+    private List<CandleCoinData> candleCoinData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,8 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
         orderAmount_edttext = findViewById(R.id.orderAmount_edttext);
         tabLayout = findViewById(R.id.tabLayout2);
         ivUpDown = findViewById(R.id.ivUpDown);
+
+
 
 //        btnSell.setOnClickListener(this);
 //        btnBuy.setOnClickListener(this);
@@ -169,8 +176,79 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
                 Log.i("변동률과 거래대금", tickerPOJOData.getPrevClosingPrice().toString());
             }
         });
+
+        model.getCandleCoinData(mainCoinName, "1m").observe(this, new Observer<List<CandleCoinData>>() {
+            @Override
+            public void onChanged(List<CandleCoinData> candleCoinData) {
+                Log.d("캔들", candleCoinData.size()+"");
+                candleDataSet(candleCoinData);
+            }
+        });
     }
 
+    public void candleDataSet(List<CandleCoinData> candleCoinData) {
+        ArrayList<CandleEntry> values = new ArrayList<>();
+
+        for (int i = 0; i < candleCoinData.size(); i++) {
+            float val = candleCoinData.size();
+            float high = Float.parseFloat(candleCoinData.get(i).getMaxPrice());
+            float low = Float.parseFloat(candleCoinData.get(i).getMinPrice());
+            float open = Float.parseFloat(candleCoinData.get(i).getOpeningPrice());
+            float close = Float.parseFloat(candleCoinData.get(i).getClosingPrice());
+
+            boolean odd = i % 2 != 0;
+            values.add(new CandleEntry(i + 1, high, low, open, close));
+
+        }
+
+        candleChart.setBackgroundColor(Color.WHITE);
+
+        candleChart.getDescription().setEnabled(false);
+
+        // if more than 60 entries are displayed in the chart, no values will be
+        // drawn
+        candleChart.setMaxVisibleValueCount(60);
+
+        // scaling can now only be done on x- and y-axis separately
+        candleChart.setPinchZoom(true);
+
+        candleChart.setDrawGridBackground(false);
+
+        XAxis xAxis = candleChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+
+        YAxis leftAxis = candleChart.getAxisLeft();
+//        leftAxis.setEnabled(false);
+        leftAxis.setLabelCount(7, false);
+        leftAxis.setDrawGridLines(false);
+        leftAxis.setDrawAxisLine(false);
+
+        YAxis rightAxis = candleChart.getAxisRight();
+        rightAxis.setEnabled(false);
+//        rightAxis.setStartAtZero(false);
+
+        candleChart.getLegend().setEnabled(false);
+
+        CandleDataSet set1 = new CandleDataSet(values, "Data Set");
+
+        set1.setDrawIcons(false);
+        set1.setAxisDependency(YAxis.AxisDependency.LEFT);
+//        set1.setColor(Color.rgb(80, 80, 80));
+        set1.setShadowColor(Color.DKGRAY);
+        set1.setShadowWidth(0.7f);
+        set1.setDecreasingColor(Color.RED);
+        set1.setDecreasingPaintStyle(Paint.Style.FILL);
+        set1.setIncreasingColor(Color.rgb(122, 242, 84));
+        set1.setIncreasingPaintStyle(Paint.Style.STROKE);
+        set1.setNeutralColor(Color.BLUE);
+        //set1.setHighlightLineWidth(1f);
+
+        CandleData data = new CandleData(set1);
+
+        candleChart.setData(data);
+        candleChart.invalidate();
+    }
 
     @Override
     public void onClick(View view) {

@@ -55,8 +55,6 @@ public class CandleGraph extends DemoBase {
         rightAxis.setEnabled(false);
 //        rightAxis.setStartAtZero(false);
 
-
-
         chart.getLegend().setEnabled(false);
     }
 }

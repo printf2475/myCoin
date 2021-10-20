@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="120sp"
         android:layout_marginBottom="1dp"
-        android:background="#DAE8F5E9"
+        android:background="#F1F8E9"
         app:layout_constraintBottom_toTopOf="@+id/candleChart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
