@@ -1,5 +1,6 @@
 package kr.or.mrhi.myCoin.viewModel;
 
+import static kr.or.mrhi.myCoin.MainActivity.namePositionMap;
 import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 
 import android.util.Log;
@@ -109,7 +110,7 @@ public class CoinViewModel extends ViewModel {
                         newTransactionData.refreshTransactionCoinData(coinNames[i]);
                     }
                     try {
-                        Thread.sleep(200);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -254,12 +255,6 @@ public class CoinViewModel extends ViewModel {
 
         private void refreshTransactionCoinData(String coinName) {
 
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
             CoinRetrofit.create()
                     .getTransactionCoinData(coinName)
                     .enqueue(new Callback<NewTransactionData>() {
@@ -273,28 +268,20 @@ public class CoinViewModel extends ViewModel {
                             Log.i("현재코인", "실패 : " + t.fillInStackTrace());
                         }
                     });
-
-
         }
 
         private List<String> makeMapData(String coinName, Response<NewTransactionData> response) {
-            Map<String, Integer> map = new HashMap<>();
-
-            for (int i = 0; i < stringSymbol.length; i++) {
-                map.put(stringSymbol[i], i);
-            }
 
             if (response.body() != null) {
-                priceList.set(map.get(coinName), response.body().getNewData().get(LATELYDATA).getPrice());
+                priceList.set(namePositionMap.get(coinName), response.body().getNewData().get(LATELYDATA).getPrice());
+
             }
             return priceList;
         }
 
-
         private List<TransactionData> getNewData() {
             return data;
         }
-
     }
 
 
@@ -316,7 +303,6 @@ public class CoinViewModel extends ViewModel {
                             tickerDTOData.setValue(response.body().getData());
                             Log.i("현재코인", tickerDTOData.getValue().toString());
                         }
-
                         @Override
                         public void onFailure(Call<TickerDTO> call, Throwable t) {
                             Log.i("현재코인", "실패 : " + t.fillInStackTrace());

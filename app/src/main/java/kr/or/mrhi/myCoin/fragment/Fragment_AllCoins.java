@@ -37,7 +37,7 @@ public class Fragment_AllCoins extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        Log.i("에러줘", "탭레이아웃 들어옴");
+
         View view = inflater.inflate(R.layout.fragment_fragment1_2, container, false);
         // Inflate the layout for this fragment
         CoinViewModel model = new ViewModelProvider(requireActivity()).get(CoinViewModel.class);

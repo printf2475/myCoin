@@ -32,6 +32,17 @@ public class DBController extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
+    public void insertFavorite(String name) {
+        SQLiteDatabase sqlDB = getWritableDatabase();
+        try {
+            sqlDB.execSQL("INSERT INTO favoritesTBL VALUES ('"
+                    + name + "')");
+        } catch (Exception e) {
+            Log.e("데이터베이스", "faviriteList Insert에러" + e.toString());
+        } finally {
+            sqlDB.close();
+        }
+    }
 
     public void insertTransaction(Transaction transaction) {
         SQLiteDatabase sqlDB = getWritableDatabase();
@@ -153,7 +164,8 @@ public class DBController extends SQLiteOpenHelper {
     public void deleteFavoritesList(String coinName) {
         SQLiteDatabase sqlDB = getWritableDatabase();
         try {
-            sqlDB.execSQL("delete from favoritesTBL where coinName = " + coinName + ";");
+            sqlDB.execSQL("delete from favoritesTBL where coinName = '" + coinName + "'" +
+                    ";");
             Log.e("데이터베이스", "delete성공");
         } catch (Exception e) {
             Log.e("데이터베이스", "delete에러" + e.toString());
@@ -189,5 +201,6 @@ public class DBController extends SQLiteOpenHelper {
         }
         return transactionList;
     }
+
 
 }

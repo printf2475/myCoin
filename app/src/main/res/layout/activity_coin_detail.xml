@@ -4,23 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CoinMain"
-    android:background="#F6F6F6">
+    android:background="#F6F6F6"
+    tools:context=".CoinMain">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/coinSimpleData"
+        android:id="@+id/constraintLayout3"
         android:layout_width="match_parent"
         android:layout_height="120sp"
         android:layout_marginBottom="1dp"
         android:background="#DAE8F5E9"
-        app:layout_constraintBottom_toTopOf="@+id/combinedChart"
+        app:layout_constraintBottom_toTopOf="@+id/candleChart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
 
         <TextView
-            android:id="@+id/coinName"
+            android:id="@+id/ACD_CoinName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -33,28 +33,34 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:layout_width="30sp"
-            android:layout_height="30sp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/ic_launcher_background"
-            app:layout_constraintBottom_toBottomOf="@+id/coinName"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/ACD_CoinName"
             app:layout_constraintEnd_toEndOf="@+id/lineChart"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/btnFavorite"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/unlikebutton" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/textView16"
+            android:id="@+id/ACD_PriceChange"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="2742000"
             android:textColor="#DE3E3E"
-            app:layout_constraintBottom_toBottomOf="@+id/textView15"
-            app:layout_constraintStart_toEndOf="@+id/textView15"
-            app:layout_constraintTop_toTopOf="@+id/textView15" />
+            app:layout_constraintBottom_toBottomOf="@+id/ACD_Percent"
+            app:layout_constraintStart_toEndOf="@+id/ACD_Percent"
+            app:layout_constraintTop_toTopOf="@+id/ACD_Percent" />
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/ACD_tvCompare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -62,22 +68,22 @@
             android:textColor="@color/black"
             app:layout_constraintEnd_toStartOf="@+id/lineChart"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/coinName"
-            app:layout_constraintTop_toBottomOf="@+id/currentCoinPrice" />
+            app:layout_constraintStart_toStartOf="@+id/ACD_CoinName"
+            app:layout_constraintTop_toBottomOf="@+id/ACD_CoinPrice" />
 
         <TextView
-            android:id="@+id/textView15"
+            android:id="@+id/ACD_Percent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="0.89%"
             android:textColor="#DE3E3E"
-            app:layout_constraintBottom_toBottomOf="@+id/textView14"
-            app:layout_constraintStart_toEndOf="@+id/textView14"
-            app:layout_constraintTop_toTopOf="@+id/textView14" />
+            app:layout_constraintBottom_toBottomOf="@+id/ACD_tvCompare"
+            app:layout_constraintStart_toEndOf="@+id/ACD_tvCompare"
+            app:layout_constraintTop_toTopOf="@+id/ACD_tvCompare" />
 
         <TextView
-            android:id="@+id/currentCoinPrice"
+            android:id="@+id/ACD_CoinPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -86,8 +92,8 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toStartOf="@+id/lineChart"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/coinName"
-            app:layout_constraintTop_toBottomOf="@+id/coinName" />
+            app:layout_constraintStart_toStartOf="@+id/ACD_CoinName"
+            app:layout_constraintTop_toBottomOf="@+id/ACD_CoinName" />
 
 
         <com.github.mikephil.charting.charts.LineChart
@@ -95,9 +101,9 @@
             android:layout_width="165dp"
             android:layout_height="55dp"
             android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView16"
+            app:layout_constraintBottom_toBottomOf="@+id/ACD_PriceChange"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/currentCoinPrice"
+            app:layout_constraintTop_toTopOf="@+id/ACD_CoinPrice"
             app:layout_constraintVertical_bias="0.0" />
 
 
@@ -111,17 +117,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coinSimpleData" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
-    <com.github.mikephil.charting.charts.CombinedChart
-        android:id="@+id/combinedChart"
+    <com.github.mikephil.charting.charts.CandleStickChart
+        android:id="@+id/candleChart"
         android:layout_width="411dp"
         android:layout_height="378dp"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2"
-        android:background="@color/white"/>
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -129,37 +135,34 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/combinedChart">
+        app:layout_constraintTop_toBottomOf="@+id/candleChart">
 
         <TextView
             android:id="@+id/textView21"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="11dp"
             android:text="KRW"
             android:textColor="@color/black"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintBottom_toBottomOf="@+id/totalAmount"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtCoinNumber" />
+            app:layout_constraintTop_toTopOf="@+id/totalAmount" />
 
         <TextView
-            android:id="@+id/textView19"
+            android:id="@+id/totalAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginTop="8dp"
             android:text="총액"
             android:textColor="@color/black"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView23" />
+            app:layout_constraintTop_toBottomOf="@+id/orderAmount" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnBuy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -172,21 +175,23 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
+            android:id="@+id/tabLayout2"
             android:layout_width="120sp"
             android:layout_height="28dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:background="#00ff0000"
+            android:background="#00000000"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabBuy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="매수" />
 
             <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabSell"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="매도" />
@@ -194,87 +199,77 @@
         </com.google.android.material.tabs.TabLayout>
 
         <TextView
-            android:id="@+id/totalPrice"
+            android:id="@+id/totalAmountCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="176dp"
-            android:layout_marginEnd="72dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="8dp"
             android:text="210000000"
             android:textColor="@color/black"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.571"
-            app:layout_constraintStart_toEndOf="@+id/textView19" />
+            app:layout_constraintBottom_toBottomOf="@+id/totalAmount"
+            app:layout_constraintEnd_toStartOf="@+id/textView21"
+            app:layout_constraintTop_toTopOf="@+id/totalAmount" />
 
         <EditText
-            android:id="@+id/edtCoinNumber"
-            android:layout_width="wrap_content"
+            android:id="@+id/orderAmount_edttext"
+            android:layout_width="155sp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="1dp"
+            android:gravity="right"
             android:text="3.2"
             android:textColor="@color/black"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView21"
+            app:layout_constraintBottom_toBottomOf="@+id/orderAmount"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView17"
-            tools:ignore="TouchTargetSizeCheck" />
+            app:layout_constraintTop_toTopOf="@+id/orderAmount" />
 
         <TextView
-            android:id="@+id/textView17"
+            android:id="@+id/tvKRW1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="56dp"
             android:layout_marginEnd="16dp"
             android:text="KRW"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/orderAvailableCount" />
 
         <TextView
-            android:id="@+id/orderPossibleCoin"
+            android:id="@+id/orderAvailableCount"
             android:layout_width="114dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:gravity="end"
             android:text="300000000"
             android:textColor="@color/black"
             android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView17"
-            app:layout_constraintEnd_toStartOf="@+id/textView17"
-            app:layout_constraintTop_toTopOf="@+id/textView17"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintBottom_toBottomOf="@+id/orderAvailable"
+            app:layout_constraintEnd_toStartOf="@+id/tvKRW1"
+            app:layout_constraintTop_toTopOf="@+id/orderAvailable" />
 
         <TextView
-            android:id="@+id/textView23"
+            android:id="@+id/orderAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="1dp"
             android:text="수량"
             android:textColor="@color/black"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView19"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView22" />
+            app:layout_constraintTop_toBottomOf="@+id/orderAvailable" />
 
         <TextView
-            android:id="@+id/textView22"
+            android:id="@+id/orderAvailable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:text="주문가능"
             android:textColor="@color/black"
             android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tabLayout"
-            app:layout_constraintVertical_bias="0.154" />
+            app:layout_constraintTop_toBottomOf="@+id/tabLayout2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
