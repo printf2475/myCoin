@@ -75,6 +75,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
             super(itemView);
 
             tvTitle=itemView.findViewById(R.id.tv_title);
+            tvTitle.setSelected(true);
             tvDesc=itemView.findViewById(R.id.tv_desc);
             tvDate=itemView.findViewById(R.id.tv_date);
             iv=itemView.findViewById(R.id.iv);
