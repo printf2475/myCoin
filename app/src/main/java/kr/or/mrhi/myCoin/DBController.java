@@ -85,7 +85,7 @@ public class DBController extends SQLiteOpenHelper {
                 transactionForm = cursor.getString(2);//사고 팔고
                 tradeQualtity = Double.parseDouble(cursor.getString(3));//갯수
                 currentPrice = cursor.getString(4);//가격
-
+                balance += cursor.getInt(5);//잔액
                 if (transactionForm.equals("buy")) {
                     count++;
                     price = price + Double.parseDouble(currentPrice);
@@ -95,7 +95,8 @@ public class DBController extends SQLiteOpenHelper {
                 }
                 //보유수량 ,구매횟수, 구매당시가격, 구매당시가격*갯수
 
-                balance = cursor.getInt(5);//잔액
+
+
 
             }
 
@@ -113,7 +114,7 @@ public class DBController extends SQLiteOpenHelper {
         return transaction;
     }
 
-    //
+
     public List<Transaction> getTransactionList() {
         List<Transaction> transactionList = new ArrayList<>();
         SQLiteDatabase sqlDB = getReadableDatabase();

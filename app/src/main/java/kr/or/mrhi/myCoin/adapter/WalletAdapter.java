@@ -10,12 +10,12 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import kr.or.mrhi.myCoin.fragment.Fragment_AllCoins;
 import kr.or.mrhi.myCoin.fragment.Fragment_LikeCoin;
 
-public class TradingCoinAdapter extends FragmentStateAdapter {
+public class WalletAdapter extends FragmentStateAdapter {
     private final static int NUM_PAGES = 2;
-    public TradingCoinAdapter(FragmentActivity fa) {
+    public WalletAdapter(FragmentActivity fa) {
         super(fa);
     }
-//detail 코인에서 매수 매도 뷰페이저
+
     @NonNull
     @Override
     public Fragment createFragment(int position) {
@@ -39,3 +39,4 @@ public class TradingCoinAdapter extends FragmentStateAdapter {
         return NUM_PAGES;
     }
 }//end of adapter
+

@@ -48,7 +48,7 @@ public class LikeCoinAdapter extends RecyclerView.Adapter<LikeCoinAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return transactionCoin.size();
+        return list.size();
     }
 
 
