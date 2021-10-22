@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#AEAEAE"
+        android:padding="1dp"
+        android:stretchColumns="*">
+
+
+    <TableRow android:background="#AEAEAE">
+
+        <TextView
+            android:id="@+id/transactionItemTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="체결시간" />
+
+        <TextView
+            android:id="@+id/transactionItemCoin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="종류" />
+
+        <TextView
+            android:id="@+id/transactionItemAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="거래수량" />
+
+        <TextView
+            android:id="@+id/transactionItemPrice"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="거래단가" />
+
+        <TextView
+            android:id="@+id/transactionItemTotalPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="거래금액" />
+
+    </TableRow>
+
+    </TableLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
