@@ -41,13 +41,14 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
     private TextView ACD_CoinName, ACD_PriceChange, ACD_tvCompare, ACD_Percent, ACD_CoinPrice, totalAmountCount, orderAvailableCount;
     private LineChart lineChart;
     private CandleStickChart candleChart;
-    private ImageView btnFavorite,ivUpDown;
+    private ImageView btnFavorite, ivUpDown;
     private Button btnSell, btnBuy;
     private EditText orderAmount_edttext;
     private TabLayout tabLayout;
+    private List<Transaction> transactionList;
 
     private String mainCoinName, mainCoinPrice;
-    private double mainPercent, mainChangePrice, totalPriceTemp=0.00;
+    private double mainPercent, mainChangePrice, totalPriceTemp = 0.00;
     private int position;
 
     private CoinViewModel model;
@@ -87,21 +88,27 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
         tabLayout = findViewById(R.id.tabLayout2);
         ivUpDown = findViewById(R.id.ivUpDown);
 
-
+        List<String> list = dbController.getFavoritesList();
+        for (String name : list) {
+            if (name.equals(mainCoinName)) {
+                btnFavorite.setImageResource(R.drawable.likebutton);
+                count++;
+            }
+        }
 
 //        btnSell.setOnClickListener(this);
 //        btnBuy.setOnClickListener(this);
         btnBuy.setOnClickListener(this);
         btnFavorite.setOnClickListener(this);
-
+        transaction = dbController.getCoinTransaction(mainCoinName);
         tabLayoutPosition = tabLayout.getSelectedTabPosition();
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tabLayoutPosition = tab.getPosition();
-                if (tabLayoutPosition==0){
+                if (tabLayoutPosition == 0) {
                     btnBuy.setText("매수");
-                }else if(tabLayoutPosition==1){
+                } else if (tabLayoutPosition == 1) {
                     btnBuy.setText("매도");
                 }
             }
@@ -117,7 +124,7 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
 
         ACD_CoinName.setText(stringName[position] + "(" + mainCoinName + "/KRW)");
         ACD_CoinPrice.setText(mainCoinPrice);
-
+        orderAvailableCount.setText(String.valueOf(transaction.getBalance()));
         orderAmount_edttext.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -138,6 +145,8 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
         model.getTransactionCoinData(mainCoinName).observe(this, new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> stringList) {
+//                int balance = 0;
+
                 ACD_CoinPrice.setText(stringList.get(position));
                 mainChangePrice = Double.parseDouble(stringList.get(position)) - Double.parseDouble(prevClosingPrice);
                 mainPercent = Double.parseDouble(String.format("%.2f", (mainChangePrice) / Double.parseDouble(prevClosingPrice) * 100));
@@ -157,11 +166,14 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
                     ACD_PriceChange.setTextColor(Color.RED);
                     ivUpDown.setImageResource(R.drawable.increase);
                 }
+//                for(int i = 0;i<transactionList.size();i++){
+//                    balance +=transactionList.get(i).getBalance();
+//                }
                 ACD_Percent.setText(String.valueOf(mainPercent) + "%");
                 ACD_PriceChange.setText(String.valueOf(mainChangePrice));
 
-                totalAmountCount.setText(String.valueOf((int)totalPriceTemp * Double.parseDouble(stringList.get(position))));
-
+                totalAmountCount.setText(String.valueOf((int) totalPriceTemp * Double.parseDouble(stringList.get(position))));
+//                orderAvailableCount.setText(balance);
 //                Log.i("값이 오나", stringList.get(position).toString());
 //                Log.i("전일대비", String.valueOf((Double.parseDouble(stringList.get(position)) - Double.parseDouble(prevClosingPrice)) / Double.parseDouble(prevClosingPrice) * 100));//전일대비 변동률 작동 확인 완료!
             }
@@ -177,13 +189,14 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
             }
         });
 
-        model.getCandleCoinData(mainCoinName, "1m").observe(this, new Observer<List<CandleCoinData>>() {
+        model.getCandleCoinData(mainCoinName, "5m").observe(this, new Observer<List<CandleCoinData>>() {
             @Override
             public void onChanged(List<CandleCoinData> candleCoinData) {
-                Log.d("캔들", candleCoinData.size()+"");
+                Log.d("캔들", candleCoinData.size() + "");
                 candleDataSet(candleCoinData);
             }
         });
+
     }
 
     public void candleDataSet(List<CandleCoinData> candleCoinData) {
@@ -266,22 +279,30 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
                 break;
             case R.id.btnBuy:
                 Log.i("DB값", "눌림");
-                if (tabLayoutPosition == 0) {
                     String buyCoinNumber = orderAmount_edttext.getText().toString();
                     String buyCoinPrice = ACD_CoinPrice.getText().toString();
-                    dbController.insertTransaction(new Transaction(stringSymbol[position], "buy", "", buyCoinNumber, buyCoinPrice, 100000, null));
+                    int balance = Integer.parseInt(String.format("%.0f",Double.parseDouble(buyCoinNumber)*Double.parseDouble(buyCoinPrice)));
+                if (tabLayoutPosition == 0) {
+                    dbController.insertTransaction(new Transaction(stringSymbol[position], "buy", "", buyCoinNumber, buyCoinPrice, -balance, null));
                     transaction = dbController.getCoinTransaction(mainCoinName);
                     Log.i("DB값 매수", transaction.toString());
                     break;
                 } else if (tabLayoutPosition == 1) {
-                    String buyCoinNumber = orderAmount_edttext.getText().toString();
-                    String buyCoinPrice = ACD_CoinPrice.getText().toString();
-                    dbController.insertTransaction(new Transaction(stringSymbol[position], "sell", "", buyCoinNumber, buyCoinPrice, 100000, null));
+                    dbController.insertTransaction(new Transaction(stringSymbol[position], "sell", "", buyCoinNumber, buyCoinPrice, +balance, null));
                     transaction = dbController.getCoinTransaction(mainCoinName);
                     Log.i("DB값 매도", transaction.toString());
                     break;
                 }
         }
 
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

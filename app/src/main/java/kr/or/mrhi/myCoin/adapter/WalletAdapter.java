@@ -10,10 +10,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import kr.or.mrhi.myCoin.fragment.Fragment_AllCoins;
 import kr.or.mrhi.myCoin.fragment.Fragment_LikeCoin;
 
-public class CoinListAdapter extends FragmentStateAdapter {
+public class WalletAdapter extends FragmentStateAdapter {
     private final static int NUM_PAGES = 2;
-
-    public CoinListAdapter(FragmentActivity fa) {
+    public WalletAdapter(FragmentActivity fa) {
         super(fa);
     }
 
@@ -21,11 +20,11 @@ public class CoinListAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         if (position == 0) {
-            Fragment fragment1 = new Fragment_AllCoins();
+            Fragment fragment1 = new Fragment_LikeCoin();
             return fragment1;
 
         } else if (position == 1) {
-            Fragment fragment2 = new Fragment_LikeCoin();
+            Fragment fragment2 = new Fragment_AllCoins();
 
             return fragment2;
         } else {

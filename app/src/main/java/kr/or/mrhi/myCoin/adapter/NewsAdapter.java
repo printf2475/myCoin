@@ -1,4 +1,4 @@
-package kr.or.mrhi.myCoin;
+package kr.or.mrhi.myCoin.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,12 +15,16 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import kr.or.mrhi.myCoin.R;
+import kr.or.mrhi.myCoin.RssItemActivity;
+import kr.or.mrhi.myCoin.model.NewsItem;
+
 public class NewsAdapter extends RecyclerView.Adapter {
 
-    ArrayList<Item> items;
+    ArrayList<NewsItem> items;
     Context context;
 
-    public NewsAdapter(ArrayList<Item> items, Context context) {
+    public NewsAdapter(ArrayList<NewsItem> items, Context context) {
         this.items = items;
         this.context = context;
     }
@@ -40,7 +44,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
         VH vh= (VH)holder;
 
         //현재번째(position) 아이템 얻어오기
-        Item item= items.get(position);
+        NewsItem item= items.get(position);
         vh.tvTitle.setText(item.getTitle());
         vh.tvDesc.setText(item.getDesc());
         vh.tvDate.setText(item.getDate());
@@ -87,7 +91,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
                     String link= items.get(getLayoutPosition()).getLink();
 
                     //웹튜를 가진 새로운 액티비티
-                    Intent intent= new Intent(context,RssItemActivity.class);
+                    Intent intent= new Intent(context, RssItemActivity.class);
                     intent.putExtra("Link",link);
                     context.startActivity(intent);
                 }

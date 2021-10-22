@@ -77,6 +77,7 @@ public class Fragment_LikeCoin extends Fragment {
 
         return view;
     }
+
     @Override
     public void onPause() {
         super.onPause();

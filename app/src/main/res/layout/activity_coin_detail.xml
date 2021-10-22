@@ -227,9 +227,10 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:gravity="right"
-            android:text="3.2"
+            android:text="0"
             android:textColor="@color/black"
             android:textSize="20sp"
+            android:inputType="number"
             app:layout_constraintBottom_toBottomOf="@+id/orderAmount"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/orderAmount" />

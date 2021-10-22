@@ -1,4 +1,4 @@
-package kr.or.mrhi.myCoin;
+package kr.or.mrhi.myCoin.fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,10 +25,14 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import kr.or.mrhi.myCoin.adapter.NewsAdapter;
+import kr.or.mrhi.myCoin.R;
+import kr.or.mrhi.myCoin.model.NewsItem;
+
 public class FragmentRss extends Fragment {
 
     RecyclerView recyclerView;
-    ArrayList<Item> items= new ArrayList<>();
+    ArrayList<NewsItem> items= new ArrayList<>();
     NewsAdapter adapter;
 
     SwipeRefreshLayout swipeRefreshLayout;
@@ -102,7 +106,7 @@ public class FragmentRss extends Fragment {
                 xpp.setInput(is, "utf-8");
                 int eventType= xpp.getEventType();
 
-                Item item= null;
+                NewsItem item= null;
                 String tagName= null;
 
                 while (eventType != XmlPullParser.END_DOCUMENT){
@@ -114,7 +118,7 @@ public class FragmentRss extends Fragment {
                             Log.i("TAG", tagName);
 
                             if(tagName.equals("item")){
-                                item= new Item();
+                                item= new NewsItem();
                             }else if(tagName.equals("title")){
                                 xpp.next();
                                 if(item!=null) item.setTitle(xpp.getText());
@@ -192,5 +196,7 @@ public class FragmentRss extends Fragment {
             //이 메소드 안에서는 UI변경 작업 가능
             Toast.makeText(getContext(), s+":"+items.size(), Toast.LENGTH_SHORT).show();
         }
+
+
     }//RssFeedTask class
 }//MainActivity class ..

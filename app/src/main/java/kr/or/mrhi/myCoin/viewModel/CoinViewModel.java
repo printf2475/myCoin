@@ -109,11 +109,11 @@ public class CoinViewModel extends ViewModel {
                     synchronized (this) {
                         newTransactionData.refreshTransactionCoinData(coinNames[i]);
                     }
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         });

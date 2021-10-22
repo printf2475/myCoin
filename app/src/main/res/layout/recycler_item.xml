@@ -30,21 +30,22 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="horizontal">
+
             <ImageView
                 android:id="@+id/iv"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:src="@mipmap/ic_launcher"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher" />
 
             <TextView
                 android:id="@+id/tv_desc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="16sp"
-                android:padding="4dp"
-                android:maxLines="3"
                 android:ellipsize="end"
+                android:maxLines="3"
+                android:padding="4dp"
                 android:text="This is description"
                 android:textSize="17sp" />
         </LinearLayout>

@@ -1,6 +1,6 @@
 package kr.or.mrhi.myCoin.model;
 
-public class item {
+public class NewsItem {
     //보통은 객체지향은 정보의 은닉을 해야하기 때문에, private으로 만든다.
     String title;
     String link;
@@ -8,10 +8,10 @@ public class item {
     String imgUrl;
     String date;
 
-    public item() { //혹시 몰라서 매개변수가 없는 것도 만들었다.
+    public NewsItem() { //혹시 몰라서 매개변수가 없는 것도 만들었다.
     }
 
-    public item(String title, String link, String desc, String imgUrl, String date) {
+    public NewsItem(String title, String link, String desc, String imgUrl, String date) {
         this.title = title;
         this.link = link;
         this.desc = desc;
@@ -20,8 +20,7 @@ public class item {
     }
 
     //Getter & Setter Method..
-    //멤버 변수가 private이면 다른 곳에서 접근하기 위해 Getter & Setter Method 필요하다.
-    // 자동완성 Alt+Insert 에 Getter & Setter 있다.
+    //멤버 변수가 private이면
 
     public String getTitle() {
         return title;

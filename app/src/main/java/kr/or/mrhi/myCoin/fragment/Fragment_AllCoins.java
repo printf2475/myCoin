@@ -76,6 +76,11 @@ public class Fragment_AllCoins extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         model.stopThread();
