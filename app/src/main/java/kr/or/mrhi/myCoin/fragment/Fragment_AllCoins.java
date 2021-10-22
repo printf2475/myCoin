@@ -1,5 +1,6 @@
 package kr.or.mrhi.myCoin.fragment;
 
+
 import static kr.or.mrhi.myCoin.MainActivity.namePositionMap;
 import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 
@@ -12,13 +13,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import kr.or.mrhi.myCoin.adapter.MainCoinAdapter;
