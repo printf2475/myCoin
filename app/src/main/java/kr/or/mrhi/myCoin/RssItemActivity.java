@@ -8,6 +8,8 @@ import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import kr.or.mrhi.myCoin.R;
+
 public class RssItemActivity extends AppCompatActivity {
 
     WebView wv;

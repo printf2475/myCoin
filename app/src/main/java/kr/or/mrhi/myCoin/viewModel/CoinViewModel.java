@@ -6,7 +6,6 @@ import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -14,9 +13,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import kr.or.mrhi.myCoin.POJO.OrderBookData;
 import kr.or.mrhi.myCoin.POJO.TransactionData;

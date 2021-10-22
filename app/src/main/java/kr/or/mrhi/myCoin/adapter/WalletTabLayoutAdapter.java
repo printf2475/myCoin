@@ -7,15 +7,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import kr.or.mrhi.myCoin.fragment.Fragment_Coins;
 import kr.or.mrhi.myCoin.fragment.Fragment_LikeCoin;
+import kr.or.mrhi.myCoin.fragment.Fragment_Wallet;
 import kr.or.mrhi.myCoin.fragment.Fragment_transactionHistory;
 import kr.or.mrhi.myCoin.fragment.OwnBank;
 
-public class OwnBankAdapter extends FragmentStateAdapter {
+public class WalletTabLayoutAdapter extends FragmentStateAdapter {
     private final static int NUM_PAGES = 2;
-
-    public OwnBankAdapter(FragmentActivity fa) {
+    public WalletTabLayoutAdapter(FragmentActivity fa) {
         super(fa);
     }
 
@@ -23,13 +22,12 @@ public class OwnBankAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         if (position == 0) {
-            Fragment fragment3 = new OwnBank();
-            return fragment3;
+            Fragment fragment1 = new OwnBank();
+            return fragment1;
 
         } else if (position == 1) {
-            Fragment fragment4 = new Fragment_transactionHistory();
-
-            return fragment4;
+            Fragment fragment2 = new Fragment_transactionHistory();
+            return fragment2;
         } else {
             Log.d("프레그먼트", "createFragment() 프레그먼트 생성 오류");
             return null;
@@ -41,4 +39,5 @@ public class OwnBankAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return NUM_PAGES;
     }
-}
+}//end of adapter
+

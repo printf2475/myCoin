@@ -1,11 +1,11 @@
 package kr.or.mrhi.myCoin.adapter;
 
+
 import static kr.or.mrhi.myCoin.MainActivity.namePositionMap;
 import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +30,6 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
     public MainCoinAdapter(List<String> transactionCoin, List<String> priceListSearch) {
         this.transactionCoin = transactionCoin;
         this.searchList = priceListSearch;
-        for (String s : searchList){
-            Log.i("검색", s);
-        }
     }
 
 
@@ -60,7 +57,7 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
 
 
     public class ViewHolders extends RecyclerView.ViewHolder {
-        TextView tvCoinNameList, tvCurrentPriceList, tvChangeRateList, tvTotalVolumeList;
+        TextView tvCoinNameList, tvCurrentPriceList, tvChangeRateList, tvTotalVolumeList,tvCoinNameList2;
 
         public ViewHolders(@NonNull View itemView) {
             super(itemView);
@@ -68,7 +65,7 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
             tvCurrentPriceList = itemView.findViewById(R.id.tvCurrentPriceList);
             tvChangeRateList = itemView.findViewById(R.id.tvChangeRateList);
             tvTotalVolumeList = itemView.findViewById(R.id.tvTotalVolumeList);
-
+            tvCoinNameList2 = itemView.findViewById(R.id.tvCoinNameList2);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

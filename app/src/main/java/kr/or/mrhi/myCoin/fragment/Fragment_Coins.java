@@ -1,7 +1,7 @@
 package kr.or.mrhi.myCoin.fragment;
 
+
 import static kr.or.mrhi.myCoin.MainActivity.namePositionMap;
-import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 
 import android.os.Bundle;
 
@@ -23,8 +23,6 @@ import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;

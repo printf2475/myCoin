@@ -175,8 +175,6 @@ public class DBController extends SQLiteOpenHelper {
         }
     }
 
-    public void getList() {
-    }
 
     public List<Transaction> getMyWallet() {
         List<String> list = new ArrayList<>();

@@ -11,6 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.HashMap;
 import java.util.Map;
 
+import kr.or.mrhi.myCoin.R;
 import kr.or.mrhi.myCoin.fragment.FragmentRss;
 import kr.or.mrhi.myCoin.fragment.Fragment_Wallet;
 import kr.or.mrhi.myCoin.fragment.Fragment_Coins;

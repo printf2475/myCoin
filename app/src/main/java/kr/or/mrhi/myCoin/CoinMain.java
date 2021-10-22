@@ -1,5 +1,6 @@
 package kr.or.mrhi.myCoin;
 
+
 import static kr.or.mrhi.myCoin.MainActivity.stringName;
 import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 

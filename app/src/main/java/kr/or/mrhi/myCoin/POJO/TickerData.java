@@ -3,6 +3,10 @@ package kr.or.mrhi.myCoin.POJO;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import kr.or.mrhi.myCoin.POJO.tickerCoins.*;
 
 public class TickerData {
@@ -2019,5 +2023,12 @@ public class TickerData {
         this.date = date;
     }
 
+
+    public List<Object> getObject(){
+        List<Object> list = new ArrayList<>();
+        list.addAll((Collection<?>) btc);
+
+        return null;
+    }
 
 }
