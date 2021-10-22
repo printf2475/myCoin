@@ -224,9 +224,9 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
         candleChart.setMaxVisibleValueCount(60);
 
         // scaling can now only be done on x- and y-axis separately
-        candleChart.setPinchZoom(false);
+        candleChart.setPinchZoom(true);
 
-        candleChart.setDrawGridBackground(true);
+        candleChart.setDrawGridBackground(false);
 
         XAxis xAxis = candleChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
