@@ -11,7 +11,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.HashMap;
 import java.util.Map;
 
-import kr.or.mrhi.myCoin.fragment.Fragment3;
 import kr.or.mrhi.myCoin.fragment.Fragment_Coins;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new FragmentRss()).commit();
                         break;
                     case R.id.sub:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment3()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new FragmentWallet()).commit();
                         break;
                     default:
                         finish();

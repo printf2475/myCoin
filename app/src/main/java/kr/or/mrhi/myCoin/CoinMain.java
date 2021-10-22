@@ -22,11 +22,18 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.github.mikephil.charting.charts.CandleStickChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.CandleData;
 import com.github.mikephil.charting.data.CandleDataSet;
 import com.github.mikephil.charting.data.CandleEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IFillFormatter;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -38,22 +45,21 @@ import kr.or.mrhi.myCoin.model.Transaction;
 import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
 
 public class CoinMain extends AppCompatActivity implements View.OnClickListener {
+    private static final int DEFAULTVALUE = 1000;
     private TextView ACD_CoinName, ACD_PriceChange, ACD_tvCompare, ACD_Percent, ACD_CoinPrice, totalAmountCount, orderAvailableCount;
     private LineChart lineChart;
     private CandleStickChart candleChart;
-    private ImageView btnFavorite,ivUpDown;
+    private PieChart pieChart;
+    private ImageView btnFavorite, ivUpDown;
     private Button btnSell, btnBuy;
     private EditText orderAmount_edttext;
     private TabLayout tabLayout;
-
     private String mainCoinName, mainCoinPrice;
-    private double mainPercent, mainChangePrice, totalPriceTemp=0.00;
+    private double mainPercent, mainChangePrice, totalPriceTemp = 0.00;
     private int position;
-
     private CoinViewModel model;
     private Transaction transaction;
     private DBController dbController;
-    private static final int DEFAULTVALUE = 1000;
     private String prevClosingPrice = "0.00";
     private int count = 0, tabLayoutPosition = 0;
     private List<CandleCoinData> candleCoinData;
@@ -88,7 +94,6 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
         ivUpDown = findViewById(R.id.ivUpDown);
 
 
-
 //        btnSell.setOnClickListener(this);
 //        btnBuy.setOnClickListener(this);
         btnBuy.setOnClickListener(this);
@@ -99,9 +104,9 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 tabLayoutPosition = tab.getPosition();
-                if (tabLayoutPosition==0){
+                if (tabLayoutPosition == 0) {
                     btnBuy.setText("매수");
-                }else if(tabLayoutPosition==1){
+                } else if (tabLayoutPosition == 1) {
                     btnBuy.setText("매도");
                 }
             }
@@ -157,10 +162,10 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
                     ACD_PriceChange.setTextColor(Color.RED);
                     ivUpDown.setImageResource(R.drawable.increase);
                 }
-                ACD_Percent.setText(String.valueOf(mainPercent) + "%");
+                ACD_Percent.setText(mainPercent + "%");
                 ACD_PriceChange.setText(String.valueOf(mainChangePrice));
 
-                totalAmountCount.setText(String.valueOf((int)totalPriceTemp * Double.parseDouble(stringList.get(position))));
+                totalAmountCount.setText(String.valueOf((int) totalPriceTemp * Double.parseDouble(stringList.get(position))));
 
 //                Log.i("값이 오나", stringList.get(position).toString());
 //                Log.i("전일대비", String.valueOf((Double.parseDouble(stringList.get(position)) - Double.parseDouble(prevClosingPrice)) / Double.parseDouble(prevClosingPrice) * 100));//전일대비 변동률 작동 확인 완료!
@@ -173,15 +178,16 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onChanged(TickerPOJOData tickerPOJOData) {
                 prevClosingPrice = tickerPOJOData.getPrevClosingPrice();
-                Log.i("변동률과 거래대금", tickerPOJOData.getPrevClosingPrice().toString());
+                Log.i("변동률과 거래대금", tickerPOJOData.getPrevClosingPrice());
             }
         });
 
         model.getCandleCoinData(mainCoinName, "1m").observe(this, new Observer<List<CandleCoinData>>() {
             @Override
             public void onChanged(List<CandleCoinData> candleCoinData) {
-                Log.d("캔들", candleCoinData.size()+"");
+                Log.d("캔들", candleCoinData.size() + "");
                 candleDataSet(candleCoinData);
+                cubicLineChart(candleCoinData);
             }
         });
     }
@@ -248,6 +254,96 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
 
         candleChart.setData(data);
         candleChart.invalidate();
+    }
+
+    public void cubicLineChart(List<CandleCoinData> candleCoinData) {
+
+        lineChart = findViewById(R.id.lineChart);
+        lineChart.setViewPortOffsets(0, 0, 0, 0);
+        lineChart.setBackgroundColor(Color.rgb(104, 241, 175));
+
+        // no description text
+        lineChart.getDescription().setEnabled(false);
+
+        // enable touch gestures
+        lineChart.setTouchEnabled(true);
+
+        // enable scaling and dragging
+        lineChart.setDragEnabled(true);
+        lineChart.setScaleEnabled(true);
+
+        // if disabled, scaling can be done on x- and y-axis separately
+        lineChart.setPinchZoom(false);
+
+        lineChart.setDrawGridBackground(false);
+        lineChart.setMaxHighlightDistance(300);
+
+        XAxis x = lineChart.getXAxis();
+        x.setEnabled(false);
+
+        YAxis y = lineChart.getAxisLeft();
+        y.setLabelCount(6, false);
+        y.setTextColor(Color.WHITE);
+        y.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+        y.setDrawGridLines(false);
+        y.setAxisLineColor(Color.WHITE);
+
+        lineChart.getAxisRight().setEnabled(false);
+
+        lineChart.getLegend().setEnabled(false);
+
+        lineChart.animateXY(2000, 2000);
+
+        // don't forget to refresh the drawing
+        lineChart.invalidate();
+
+        ArrayList<Entry> values = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            float val = Float.parseFloat(candleCoinData.get(i).getMaxPrice());
+            values.add(new Entry(i, val));
+        }
+
+        LineDataSet set1;
+
+        if (lineChart.getData() != null &&
+                lineChart.getData().getDataSetCount() > 0) {
+            set1 = (LineDataSet) lineChart.getData().getDataSetByIndex(0);
+            set1.setValues(values);
+            lineChart.getData().notifyDataChanged();
+            lineChart.notifyDataSetChanged();
+        } else {
+            // create a dataset and give it a type
+            set1 = new LineDataSet(values, "DataSet 1");
+
+            set1.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+            set1.setCubicIntensity(0.2f);
+            set1.setDrawFilled(true);
+            set1.setDrawCircles(false);
+            set1.setLineWidth(1.8f);
+            set1.setCircleRadius(4f);
+            set1.setCircleColor(Color.WHITE);
+            set1.setHighLightColor(Color.rgb(244, 117, 117));
+            set1.setColor(Color.WHITE);
+            set1.setFillColor(Color.WHITE);
+            set1.setFillAlpha(100);
+            set1.setDrawHorizontalHighlightIndicator(false);
+            set1.setFillFormatter(new IFillFormatter() {
+                @Override
+                public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                    return lineChart.getAxisLeft().getAxisMinimum();
+                }
+            });
+
+            // create a data object with the data sets
+            LineData data = new LineData(set1);
+            data.setValueTextSize(9f);
+            data.setDrawValues(false);
+
+            // set data
+            lineChart.setData(data);
+
+        }
     }
 
     @Override
