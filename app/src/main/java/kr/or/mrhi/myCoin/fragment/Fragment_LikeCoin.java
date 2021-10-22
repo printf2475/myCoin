@@ -81,17 +81,16 @@ public class Fragment_LikeCoin extends Fragment {
         model.getSearchName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(String s) {
-                Log.i("검색", s);
-                List<String> list = new ArrayList<>();
-                for (String str:favoriteList){
-                    if (str.contains(s)){
-                        list.add(str);
+                favoriteListTemp.removeAll(favoriteListTemp);
+                for (int i=0; i<favoriteList.size(); i++){
+                    if (favoriteList.get(i).contains(s)){
+                        favoriteListTemp.add(favoriteList.get(i));
                     }
                 }
-                favoriteListTemp=list;
                 likeCoinAdapter.notifyDataSetChanged();
             }
         });
+
         model.refrashTransactionDataThread(stringSymbol);
 
         return view;
