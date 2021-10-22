@@ -195,7 +195,6 @@
             android:layout_height="283dp">
 
             <com.github.mikephil.charting.charts.PieChart
-                android:id="@+id/pieChart"
                 android:layout_width="347dp"
                 android:layout_height="215dp"
                 android:layout_marginStart="28dp"
