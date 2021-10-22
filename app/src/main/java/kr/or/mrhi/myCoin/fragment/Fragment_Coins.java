@@ -11,11 +11,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
@@ -35,6 +38,8 @@ import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
 
 public class Fragment_Coins extends Fragment {
     private TextView tvTotalBuyCount, tvEvaluationProfitCount, tvTotalEvaluationCount, tvYieldCount;
+    private EditText edtTextSearchCoin;
+
     private TabLayout tabLayout;
     private ViewPager2 pager;
     private double totalBuyCount,evaluationProfitCount,totalEvaluationCount,yieldCount;
@@ -44,14 +49,17 @@ public class Fragment_Coins extends Fragment {
     private CoinViewModel model;
     private String[] myCoinName;
     private List<String> priceList;
+
     private final static String[] tabElement = {"전체", "관심"};
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        model = new ViewModelProvider(this).get(CoinViewModel.class);
+        model = new ViewModelProvider(requireActivity()).get(CoinViewModel.class);
         dbController = new DBController(requireActivity());
         priceList = new ArrayList<>();
         transactionList = dbController.getMyWallet();
@@ -59,6 +67,8 @@ public class Fragment_Coins extends Fragment {
         for (int i = 0; i < transactionList.size(); i++) {
             myCoinName[i] = transactionList.get(i).getCoinName();
         }
+
+
 
         model.getTransactionCoinData("BTC").observe(requireActivity(), new Observer<List<String>>() {
             @Override
@@ -92,6 +102,7 @@ public class Fragment_Coins extends Fragment {
         });
         model.refrashTransactionDataThread(myCoinName);
 
+
         // tvTotalBuyCount.setText();
 
         tabLayout = view.findViewById(R.id.tabLayout2);
@@ -100,9 +111,26 @@ public class Fragment_Coins extends Fragment {
         tvEvaluationProfitCount = view.findViewById(R.id.tvEvaluationProfitCount);
         tvTotalEvaluationCount = view.findViewById(R.id.tvTotalEvaluationCount);
         tvYieldCount = view.findViewById(R.id.tvYieldCount);
+        edtTextSearchCoin = view.findViewById(R.id.edtText_SearchCoin);
 
 
         CoinListAdapter screenSlidePagerAdapter = new CoinListAdapter(getActivity());
+        edtTextSearchCoin.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                model.setSearchName(charSequence.toString().toUpperCase());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
         pager.setAdapter(screenSlidePagerAdapter);
 
 

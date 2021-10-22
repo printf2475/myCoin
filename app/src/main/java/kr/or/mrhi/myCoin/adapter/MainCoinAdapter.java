@@ -12,33 +12,27 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import kr.or.mrhi.myCoin.CoinMain;
 import kr.or.mrhi.myCoin.POJO.TickerData;
-import kr.or.mrhi.myCoin.POJO.TickerPOJOData;
-import kr.or.mrhi.myCoin.POJO.orderBookCoins.Btc;
 import kr.or.mrhi.myCoin.R;
-import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
 
 public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHolders> {
     private List<String> transactionCoin;
+    List<String> searchList;
+
     private TickerData tickerCoin;
     private double changeRate;
-    private int num;
-//    private TickerPOJOData tickerPOJOData;
 
-
-    public MainCoinAdapter(List<String> transactionCoin) {
+    public MainCoinAdapter(List<String> transactionCoin, List<String> priceListSearch) {
         this.transactionCoin = transactionCoin;
-//        this.tickerCoin = tickerData;
+        this.searchList = priceListSearch;
+        for (String s : searchList){
+            Log.i("검색", s);
+        }
     }
 
 
@@ -57,7 +51,7 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return transactionCoin.size();
+        return searchList.size();
     }
 
     public void setTickerData(TickerData tickerData) {
@@ -81,34 +75,24 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
 //
                     int position = getAdapterPosition();
                     Intent intent = new Intent(view.getContext(), CoinMain.class);
-                    intent.putExtra("CoinID", stringSymbol[position]);
+                    intent.putExtra("CoinID", stringSymbol[namePositionMap.get(searchList.get(position))]);
                     intent.putExtra("CoinData", transactionCoin.get(position));
                     intent.putExtra("Position", namePositionMap.get(stringSymbol[position]));
                     view.getContext().startActivity(intent);
-                    Log.i("값이가나", intent.toUri(0));
-//
                 }
             });
         }
 
         public void onBind(int position) {
-//            DecimalFormat formatter = new DecimalFormat("###,###,###");
-
-
             String prevClosingPrice = null;
-            String currentPrice = transactionCoin.get(position);
-//            changeRate = (Double.parseDouble(transactionCoin.get(position)) - Double.parseDouble(tickerCoin.getLtc().getPrevClosingPrice())) / Double.parseDouble(tickerCoin.getLtc().getPrevClosingPrice()) * 100;
-            if (position < transactionCoin.size() && tickerCoin != null) {
-                tvCoinNameList.setText(stringSymbol[position]);
-                tvCurrentPriceList.setText(transactionCoin.get(position));
+            if (position < transactionCoin.size() && tickerCoin != null && !searchList.isEmpty()) {
+                String currentPrice = transactionCoin.get(position);
+                tvCoinNameList.setText(searchList.get(position));
+                tvCurrentPriceList.setText(currentPrice);
                 if (tvCoinNameList.getText().equals("BTC")) {
                     prevClosingPrice = tickerCoin.getBtc().getClosingPrice();
                 } else if (tvCoinNameList.getText().equals("ETH")) {
                     prevClosingPrice = tickerCoin.getEth().getPrevClosingPrice();
-//                    changeRate = Double.parseDouble(currentPrice) - Double.parseDouble(s) / Double.parseDouble(s) * 100;
-//                    tvChangeRateList.setText(String.valueOf(String.format("%.2f", (Double.parseDouble(transactionCoin.get(position)) - Double.parseDouble(prevClosingPrice)) / Double.parseDouble(prevClosingPrice) * 100)));
-//                    tvTotalVolumeList.setText(formatter.format(Double.parseDouble((String.format("%6.2f",tickerCoin.getEth().getAccTradeValue24H())))+"백만"));
-//                    tvTotalVolumeList.setText(String.format("%")tickerCoin.getEth().getAccTradeValue24H()+"백만");
                 } else if (tvCoinNameList.getText().equals("BCH")) {
                    prevClosingPrice = tickerCoin.getBch().getPrevClosingPrice();
                 } else if (tvCoinNameList.getText().equals("LTC")) {

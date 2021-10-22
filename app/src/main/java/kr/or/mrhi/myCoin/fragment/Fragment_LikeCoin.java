@@ -34,7 +34,7 @@ public class Fragment_LikeCoin extends Fragment {
     private TickerData ticker;
     private DBController dbController;
     private List<String> favoriteList;
-    private List<Integer> favoritPositionList;
+    private List<String> favoriteListTemp;
 
     private CoinViewModel model;
 
@@ -46,13 +46,17 @@ public class Fragment_LikeCoin extends Fragment {
         dbController = new DBController(requireActivity());
         priceList = new ArrayList<>();
         favoriteList = new ArrayList<>();
+        favoriteListTemp = new ArrayList<>();
 
         favoriteList = dbController.getFavoritesList();
+        favoriteListTemp.addAll(favoriteList);
         priceList.removeAll(priceList);
+
+
 
         recyclerView = view.findViewById(R.id.recyclerView1);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        likeCoinAdapter = new LikeCoinAdapter(priceList, ticker, favoriteList);
+        likeCoinAdapter = new LikeCoinAdapter(priceList, ticker, favoriteListTemp);
         recyclerView.setAdapter(likeCoinAdapter);
 
         model.getTickerCoinData().observe(requireActivity(), new Observer<TickerData>() {
@@ -67,9 +71,24 @@ public class Fragment_LikeCoin extends Fragment {
             @Override
             public void onChanged(List<String> transactionData) {
                 priceList.removeAll(priceList);
-                for (int i=0; i<favoriteList.size(); i++){
-                   priceList.add(transactionData.get(namePositionMap.get(favoriteList.get(i))));
+                for (int i=0; i<favoriteListTemp.size(); i++){
+                   priceList.add(transactionData.get(namePositionMap.get(favoriteListTemp.get(i))));
                 }
+                likeCoinAdapter.notifyDataSetChanged();
+            }
+        });
+
+        model.getSearchName().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                Log.i("검색", s);
+                List<String> list = new ArrayList<>();
+                for (String str:favoriteList){
+                    if (str.contains(s)){
+                        list.add(str);
+                    }
+                }
+                favoriteListTemp=list;
                 likeCoinAdapter.notifyDataSetChanged();
             }
         });
