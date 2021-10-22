@@ -34,14 +34,13 @@ public class Fragment_LikeCoin extends Fragment {
     private TickerData ticker;
     private DBController dbController;
     private List<String> favoriteList;
-    private List<Integer> favoritPositionList;
-
+    private CoinViewModel model;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_fragment1_1, container, false);
-        CoinViewModel model = new ViewModelProvider(requireActivity()).get(CoinViewModel.class);
+        model = new ViewModelProvider(requireActivity()).get(CoinViewModel.class);
         dbController = new DBController(requireActivity());
         priceList = new ArrayList<>();
         favoriteList = new ArrayList<>();
@@ -53,6 +52,7 @@ public class Fragment_LikeCoin extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         likeCoinAdapter = new LikeCoinAdapter(priceList, ticker, favoriteList);
         recyclerView.setAdapter(likeCoinAdapter);
+
 
         model.getTickerCoinData().observe(requireActivity(), new Observer<TickerData>() {
             @Override
@@ -73,7 +73,12 @@ public class Fragment_LikeCoin extends Fragment {
             }
         });
         model.refrashTransactionDataThread(stringSymbol);
-
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        model.stopThread();
     }
 }

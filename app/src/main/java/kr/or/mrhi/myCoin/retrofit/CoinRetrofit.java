@@ -1,6 +1,9 @@
 package kr.or.mrhi.myCoin.retrofit;
 
+import java.util.concurrent.TimeUnit;
+
 import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
+import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -30,7 +33,10 @@ public interface CoinRetrofit {
     static CoinRetrofit create() {
         String hostURL = "https://api.bithumb.com/public/";
 
-        OkHttpClient client = new OkHttpClient.Builder().build();
+        ConnectionPool pool = new ConnectionPool(5, 10000, TimeUnit.MILLISECONDS);
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectionPool(pool)
+                .build();
 
         return new Retrofit.Builder()
                 .baseUrl(hostURL) // 서버 호스트

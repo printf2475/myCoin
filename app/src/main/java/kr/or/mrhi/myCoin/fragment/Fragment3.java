@@ -31,8 +31,9 @@ public class Fragment3 extends Fragment {
 
         List<Transaction> list =  dbController.getMyWallet();
         if (list.size()!=0){
-            Log.i("거래내역", list.get(0).toString());
-
+            for (Transaction tran : list){
+                Log.i("거래내역", tran.toString());
+            }
         }else{
             Log.i("거래내역", "없음");
         }

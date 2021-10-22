@@ -70,14 +70,15 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//
                         int position = getAdapterPosition();
-                        Intent intent = new Intent(view.getContext(), CoinMain.class);
-                        intent.putExtra("CoinID", stringSymbol[position]);
-                        intent.putExtra("CoinData", transactionCoin.get(position));
-                        intent.putExtra("Position", namePositionMap.get(stringSymbol[position]));
-                        view.getContext().startActivity(intent);
-                        Log.i("값이가나", intent.toUri(0));
+                        if (position>=0){
+                            Intent intent = new Intent(view.getContext(), CoinMain.class);
+                            intent.putExtra("CoinID", stringSymbol[position]);
+                            intent.putExtra("CoinData", transactionCoin.get(position));
+                            intent.putExtra("Position", namePositionMap.get(stringSymbol[position]));
+                            view.getContext().startActivity(intent);
+                        }
+
 //
                 }
             });

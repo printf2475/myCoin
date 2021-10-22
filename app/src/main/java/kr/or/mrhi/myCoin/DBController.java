@@ -113,7 +113,7 @@ public class DBController extends SQLiteOpenHelper {
         return transaction;
     }
 
-    //
+
     public List<Transaction> getTransactionList() {
         List<Transaction> transactionList = new ArrayList<>();
         SQLiteDatabase sqlDB = getReadableDatabase();

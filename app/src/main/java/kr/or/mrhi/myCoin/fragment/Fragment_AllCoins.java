@@ -3,6 +3,7 @@ package kr.or.mrhi.myCoin.fragment;
 import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -31,16 +32,18 @@ public class Fragment_AllCoins extends Fragment {
     private MainCoinAdapter mainCoinAdapter;
     private List<String> priceList;
     private TickerData ticker;
-
-//    public static Boolean TRANSACTIONFLAG=false;
+    private CoinViewModel model;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-
         View view = inflater.inflate(R.layout.fragment_fragment1_2, container, false);
         // Inflate the layout for this fragment
-        CoinViewModel model = new ViewModelProvider(requireActivity()).get(CoinViewModel.class);
+        model = new ViewModelProvider(requireActivity()).get(CoinViewModel.class);
+
+        Bundle bundle = getArguments();
+        List<String> list= bundle.getStringArrayList("searchList");
+
+
 
         priceList = new ArrayList<>();
         for (int i = 0; i< stringSymbol.length; i++){
@@ -71,5 +74,11 @@ public class Fragment_AllCoins extends Fragment {
 
         return view;
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        model.stopThread();
     }
 }

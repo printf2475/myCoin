@@ -14,9 +14,9 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import kr.or.mrhi.myCoin.POJO.OrderBookData;
 import kr.or.mrhi.myCoin.POJO.TransactionData;
@@ -43,18 +43,21 @@ public class CoinViewModel extends ViewModel {
     private static final int LATELYDATA = 19;
     private List<String> priceList;
     private boolean stopFlag;
+    private ExecutorService executorService;
+
 
     public CoinViewModel() {
+        executorService = Executors.newFixedThreadPool(4);
         this.newCandleData = new NewCandleData();
         this.newTickerData = new NewTickerData();
         this.orderBookData = new NewOrderBookData();
         this.newTransactionData = new NewTransactionData();
         this.tickerDTO = new TickerDTO();
-        this.priceList= new ArrayList<>(20);
-        for (int i=0; i<stringSymbol.length; i++){
+        this.priceList = new ArrayList<>(20);
+        for (int i = 0; i < stringSymbol.length; i++) {
             priceList.add("0.00");
         }
-        stopFlag=false;
+        stopFlag = false;
     }
 
     public LiveData<List<CandleCoinData>> getCandleCoinData(String coinName, String intervals) {
@@ -102,21 +105,25 @@ public class CoinViewModel extends ViewModel {
     }
 
     public void refrashTransactionDataThread(String[] coinNames) {
-        stopFlag=true;
-        Thread thread = new Thread(() -> {
-            while (stopFlag) {
-                for (int i = 0; i < coinNames.length; i++) {
-                    synchronized (this) {
+        stopFlag = true;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (stopFlag) {
+                    for (int i = 0; i < coinNames.length; i++) {
                         newTransactionData.refreshTransactionCoinData(coinNames[i]);
                     }
+
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
+
             }
         });
+
         thread.setDaemon(true);
         thread.start();
     }
@@ -194,8 +201,6 @@ public class CoinViewModel extends ViewModel {
                         }
                     });
         }
-
-
 
 
         private TickerData getNewData() {
@@ -301,8 +306,8 @@ public class CoinViewModel extends ViewModel {
                         @Override
                         public void onResponse(Call<TickerDTO> call, Response<TickerDTO> response) {
                             tickerDTOData.setValue(response.body().getData());
-                            Log.i("현재코인", tickerDTOData.getValue().toString());
                         }
+
                         @Override
                         public void onFailure(Call<TickerDTO> call, Throwable t) {
                             Log.i("현재코인", "실패 : " + t.fillInStackTrace());

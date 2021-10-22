@@ -39,9 +39,7 @@ public class MainActivity extends AppCompatActivity {
             namePositionMap.put(stringSymbol[i], i);
         }
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_frame, new Fragment_Coins())
-                .commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment_Coins()).commit();
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -49,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     //item을 클릭시 id값을 가져와 FrameLayout에 fragment.xml띄우기
                     case R.id.main:
+
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment_Coins()).commit();
                         break;
                     case R.id.news:
