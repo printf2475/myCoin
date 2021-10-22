@@ -3,7 +3,6 @@ package kr.or.mrhi.myCoin.fragment;
 import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -32,32 +31,32 @@ public class Fragment_AllCoins extends Fragment {
     private MainCoinAdapter mainCoinAdapter;
     private List<String> priceList;
     private TickerData ticker;
+
     private CoinViewModel model;
 
+    //    public static Boolean TRANSACTIONFLAG=false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
         View view = inflater.inflate(R.layout.fragment_fragment1_2, container, false);
         // Inflate the layout for this fragment
         model = new ViewModelProvider(requireActivity()).get(CoinViewModel.class);
 
-        Bundle bundle = getArguments();
-        List<String> list= bundle.getStringArrayList("searchList");
-
-
-
         priceList = new ArrayList<>();
-        for (int i = 0; i< stringSymbol.length; i++){
+        for (int i = 0; i < stringSymbol.length; i++) {
             priceList.add("0.00");
         }
         recyclerView2 = view.findViewById(R.id.recyclerView2);
         recyclerView2.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        mainCoinAdapter = new MainCoinAdapter(priceList , ticker);
+        mainCoinAdapter = new MainCoinAdapter(priceList);
         recyclerView2.setAdapter(mainCoinAdapter);
 
         model.getTickerCoinData().observe(requireActivity(), new Observer<TickerData>() {
             @Override
             public void onChanged(TickerData tickerData) {
-                ticker=tickerData;
+//                ticker = tickerData;
+                mainCoinAdapter.setTickerData(tickerData);
                 mainCoinAdapter.notifyDataSetChanged();
             }
         });
@@ -74,6 +73,11 @@ public class Fragment_AllCoins extends Fragment {
 
         return view;
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override

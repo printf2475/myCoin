@@ -24,6 +24,7 @@ public interface CoinRetrofit {
     @GET("ticker/{order_currency}_KRW")
     Call<CoinViewModel.TickerDTO> getTickerDTO(@Path("order_currency") String order_currency);
 
+
     @GET("orderbook/{order_currency}_{payment_currency}")
     Call<CoinViewModel.NewOrderBookData> getOrderBookCoinData(@Path("order_currency") String order_currency, @Path("payment_currency") String payment_currency);
 
@@ -33,7 +34,10 @@ public interface CoinRetrofit {
     static CoinRetrofit create() {
         String hostURL = "https://api.bithumb.com/public/";
 
-        ConnectionPool pool = new ConnectionPool(5, 10000, TimeUnit.MILLISECONDS);
+        ConnectionPool pool = new ConnectionPool(5,
+                10000,
+                TimeUnit.MILLISECONDS);
+
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectionPool(pool)
                 .build();
@@ -45,4 +49,5 @@ public interface CoinRetrofit {
                 .build()
                 .create(CoinRetrofit.class);
     }
+
 }

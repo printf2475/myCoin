@@ -34,6 +34,8 @@ public class Fragment_LikeCoin extends Fragment {
     private TickerData ticker;
     private DBController dbController;
     private List<String> favoriteList;
+    private List<Integer> favoritPositionList;
+
     private CoinViewModel model;
 
     @Override
@@ -52,7 +54,6 @@ public class Fragment_LikeCoin extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         likeCoinAdapter = new LikeCoinAdapter(priceList, ticker, favoriteList);
         recyclerView.setAdapter(likeCoinAdapter);
-
 
         model.getTickerCoinData().observe(requireActivity(), new Observer<TickerData>() {
             @Override
@@ -73,6 +74,7 @@ public class Fragment_LikeCoin extends Fragment {
             }
         });
         model.refrashTransactionDataThread(stringSymbol);
+
         return view;
     }
 

@@ -1,18 +1,18 @@
 package kr.or.mrhi.myCoin;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import kr.or.mrhi.myCoin.fragment.Fragment2;
-import kr.or.mrhi.myCoin.fragment.Fragment3;
+import kr.or.mrhi.myCoin.fragment.FragmentRss;
+import kr.or.mrhi.myCoin.fragment.Fragment_Wallet;
 import kr.or.mrhi.myCoin.fragment.Fragment_Coins;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,10 +51,10 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment_Coins()).commit();
                         break;
                     case R.id.news:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment2()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new FragmentRss()).commit();
                         break;
                     case R.id.sub:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment3()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_frame, new Fragment_Wallet()).commit();
                         break;
                     default:
                         finish();

@@ -41,9 +41,6 @@ public abstract class DemoBase extends AppCompatActivity implements ActivityComp
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        tfRegular = Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf");
-        tfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
     }
 
     protected float getRandom(float range, float start) {
