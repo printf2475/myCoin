@@ -279,9 +279,9 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
                 break;
             case R.id.btnBuy:
                 Log.i("DB값", "눌림");
-                    String buyCoinNumber = orderAmount_edttext.getText().toString();
-                    String buyCoinPrice = ACD_CoinPrice.getText().toString();
-                    int balance = Integer.parseInt(String.format("%.0f",Double.parseDouble(buyCoinNumber)*Double.parseDouble(buyCoinPrice)));
+                String buyCoinNumber = orderAmount_edttext.getText().toString();
+                String buyCoinPrice = ACD_CoinPrice.getText().toString();
+                int balance = Integer.parseInt(String.format("%.0f", Double.parseDouble(buyCoinNumber) * Double.parseDouble(buyCoinPrice)));
                 if (tabLayoutPosition == 0) {
                     dbController.insertTransaction(new Transaction(stringSymbol[position], "buy", "", buyCoinNumber, buyCoinPrice, -balance, null));
                     transaction = dbController.getCoinTransaction(mainCoinName);
@@ -294,15 +294,13 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
                     break;
                 }
         }
-
-
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 }
