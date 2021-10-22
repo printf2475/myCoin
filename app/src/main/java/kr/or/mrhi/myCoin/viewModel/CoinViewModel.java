@@ -34,6 +34,7 @@ public class CoinViewModel extends ViewModel {
     private MutableLiveData<TickerPOJOData> tickerDTOData;
     private MutableLiveData<List<OrderBookData>> orderbookCoinData;
     private MutableLiveData<List<String>> transactionCoinData;
+    private MutableLiveData<String> searchName;
 
     private NewCandleData newCandleData;
     private NewTickerData newTickerData;
@@ -45,6 +46,7 @@ public class CoinViewModel extends ViewModel {
     private boolean stopFlag;
 
     public CoinViewModel() {
+        this.searchName = new MutableLiveData<String>();
         this.newCandleData = new NewCandleData();
         this.newTickerData = new NewTickerData();
         this.orderBookData = new NewOrderBookData();
@@ -57,7 +59,19 @@ public class CoinViewModel extends ViewModel {
         stopFlag=false;
     }
 
-    public LiveData<List<CandleCoinData>> getCandleCoinData(String coinName, String intervals) {
+
+    public MutableLiveData<String> getSearchName() {
+        searchName.setValue("");
+        Log.i("검색:getSearchName", searchName.getValue());
+        return searchName;
+    }
+
+    public void setSearchName(String searchName) {
+        this.searchName.setValue(searchName);
+        Log.i("검색:setSearchName", this.searchName.getValue());
+    }
+
+    public MutableLiveData<List<CandleCoinData>> getCandleCoinData(String coinName, String intervals) {
         if (candleCoinData == null) {
             candleCoinData = new MutableLiveData<List<CandleCoinData>>();
         }
@@ -283,7 +297,6 @@ public class CoinViewModel extends ViewModel {
             return data;
         }
     }
-
 
     public class TickerDTO {
 
