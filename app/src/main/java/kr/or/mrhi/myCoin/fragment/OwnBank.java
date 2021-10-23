@@ -9,17 +9,12 @@ import android.util.Log;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -38,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kr.or.mrhi.myCoin.DBController;
+import kr.or.mrhi.myCoin.POJO.TickerData;
 import kr.or.mrhi.myCoin.R;
 import kr.or.mrhi.myCoin.adapter.WalletAdapter;
 import kr.or.mrhi.myCoin.model.Transaction;
@@ -47,7 +43,7 @@ import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
 public class OwnBank extends Fragment implements OnChartValueSelectedListener {
 
     private TextView textTotalBuyCount, textTotalEvaluationCount, textEvaluationProfitCount, textYieldCount, holdings, KRWHoldings;
-    private double totalBuyCount, evaluationProfitCount, totalEvaluationCount, yieldCount;
+    private double totalBuyCount, evaluationProfitCount;
     private PieChart pieChart;
 
     private DBController dbController;
@@ -61,7 +57,7 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
 
     private List<String> priceList;
     private ListView listView;
-    private WalletAdapter adapter;
+    private WalletAdapter walletAdapter;
     private  ArrayList<PieEntry> entries;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -85,20 +81,27 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
                 transactions.add(tran);
             }
         }
-
-
-        adapter = new WalletAdapter(transactions);
-        listView.setAdapter(adapter);
-
         myCoinName = new ArrayList<>();
         for (int i = 0; i < transactionList.size(); i++) {
             myCoinName.add(transactionList.get(i).getCoinName());
         }
 
+        walletAdapter = new WalletAdapter(transactions, myCoinName);
+        listView.setAdapter(walletAdapter);
+
+
+
+        model.getTickerCoinData().observe(requireActivity(), new Observer<TickerData>() {
+            @Override
+            public void onChanged(TickerData tickerData) {
+                walletAdapter.setTickerData(tickerData);
+                walletAdapter.notifyDataSetChanged();
+            }
+        });
+
         model.getTransactionCoinData("BTC").observe(requireActivity(), new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> currentData) {
-                double transactionPrice = 0.0;
                 double buyCount = 0.0;
                 double curruntPrice = 0.0;
                 double buyPrice = 0.0;

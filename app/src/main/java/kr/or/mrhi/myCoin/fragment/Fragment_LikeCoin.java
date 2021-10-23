@@ -50,8 +50,6 @@ public class Fragment_LikeCoin extends Fragment {
         favoriteListTemp.addAll(favoriteList);
         priceList.removeAll(priceList);
 
-
-
         recyclerView = view.findViewById(R.id.recyclerView1);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
         likeCoinAdapter = new LikeCoinAdapter(priceList, ticker, favoriteListTemp);
@@ -88,9 +86,7 @@ public class Fragment_LikeCoin extends Fragment {
                 likeCoinAdapter.notifyDataSetChanged();
             }
         });
-
         model.refrashTransactionDataThread(stringSymbol);
-
         return view;
     }
 

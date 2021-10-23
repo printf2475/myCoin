@@ -132,7 +132,7 @@ public class DBController extends SQLiteOpenHelper {
                         new Transaction(coinName, transaction, transactionTime, quantity, price, balance, null));
             }
         } catch (Exception e) {
-            Log.e("데이터베이스", "select에러1" + e.toString());
+            Log.e("데이터베이스", "select에러 : getTransactionList" + e.toString());
         } finally {
             sqlDB.close();
             if (cursor != null) {
@@ -152,7 +152,7 @@ public class DBController extends SQLiteOpenHelper {
                 favoritesList.add(cursor.getString(0));
             }
         } catch (Exception e) {
-            Log.e("데이터베이스", "select에러2" + e.toString());
+            Log.e("데이터베이스", "select에러 : getFavoritesList" + e.toString());
         } finally {
             sqlDB.close();
             if (cursor != null) {
@@ -165,11 +165,9 @@ public class DBController extends SQLiteOpenHelper {
     public void deleteFavoritesList(String coinName) {
         SQLiteDatabase sqlDB = getWritableDatabase();
         try {
-            sqlDB.execSQL("delete from favoritesTBL where coinName = '" + coinName + "'" +
-                    ";");
-            Log.e("데이터베이스", "delete성공");
+            sqlDB.execSQL("delete from favoritesTBL where coinName = '" + coinName + "';");
         } catch (Exception e) {
-            Log.e("데이터베이스", "delete에러" + e.toString());
+            Log.e("데이터베이스", "delete에러 : deleteFavoritesList" + e.toString());
         } finally {
             sqlDB.close();
         }
@@ -186,11 +184,10 @@ public class DBController extends SQLiteOpenHelper {
             cursor = sqlDB.rawQuery("SELECT name From TransactionTBL GROUP BY name ;", null);
             while (cursor.moveToNext()) {
                 list.add(cursor.getString(0));
-                Log.e("이름", cursor.getString(0));
             }
 
         } catch (Exception e) {
-            Log.e("데이터베이스", "GROUP BY SELECT에러" + e.toString());
+            Log.e("데이터베이스", "SELECT 에러 : getMyWallet" + e.toString());
         } finally {
             sqlDB.close();
             if (cursor != null) {

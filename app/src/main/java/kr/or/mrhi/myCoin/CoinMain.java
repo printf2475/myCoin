@@ -100,13 +100,8 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
         }
 
         transactionList = dbController.getMyWallet();
-        myCoinPrice = new ArrayList<>();
-        for (int i = 0; i < transactionList.size(); i++) {
-            myCoinPrice.add(transactionList.get(i).getBalance());
-        }
 
-//        btnSell.setOnClickListener(this);
-//        btnBuy.setOnClickListener(this);
+
         btnBuy.setOnClickListener(this);
         btnFavorite.setOnClickListener(this);
         transaction = dbController.getCoinTransaction(mainCoinName);
@@ -116,12 +111,9 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
             public void onTabSelected(TabLayout.Tab tab) {
                 tabLayoutPosition = tab.getPosition();
                 if (tabLayoutPosition == 0) {
-
                     btnBuy.setText("매수");
                 } else if (tabLayoutPosition == 1) {
                     btnBuy.setText("매도");
-//                    orderAvailableCount.setText(String.valueOf(Integer.parseInt(mainCoinPrice) * Integer.parseInt(dbController.getMyWallet().get(1).getQuantity())));
-
                 }
             }
 
@@ -158,7 +150,14 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onChanged(List<String> stringList) {
                 int balance=0;
+                myCoinPrice = new ArrayList<>();
+
+                transactionList = dbController.getMyWallet();
                 double myCoinAmong = Double.parseDouble(dbController.getCoinTransaction(mainCoinName).getQuantity());
+
+                for (int i = 0; i < transactionList.size(); i++) {
+                    myCoinPrice.add(transactionList.get(i).getBalance());
+                }
                 for (Integer i : myCoinPrice){
                     balance+=i;
                 }
@@ -319,7 +318,7 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
                     }
                 } else if (tabLayoutPosition == 1) {
                     int buyAmong = Integer.parseInt(orderAmount_edttext.getText().toString());
-                    int myCoinAmong = Integer.parseInt(dbController.getCoinTransaction(mainCoinName).getQuantity());
+                    double myCoinAmong = Double.parseDouble(dbController.getCoinTransaction(mainCoinName).getQuantity());
                     orderAvailableCount.setText(String.valueOf(myCoinAmong*Integer.parseInt(buyCoinPrice)));
                     if (myCoinAmong < buyAmong) {
 //                        btnBuy.setEnabled(true);
@@ -343,6 +342,7 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        model.stopThread();
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
