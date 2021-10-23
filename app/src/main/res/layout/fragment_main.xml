@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:gravity="right"
-            android:text="100,000,000"
+            android:text="0"
             android:textColor="@color/black"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvTotalBuy"
@@ -117,7 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="right"
-            android:text="200,000,000"
+            android:text="0"
             android:textColor="@color/black"
             android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="@+id/tvYieldCount"
@@ -131,7 +131,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="8dp"
             android:gravity="right"
-            android:text="300,000,000"
+            android:text="0"
             android:textColor="@color/black"
             android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="@+id/tvTotalBuyCount"
@@ -146,7 +146,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:gravity="right"
-            android:text="200.00%"
+            android:text="NaN%"
             android:textColor="@color/black"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -255,7 +255,8 @@
         android:layout_width="match_parent"
         android:layout_height="0sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        tools:layout_editor_absoluteX="-56dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

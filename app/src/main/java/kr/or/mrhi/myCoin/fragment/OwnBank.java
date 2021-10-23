@@ -53,7 +53,9 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
     private DBController dbController;
     private List<Transaction> transactionList;
     private CoinViewModel model;
-    private String[] myCoinName;
+    private List<String> myCoinName;
+    private List<Integer> myCoinPrice;
+    private List<String> myCoinAmong;
     private List<String> priceList;
     private Transaction transaction;
     private ListView listView;
@@ -71,18 +73,23 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
         holdings = view.findViewById(R.id.holdings);
         KRWHoldings = view.findViewById(R.id.KRWHoldings);
         listView= view.findViewById(R.id.mycoinlist);
+        pieChart = view.findViewById(R.id.pieChart);
+
 
         WalletAdapter adapter = new WalletAdapter(dbController.getMyWallet());
         listView.setAdapter(adapter);
 
-        pieChart = view.findViewById(R.id.pieChart);
 
 
-        transaction = dbController.getCoinTransaction("BTC");
         transactionList = dbController.getMyWallet();
-        myCoinName = new String[transactionList.size()];
+        priceList = new ArrayList<>();
+        myCoinName = new ArrayList<>();
+        myCoinAmong = new ArrayList<>();
+        myCoinPrice = new ArrayList<>();
         for (int i = 0; i < transactionList.size(); i++) {
-            myCoinName[i] = transactionList.get(i).getCoinName();
+            myCoinName.add(transactionList.get(i).getCoinName());
+            myCoinAmong.add(transactionList.get(i).getQuantity());
+            myCoinPrice.add(transactionList.get(i).getBalance());
         }
 
         model.getTransactionCoinData("BTC").observe(requireActivity(), new Observer<List<String>>() {
@@ -95,48 +102,53 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
                 totalBuyCount = 0.0;
                 evaluationProfitCount = 0.0;
 
-                for (int i = 0; i < transactionList.size(); i++) {
-                    priceList.add(transactionData.get(namePositionMap.get(myCoinName[i])));
+                for (Integer i : myCoinPrice){
+                    balance+=i;
                 }
 
                 for (int i = 0; i < transactionList.size(); i++) {
-                    transactionPrice = Double.parseDouble(priceList.get(i));
-                    buyCount = Double.parseDouble(transactionList.get(i).getQuantity());
-                    totalBuyCount += transactionPrice * buyCount;//총매수
-                    curruntPrice = Double.parseDouble(transactionData.get(namePositionMap.get(myCoinName[i])));
-                    evaluationProfitCount += curruntPrice * buyCount;//총평가
-                    balance += transactionList.get(i).getBalance();
-
+                    if (namePositionMap.get(myCoinName.get(0))!=null){
+                        priceList.add(transactionData.get(namePositionMap.get(myCoinName.get(i))));
+                    }
                 }
-                textTotalBuyCount.setText(String.format("%.0f", totalBuyCount));//총매수
-                textTotalEvaluationCount.setText(String.format("%.0f", evaluationProfitCount));//총평가
-                textEvaluationProfitCount.setText(String.format("%.0f", evaluationProfitCount - totalBuyCount));
-                textYieldCount.setText(String.format("%.2f%%", ((evaluationProfitCount - totalBuyCount) / totalBuyCount * 100)));
+
+                if (!priceList.isEmpty() && transactionList.size() != 0) {
+                    for (int i = 0; i < transactionList.size(); i++) {
+                        transactionPrice = Double.parseDouble(priceList.get(i));
+                        buyCount = Double.parseDouble(myCoinAmong.get(i));
+
+                        totalBuyCount += transactionPrice * buyCount;//총매수
+                        curruntPrice = Double.parseDouble(transactionData.get(namePositionMap.get(myCoinName.get(i))));
+                        evaluationProfitCount += curruntPrice * buyCount;//총평가
+                        Log.i("총매수", transactionPrice + "/" + buyCount);
+                    }
+                    textTotalBuyCount.setText(String.format("%.2f", totalBuyCount));//총매수
+                    textTotalEvaluationCount.setText(String.format("%.0f", evaluationProfitCount));//총평가
+                    textEvaluationProfitCount.setText(String.format("%.0f", evaluationProfitCount - totalBuyCount));
+                    textYieldCount.setText(String.format("%.2f%%", ((evaluationProfitCount - totalBuyCount) / totalBuyCount * 100)));
+                }
+
 
                 if (transactionList.size() != 0) {
                     KRWHoldings.setText(String.valueOf(balance));
                     holdings.setText(String.format("%.0f", evaluationProfitCount + Double.parseDouble(KRWHoldings.getText().toString())));
                 }
-
-
             }
         });
-        model.refrashTransactionDataThread(myCoinName);
+        model.refrashTransactionDataThread(myCoinName.toArray(new String[myCoinName.size()]));
 
         DBController dbController = new DBController(requireContext());
         ArrayList<PieEntry> entries = new ArrayList<>();
         ArrayList<Transaction> entries1 = (ArrayList<Transaction>) dbController.getMyWallet();
 
 
-        if (entries1.isEmpty()) {
-            entries.add(new PieEntry(1.1f, "BTC", null));
-        } else {
-            for (int i = 0; i < entries1.size(); i++) {
-                Log.i("그래프", entries1.get(i).getCoinName());
-                entries.add(new PieEntry(Float.parseFloat(entries1.get(i).getQuantity()),
-                        entries1.get(i).getCoinName(), null));
-            }
+        for (int i = 0; i < entries1.size(); i++) {
+            Log.i("그래프", entries1.get(i).getCoinName());
+            entries.add(new PieEntry(Float.parseFloat(entries1.get(i).getQuantity()),
+                    entries1.get(i).getCoinName(), null));
         }
+
+
 
 
         PieDataSet dataSet = new PieDataSet(entries, "purchase");

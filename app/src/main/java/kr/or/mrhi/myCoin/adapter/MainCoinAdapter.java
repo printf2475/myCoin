@@ -1,11 +1,11 @@
 package kr.or.mrhi.myCoin.adapter;
 
-
 import static kr.or.mrhi.myCoin.MainActivity.namePositionMap;
 import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,15 +57,16 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
 
 
     public class ViewHolders extends RecyclerView.ViewHolder {
-        TextView tvCoinNameList, tvCurrentPriceList, tvChangeRateList, tvTotalVolumeList,tvCoinNameList2;
+        TextView tvCoinNameList, tvCoinNameList2, tvCurrentPriceList, tvChangeRateList, tvTotalVolumeList;
 
         public ViewHolders(@NonNull View itemView) {
             super(itemView);
             tvCoinNameList = itemView.findViewById(R.id.tvCoinNameList);
+            tvCoinNameList2 = itemView.findViewById(R.id.tvCoinNameList2);
             tvCurrentPriceList = itemView.findViewById(R.id.tvCurrentPriceList);
             tvChangeRateList = itemView.findViewById(R.id.tvChangeRateList);
             tvTotalVolumeList = itemView.findViewById(R.id.tvTotalVolumeList);
-            tvCoinNameList2 = itemView.findViewById(R.id.tvCoinNameList2);
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -80,45 +81,84 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
             });
         }
 
-        public void onBind(int position) {
-            String prevClosingPrice = null;
+        private void onBind(int position) {
+            long volume = 0;
+            double volumeList = 0.0;
+            String totalVolumeList = null;
+            String prevClosingPrice = "0.0";
+            String currentPrice = null;
             if (position < transactionCoin.size() && tickerCoin != null && !searchList.isEmpty()) {
-                String currentPrice = transactionCoin.get(position);
-                tvCoinNameList.setText(searchList.get(position));
+                currentPrice = transactionCoin.get(position);
                 tvCurrentPriceList.setText(currentPrice);
-                if (tvCoinNameList.getText().equals("BTC")) {
+                tvCoinNameList2.setText(searchList.get(position) + "/KRW");
+                if (searchList.get(position).equals("BTC")) {
+                    tvCoinNameList.setText("비트코인");
                     prevClosingPrice = tickerCoin.getBtc().getClosingPrice();
-                } else if (tvCoinNameList.getText().equals("ETH")) {
+                    volumeList = Double.parseDouble(tickerCoin.getBtc().getAccTradeValue24H());
+                } else if (searchList.get(position).equals("ETH")) {
+                    tvCoinNameList.setText("이더리움");
                     prevClosingPrice = tickerCoin.getEth().getPrevClosingPrice();
-                } else if (tvCoinNameList.getText().equals("BCH")) {
-                   prevClosingPrice = tickerCoin.getBch().getPrevClosingPrice();
-                } else if (tvCoinNameList.getText().equals("LTC")) {
+                    volumeList = Double.parseDouble(tickerCoin.getEth().getAccTradeValue24H());
+                } else if (searchList.get(position).equals("BCH")) {
+                    tvCoinNameList.setText("비트코인캐시");
+                    prevClosingPrice = tickerCoin.getBch().getPrevClosingPrice();
+                    volumeList = Double.parseDouble(tickerCoin.getBch().getAccTradeValue24H());
+                } else if (searchList.get(position).equals("LTC")) {
+                    tvCoinNameList.setText("라이트코인");
                     prevClosingPrice = tickerCoin.getLtc().getPrevClosingPrice();
-                } else if (tvCoinNameList.getText().equals("BSV")) {
+                    volumeList = Double.parseDouble(tickerCoin.getLtc().getAccTradeValue24H());
+                } else if (searchList.get(position).equals("BSV")) {
+                    tvCoinNameList.setText("비트코인에스브이");
                     prevClosingPrice = tickerCoin.getBsv().getPrevClosingPrice();
-                }else if (tvCoinNameList.getText().equals("AXS")) {
+                    volumeList = Double.parseDouble(tickerCoin.getBsv().getAccTradeValue24H());
+                } else if (searchList.get(position).equals("AXS")) {
+                    tvCoinNameList.setText("엑시인피니티");
                     prevClosingPrice = tickerCoin.getAxs().getPrevClosingPrice();
-                }else if (tvCoinNameList.getText().equals("BTG")) {
+                    volumeList = Double.parseDouble(tickerCoin.getAxs().getAccTradeValue24H());
+                } else if (searchList.get(position).equals("BTG")) {
+                    tvCoinNameList.setText("비트코인골드");
                     prevClosingPrice = tickerCoin.getBtg().getPrevClosingPrice();
-                }else if (tvCoinNameList.getText().equals("ETC")) {
+                    volumeList = Double.parseDouble(tickerCoin.getBtg().getAccTradeValue24H());
+                } else if (searchList.get(position).equals("ETC")) {
+                    tvCoinNameList.setText("이더리움 클래식");
                     prevClosingPrice = tickerCoin.getEtc().getPrevClosingPrice();
-                }else if (tvCoinNameList.getText().equals("DOT")) {
+                    volumeList = Double.parseDouble(tickerCoin.getEtc().getAccTradeValue24H());
+                } else if (searchList.get(position).equals("DOT")) {
+                    tvCoinNameList.setText("폴카닷");
                     prevClosingPrice = tickerCoin.getDot().getPrevClosingPrice();
-                }else if (tvCoinNameList.getText().equals("ATOM")) {
+                    volumeList = Double.parseDouble(tickerCoin.getDot().getAccTradeValue24H());
+                } else if (searchList.get(position).equals("ATOM")) {
+                    tvCoinNameList.setText("코스모스");
                     prevClosingPrice = tickerCoin.getAtom().getPrevClosingPrice();
-                }else if (tvCoinNameList.getText().equals("WAVES")) {
+                    volumeList = Double.parseDouble(tickerCoin.getAtom().getAccTradeValue24H());
+                } else if (searchList.get(position).equals("WAVES")) {
+                    tvCoinNameList.setText("웨이브");
                     prevClosingPrice = tickerCoin.getWaves().getPrevClosingPrice();
-                }else if (tvCoinNameList.getText().equals("LINK")) {
+                    volumeList = Double.parseDouble(tickerCoin.getWaves().getAccTradeValue24H());
+                } else if (searchList.get(position).equals("LINK")) {
+                    tvCoinNameList.setText("체인링크");
                     prevClosingPrice = tickerCoin.getLink().getPrevClosingPrice();
-                }else if (tvCoinNameList.getText().equals("REP")) {
+                    volumeList = Double.parseDouble(tickerCoin.getLink().getAccTradeValue24H());
+                } else if (searchList.get(position).equals("REP")) {
+                    tvCoinNameList.setText("어거");
                     prevClosingPrice = tickerCoin.getRep().getPrevClosingPrice();
-                }else if (tvCoinNameList.getText().equals("OMG")) {
+                    volumeList = Double.parseDouble(tickerCoin.getRep().getAccTradeValue24H());
+                } else if (searchList.get(position).equals("OMG")) {
+                    tvCoinNameList.setText("오미세고");
                     prevClosingPrice = tickerCoin.getOmg().getPrevClosingPrice();
-                }else if (tvCoinNameList.getText().equals("QTUM")) {
+                    volumeList = Double.parseDouble(tickerCoin.getOmg().getAccTradeValue24H());
+                } else if (searchList.get(position).equals("QTUM")) {
+                    tvCoinNameList.setText("퀀텀");
                     prevClosingPrice = tickerCoin.getQtum().getPrevClosingPrice();
+                    volumeList = Double.parseDouble(tickerCoin.getQtum().getAccTradeValue24H());
                 }
+//                Log.i("대체 왜",prevClosingPrice));
+//                Log.i("대체 왜",currentPrice);
                 changeRate = (Double.parseDouble(currentPrice) - Double.parseDouble(prevClosingPrice)) / Double.parseDouble(prevClosingPrice) * 100;
-                tvChangeRateList.setText(String.format("%.2f",changeRate));
+                tvChangeRateList.setText(String.format("%.2f", changeRate));
+                totalVolumeList = String.format("%.0f", volumeList);
+                volume = Long.parseLong(totalVolumeList);
+                tvTotalVolumeList.setText(String.valueOf(volume / 1000000) + "백만");
                 if (changeRate == 0.00) {
                     tvChangeRateList.setTextColor(Color.BLACK);
                     tvCurrentPriceList.setTextColor(Color.BLACK);

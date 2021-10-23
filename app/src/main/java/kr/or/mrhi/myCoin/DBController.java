@@ -32,6 +32,10 @@ public class DBController extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
+    public void insertBalanceTransactionTBL(int balance) {
+        insertTransaction(new Transaction("포인트", "add", null, "0.0", "0.0", balance, null));
+    }
+
     public void insertFavorite(String name) {
         SQLiteDatabase sqlDB = getWritableDatabase();
         try {
@@ -94,10 +98,6 @@ public class DBController extends SQLiteOpenHelper {
                     quantity = quantity - tradeQualtity;
                 }
                 //보유수량 ,구매횟수, 구매당시가격, 구매당시가격*갯수
-
-
-
-
             }
 
             double avgPrice = price / count;
@@ -186,7 +186,9 @@ public class DBController extends SQLiteOpenHelper {
             cursor = sqlDB.rawQuery("SELECT name From TransactionTBL GROUP BY name ;", null);
             while (cursor.moveToNext()) {
                 list.add(cursor.getString(0));
+                Log.e("이름", cursor.getString(0));
             }
+
         } catch (Exception e) {
             Log.e("데이터베이스", "GROUP BY SELECT에러" + e.toString());
         } finally {
@@ -195,8 +197,10 @@ public class DBController extends SQLiteOpenHelper {
                 cursor.close();
             }
         }
+
         for (String str : list) {
             transactionList.add(getCoinTransaction(str));
+            Log.e("값!", getCoinTransaction(str).toString());
         }
         return transactionList;
     }

@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
             "체인링크", "어거", "오미세고", "퀀텀"};
 
     public static Boolean TRANSACTIONFLAG = false;
-    public static Map<String, Integer> namePositionMap = null;
+    public static Map<String, Integer> namePositionMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -194,7 +194,7 @@ public class FragmentRss extends Fragment {
 
 
             //이 메소드 안에서는 UI변경 작업 가능
-            Toast.makeText(getContext(), s+":"+items.size(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), s+":"+items.size(), Toast.LENGTH_SHORT).show();
         }
 
 

@@ -25,7 +25,6 @@ import kr.or.mrhi.myCoin.model.Transaction;
 
 public class WalletAdapter extends BaseAdapter {
     private String currentPrice = null;
-    private List<TransactionData> transactionData;
     List<String> searchList;
     private List<Transaction> transactionList;
     private TickerData tickerCoin;
@@ -34,6 +33,7 @@ public class WalletAdapter extends BaseAdapter {
 
     public WalletAdapter(List<Transaction> transactionList) {
         this.transactionList = transactionList;
+
     }
 
     @Override
@@ -69,8 +69,8 @@ public class WalletAdapter extends BaseAdapter {
         myCoinTicker = view.findViewById(R.id.myCoinTicker);
 
 
-        if (i < transactionData.size() && tickerCoin != null && !searchList.isEmpty()) {
-            currentPrice = String.valueOf(transactionData.get(i));
+        if (i < transactionList.size() && tickerCoin != null && !searchList.isEmpty()) {
+            currentPrice = String.valueOf(transactionList.get(i));
             myCoinName.setText(searchList.get(i));
             if (myCoinName.getText().equals("BTC")) {
                 myCoinTicker.setText("(" + myCoinName + ")");
