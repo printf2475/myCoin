@@ -1,3 +1,5 @@
+package kr.or.mrhi.myCoin;
+
 public class CSCoin {
     private long createdAt;
 
