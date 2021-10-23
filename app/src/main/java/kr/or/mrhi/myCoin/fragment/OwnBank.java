@@ -72,13 +72,12 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
         textYieldCount = view.findViewById(R.id.textYieldCount);
         holdings = view.findViewById(R.id.holdings);
         KRWHoldings = view.findViewById(R.id.KRWHoldings);
-        listView= view.findViewById(R.id.mycoinlist);
+        listView = view.findViewById(R.id.mycoinlist);
         pieChart = view.findViewById(R.id.pieChart);
 
 
         WalletAdapter adapter = new WalletAdapter(dbController.getMyWallet());
         listView.setAdapter(adapter);
-
 
 
         transactionList = dbController.getMyWallet();
@@ -102,12 +101,12 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
                 totalBuyCount = 0.0;
                 evaluationProfitCount = 0.0;
 
-                for (Integer i : myCoinPrice){
-                    balance+=i;
+                for (Integer i : myCoinPrice) {
+                    balance += i;
                 }
 
                 for (int i = 0; i < transactionList.size(); i++) {
-                    if (namePositionMap.get(myCoinName.get(0))!=null){
+                    if (namePositionMap.get(myCoinName.get(0)) != null) {
                         priceList.add(transactionData.get(namePositionMap.get(myCoinName.get(i))));
                     }
                 }
@@ -147,8 +146,6 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
             entries.add(new PieEntry(Float.parseFloat(entries1.get(i).getQuantity()),
                     entries1.get(i).getCoinName(), null));
         }
-
-
 
 
         PieDataSet dataSet = new PieDataSet(entries, "purchase");

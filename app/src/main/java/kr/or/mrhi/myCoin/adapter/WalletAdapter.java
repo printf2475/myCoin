@@ -71,208 +71,240 @@ public class WalletAdapter extends BaseAdapter {
 
         if (i < transactionList.size() && tickerCoin != null && !searchList.isEmpty()) {
             currentPrice = String.valueOf(transactionList.get(i));
-            myCoinName.setText(searchList.get(i));
-            if (myCoinName.getText().equals("BTC")) {
-                myCoinTicker.setText("(" + myCoinName + ")");
-                myCoinMarginCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
+            myCoinTicker.setText("(" + searchList.get(i) + ")");
+            if (searchList.get(i).equals("BTC")) {
+                myCoinName.setText("비트코인");
+                //평가손익 = 그때 당시 가격 * 개수 - 지금 가격 * 개수
+                myCoinMarginCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
                         Double.parseDouble(transactionList.get(i).getPrice()) -
-                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinPercentCount.setText(String.valueOf((Double.parseDouble(currentPrice) *
+                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                //수익률 (현재가 * 개수)
+                myCoinPercentCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice) *
+                        Double.parseDouble(transactionList.get(i).getQuantity())) -
+                        Double.parseDouble(transactionList.get(i).getQuantity()) * 100));
+                //보유수량
+                myCoinAmountCount.setText(transactionList.get(i).getQuantity());
+                //매수평균가
+                myCoinAveragePriceCount.setText(String.format("%.0f", Double.parseDouble(transactionList.get(i).getPrice())
+                        / Double.parseDouble(transactionList.get(i).getQuantity())));
+                //평가금액
+                myCoinValueCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice)
+                        * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                //매수금액
+                myCoinBuyPriceCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
+                        Double.parseDouble(transactionList.get(i).getPrice()))));
+            } else if (searchList.get(i).equals("ETH")) {
+                myCoinName.setText("이더리움");
+                myCoinMarginCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
+                        Double.parseDouble(transactionList.get(i).getPrice()) -
+                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinPercentCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice) *
                         Double.parseDouble(transactionList.get(i).getQuantity())) -
                         Double.parseDouble(transactionList.get(i).getQuantity()) * 100));
                 myCoinAmountCount.setText(transactionList.get(i).getQuantity());
-//          매수평균가 myCoinAveragePriceCount.setText(/transactionList.get(i).getQuantity());
-                myCoinValueCount.setText(String.valueOf(Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinBuyPriceCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
-                        Double.parseDouble(transactionList.get(i).getPrice())));
-            } else if (myCoinName.getText().equals("ETH")) {
-                myCoinTicker.setText("(" + myCoinName + ")");
-                myCoinMarginCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
+                myCoinAveragePriceCount.setText(String.format("%.0f", Double.parseDouble(transactionList.get(i).getPrice())
+                        / Double.parseDouble(transactionList.get(i).getQuantity())));
+                myCoinValueCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice)
+                        * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinBuyPriceCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
+                        Double.parseDouble(transactionList.get(i).getPrice()))));
+            } else if (searchList.get(i).equals("BCH")) {
+                myCoinName.setText("비트코인캐시");
+                myCoinMarginCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
                         Double.parseDouble(transactionList.get(i).getPrice()) -
-                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinPercentCount.setText(String.valueOf((Double.parseDouble(currentPrice) *
+                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinPercentCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice) *
                         Double.parseDouble(transactionList.get(i).getQuantity())) -
                         Double.parseDouble(transactionList.get(i).getQuantity()) * 100));
                 myCoinAmountCount.setText(transactionList.get(i).getQuantity());
-//          매수평균가 myCoinAveragePriceCount.setText(/transactionList.get(i).getQuantity());
-                myCoinValueCount.setText(String.valueOf(Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinBuyPriceCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
-                        Double.parseDouble(transactionList.get(i).getPrice())));
-            } else if (myCoinName.getText().equals("BCH")) {
-                myCoinTicker.setText("(" + myCoinName + ")");
-                myCoinMarginCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
+                myCoinAveragePriceCount.setText(String.format("%.0f", Double.parseDouble(transactionList.get(i).getPrice())
+                        / Double.parseDouble(transactionList.get(i).getQuantity())));
+                myCoinValueCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice)
+                        * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinBuyPriceCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
+                        Double.parseDouble(transactionList.get(i).getPrice()))));
+            } else if (searchList.get(i).equals("LTC")) {
+                myCoinName.setText("라이트코인");
+                myCoinMarginCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
                         Double.parseDouble(transactionList.get(i).getPrice()) -
-                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinPercentCount.setText(String.valueOf((Double.parseDouble(currentPrice) *
+                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinPercentCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice) *
                         Double.parseDouble(transactionList.get(i).getQuantity())) -
                         Double.parseDouble(transactionList.get(i).getQuantity()) * 100));
                 myCoinAmountCount.setText(transactionList.get(i).getQuantity());
-//          매수평균가 myCoinAveragePriceCount.setText(/transactionList.get(i).getQuantity());
-                myCoinValueCount.setText(String.valueOf(Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinBuyPriceCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
-                        Double.parseDouble(transactionList.get(i).getPrice())));
-            } else if (myCoinName.getText().equals("LTC")) {
-                myCoinTicker.setText("(" + myCoinName + ")");
-                myCoinMarginCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
+                myCoinAveragePriceCount.setText(String.format("%.0f", Double.parseDouble(transactionList.get(i).getPrice())
+                        / Double.parseDouble(transactionList.get(i).getQuantity())));
+                myCoinValueCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice)
+                        * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinBuyPriceCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
+                        Double.parseDouble(transactionList.get(i).getPrice()))));
+            } else if (searchList.get(i).equals("BSV")) {
+                myCoinName.setText("비트코인에스브이");
+                myCoinMarginCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
                         Double.parseDouble(transactionList.get(i).getPrice()) -
-                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinPercentCount.setText(String.valueOf((Double.parseDouble(currentPrice) *
+                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinPercentCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice) *
                         Double.parseDouble(transactionList.get(i).getQuantity())) -
                         Double.parseDouble(transactionList.get(i).getQuantity()) * 100));
                 myCoinAmountCount.setText(transactionList.get(i).getQuantity());
-//          매수평균가 myCoinAveragePriceCount.setText(/transactionList.get(i).getQuantity());
-                myCoinValueCount.setText(String.valueOf(Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinBuyPriceCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
-                        Double.parseDouble(transactionList.get(i).getPrice())));
-            } else if (myCoinName.getText().equals("BSV")) {
-                myCoinTicker.setText("(" + myCoinName + ")");
-                myCoinMarginCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
+                myCoinAveragePriceCount.setText(String.format("%.0f", Double.parseDouble(transactionList.get(i).getPrice())
+                        / Double.parseDouble(transactionList.get(i).getQuantity())));
+                myCoinValueCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice)
+                        * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinBuyPriceCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
+                        Double.parseDouble(transactionList.get(i).getPrice()))));
+            } else if (searchList.get(i).equals("AXS")) {
+                myCoinName.setText("엑시인피니티");
+                myCoinMarginCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
                         Double.parseDouble(transactionList.get(i).getPrice()) -
-                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinPercentCount.setText(String.valueOf((Double.parseDouble(currentPrice) *
+                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinPercentCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice) *
                         Double.parseDouble(transactionList.get(i).getQuantity())) -
                         Double.parseDouble(transactionList.get(i).getQuantity()) * 100));
                 myCoinAmountCount.setText(transactionList.get(i).getQuantity());
-//          매수평균가 myCoinAveragePriceCount.setText(/transactionList.get(i).getQuantity());
-                myCoinValueCount.setText(String.valueOf(Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinBuyPriceCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
-                        Double.parseDouble(transactionList.get(i).getPrice())));
-            } else if (myCoinName.getText().equals("AXS")) {
-                myCoinTicker.setText("(" + myCoinName + ")");
-                myCoinMarginCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
+                myCoinAveragePriceCount.setText(String.format("%.0f", Double.parseDouble(transactionList.get(i).getPrice())
+                        / Double.parseDouble(transactionList.get(i).getQuantity())));
+                myCoinValueCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice)
+                        * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinBuyPriceCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
+                        Double.parseDouble(transactionList.get(i).getPrice()))));
+            } else if (searchList.get(i).equals("BTG")) {
+                myCoinName.setText("비트코인골드");
+                myCoinMarginCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
                         Double.parseDouble(transactionList.get(i).getPrice()) -
-                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinPercentCount.setText(String.valueOf((Double.parseDouble(currentPrice) *
+                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinPercentCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice) *
                         Double.parseDouble(transactionList.get(i).getQuantity())) -
                         Double.parseDouble(transactionList.get(i).getQuantity()) * 100));
                 myCoinAmountCount.setText(transactionList.get(i).getQuantity());
-//          매수평균가 myCoinAveragePriceCount.setText(/transactionList.get(i).getQuantity());
-                myCoinValueCount.setText(String.valueOf(Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinBuyPriceCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
-                        Double.parseDouble(transactionList.get(i).getPrice())));
-            } else if (myCoinName.getText().equals("BTG")) {
-                myCoinTicker.setText("(" + myCoinName + ")");
-                myCoinMarginCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
+                myCoinAveragePriceCount.setText(String.format("%.0f", Double.parseDouble(transactionList.get(i).getPrice())
+                        / Double.parseDouble(transactionList.get(i).getQuantity())));
+                myCoinValueCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice)
+                        * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinBuyPriceCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
+                        Double.parseDouble(transactionList.get(i).getPrice()))));
+            } else if (searchList.get(i).equals("ETC")) {
+                myCoinName.setText("이더리움클래식");
+                myCoinMarginCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
                         Double.parseDouble(transactionList.get(i).getPrice()) -
-                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinPercentCount.setText(String.valueOf((Double.parseDouble(currentPrice) *
+                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinPercentCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice) *
                         Double.parseDouble(transactionList.get(i).getQuantity())) -
                         Double.parseDouble(transactionList.get(i).getQuantity()) * 100));
                 myCoinAmountCount.setText(transactionList.get(i).getQuantity());
-//          매수평균가 myCoinAveragePriceCount.setText(/transactionList.get(i).getQuantity());
-                myCoinValueCount.setText(String.valueOf(Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinBuyPriceCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
-                        Double.parseDouble(transactionList.get(i).getPrice())));
-            } else if (myCoinName.getText().equals("ETC")) {
-                myCoinTicker.setText("(" + myCoinName + ")");
-                myCoinMarginCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
+                myCoinAveragePriceCount.setText(String.format("%.0f", Double.parseDouble(transactionList.get(i).getPrice())
+                        / Double.parseDouble(transactionList.get(i).getQuantity())));
+                myCoinValueCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice)
+                        * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinBuyPriceCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
+                        Double.parseDouble(transactionList.get(i).getPrice()))));
+            } else if (searchList.get(i).equals("DOT")) {
+                myCoinName.setText("폴카닷");
+                myCoinMarginCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
                         Double.parseDouble(transactionList.get(i).getPrice()) -
-                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinPercentCount.setText(String.valueOf((Double.parseDouble(currentPrice) *
+                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinPercentCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice) *
                         Double.parseDouble(transactionList.get(i).getQuantity())) -
                         Double.parseDouble(transactionList.get(i).getQuantity()) * 100));
                 myCoinAmountCount.setText(transactionList.get(i).getQuantity());
-//          매수평균가 myCoinAveragePriceCount.setText(/transactionList.get(i).getQuantity());
-                myCoinValueCount.setText(String.valueOf(Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinBuyPriceCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
-                        Double.parseDouble(transactionList.get(i).getPrice())));
-            } else if (myCoinName.getText().equals("DOT")) {
-                myCoinTicker.setText("(" + myCoinName + ")");
-                myCoinMarginCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
+                myCoinAveragePriceCount.setText(String.format("%.0f", Double.parseDouble(transactionList.get(i).getPrice())
+                        / Double.parseDouble(transactionList.get(i).getQuantity())));
+                myCoinValueCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice)
+                        * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinBuyPriceCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
+                        Double.parseDouble(transactionList.get(i).getPrice()))));
+            } else if (searchList.get(i).equals("ATOM")) {
+                myCoinName.setText("코스모스");
+                myCoinMarginCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
                         Double.parseDouble(transactionList.get(i).getPrice()) -
-                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinPercentCount.setText(String.valueOf((Double.parseDouble(currentPrice) *
+                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinPercentCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice) *
                         Double.parseDouble(transactionList.get(i).getQuantity())) -
                         Double.parseDouble(transactionList.get(i).getQuantity()) * 100));
                 myCoinAmountCount.setText(transactionList.get(i).getQuantity());
-//          매수평균가 myCoinAveragePriceCount.setText(/transactionList.get(i).getQuantity());
-                myCoinValueCount.setText(String.valueOf(Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinBuyPriceCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
-                        Double.parseDouble(transactionList.get(i).getPrice())));
-            } else if (myCoinName.getText().equals("ATOM")) {
-                myCoinTicker.setText("(" + myCoinName + ")");
-                myCoinMarginCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
+                myCoinAveragePriceCount.setText(String.format("%.0f", Double.parseDouble(transactionList.get(i).getPrice())
+                        / Double.parseDouble(transactionList.get(i).getQuantity())));
+                myCoinValueCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice)
+                        * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinBuyPriceCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
+                        Double.parseDouble(transactionList.get(i).getPrice()))));
+            } else if (searchList.get(i).equals("WAVES")) {
+                myCoinName.setText("웨이브");
+                myCoinMarginCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
                         Double.parseDouble(transactionList.get(i).getPrice()) -
-                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinPercentCount.setText(String.valueOf((Double.parseDouble(currentPrice) *
+                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinPercentCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice) *
                         Double.parseDouble(transactionList.get(i).getQuantity())) -
                         Double.parseDouble(transactionList.get(i).getQuantity()) * 100));
                 myCoinAmountCount.setText(transactionList.get(i).getQuantity());
-//          매수평균가 myCoinAveragePriceCount.setText(/transactionList.get(i).getQuantity());
-                myCoinValueCount.setText(String.valueOf(Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinBuyPriceCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
-                        Double.parseDouble(transactionList.get(i).getPrice())));
-            } else if (myCoinName.getText().equals("WAVES")) {
-                myCoinTicker.setText("(" + myCoinName + ")");
-                myCoinMarginCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
+                myCoinAveragePriceCount.setText(String.format("%.0f", Double.parseDouble(transactionList.get(i).getPrice())
+                        / Double.parseDouble(transactionList.get(i).getQuantity())));
+                myCoinValueCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice)
+                        * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinBuyPriceCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
+                        Double.parseDouble(transactionList.get(i).getPrice()))));
+            } else if (searchList.get(i).equals("LINK")) {
+                myCoinName.setText("체인링크");
+                myCoinMarginCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
                         Double.parseDouble(transactionList.get(i).getPrice()) -
-                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinPercentCount.setText(String.valueOf((Double.parseDouble(currentPrice) *
+                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinPercentCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice) *
                         Double.parseDouble(transactionList.get(i).getQuantity())) -
                         Double.parseDouble(transactionList.get(i).getQuantity()) * 100));
                 myCoinAmountCount.setText(transactionList.get(i).getQuantity());
-//          매수평균가 myCoinAveragePriceCount.setText(/transactionList.get(i).getQuantity());
-                myCoinValueCount.setText(String.valueOf(Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinBuyPriceCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
-                        Double.parseDouble(transactionList.get(i).getPrice())));
-            } else if (myCoinName.getText().equals("LINK")) {
-                myCoinTicker.setText("(" + myCoinName + ")");
-                myCoinMarginCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
+                myCoinAveragePriceCount.setText(String.format("%.0f", Double.parseDouble(transactionList.get(i).getPrice())
+                        / Double.parseDouble(transactionList.get(i).getQuantity())));
+                myCoinValueCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice)
+                        * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinBuyPriceCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
+                        Double.parseDouble(transactionList.get(i).getPrice()))));
+            } else if (searchList.get(i).equals("REP")) {
+                myCoinName.setText("어거");
+                myCoinMarginCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
                         Double.parseDouble(transactionList.get(i).getPrice()) -
-                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinPercentCount.setText(String.valueOf((Double.parseDouble(currentPrice) *
+                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinPercentCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice) *
                         Double.parseDouble(transactionList.get(i).getQuantity())) -
                         Double.parseDouble(transactionList.get(i).getQuantity()) * 100));
                 myCoinAmountCount.setText(transactionList.get(i).getQuantity());
-//          매수평균가 myCoinAveragePriceCount.setText(/transactionList.get(i).getQuantity());
-                myCoinValueCount.setText(String.valueOf(Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinBuyPriceCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
-                        Double.parseDouble(transactionList.get(i).getPrice())));
-            } else if (myCoinName.getText().equals("REP")) {
-                myCoinTicker.setText("(" + myCoinName + ")");
-                myCoinMarginCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
+                myCoinAveragePriceCount.setText(String.format("%.0f", Double.parseDouble(transactionList.get(i).getPrice())
+                        / Double.parseDouble(transactionList.get(i).getQuantity())));
+                myCoinValueCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice)
+                        * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinBuyPriceCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
+                        Double.parseDouble(transactionList.get(i).getPrice()))));
+            } else if (searchList.get(i).equals("OMG")) {
+                myCoinName.setText("오미세고");
+                myCoinMarginCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
                         Double.parseDouble(transactionList.get(i).getPrice()) -
-                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinPercentCount.setText(String.valueOf((Double.parseDouble(currentPrice) *
+                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinPercentCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice) *
                         Double.parseDouble(transactionList.get(i).getQuantity())) -
                         Double.parseDouble(transactionList.get(i).getQuantity()) * 100));
                 myCoinAmountCount.setText(transactionList.get(i).getQuantity());
-//          매수평균가 myCoinAveragePriceCount.setText(/transactionList.get(i).getQuantity());
-                myCoinValueCount.setText(String.valueOf(Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinBuyPriceCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
-                        Double.parseDouble(transactionList.get(i).getPrice())));
-            } else if (myCoinName.getText().equals("OMG")) {
-                myCoinTicker.setText("(" + myCoinName + ")");
-                myCoinMarginCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
+                myCoinAveragePriceCount.setText(String.format("%.0f", Double.parseDouble(transactionList.get(i).getPrice())
+                        / Double.parseDouble(transactionList.get(i).getQuantity())));
+                myCoinValueCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice)
+                        * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinBuyPriceCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
+                        Double.parseDouble(transactionList.get(i).getPrice()))));
+            } else if (searchList.get(i).equals("QTUM")) {
+                myCoinName.setText("퀀텀");
+                myCoinMarginCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
                         Double.parseDouble(transactionList.get(i).getPrice()) -
-                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinPercentCount.setText(String.valueOf((Double.parseDouble(currentPrice) *
+                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinPercentCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice) *
                         Double.parseDouble(transactionList.get(i).getQuantity())) -
                         Double.parseDouble(transactionList.get(i).getQuantity()) * 100));
                 myCoinAmountCount.setText(transactionList.get(i).getQuantity());
-//          매수평균가 myCoinAveragePriceCount.setText(/transactionList.get(i).getQuantity());
-                myCoinValueCount.setText(String.valueOf(Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinBuyPriceCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
-                        Double.parseDouble(transactionList.get(i).getPrice())));
-            } else if (myCoinName.getText().equals("QTUM")) {
-                myCoinTicker.setText("(" + myCoinName + ")");
-                myCoinMarginCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
-                        Double.parseDouble(transactionList.get(i).getPrice()) -
-                        Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinPercentCount.setText(String.valueOf((Double.parseDouble(currentPrice) *
-                        Double.parseDouble(transactionList.get(i).getQuantity())) -
-                        Double.parseDouble(transactionList.get(i).getQuantity()) * 100));
-                myCoinAmountCount.setText(transactionList.get(i).getQuantity());
-//          매수평균가 myCoinAveragePriceCount.setText(/transactionList.get(i).getQuantity());
-                myCoinValueCount.setText(String.valueOf(Double.parseDouble(currentPrice) * Double.parseDouble(transactionList.get(i).getQuantity())));
-                myCoinBuyPriceCount.setText(String.valueOf(Double.parseDouble(transactionList.get(i).getQuantity()) *
-                        Double.parseDouble(transactionList.get(i).getPrice())));
+                myCoinAveragePriceCount.setText(String.format("%.0f", Double.parseDouble(transactionList.get(i).getPrice())
+                        / Double.parseDouble(transactionList.get(i).getQuantity())));
+                myCoinValueCount.setText(String.format("%.0f", (Double.parseDouble(currentPrice)
+                        * Double.parseDouble(transactionList.get(i).getQuantity()))));
+                myCoinBuyPriceCount.setText(String.format("%.0f", (Double.parseDouble(transactionList.get(i).getQuantity()) *
+                        Double.parseDouble(transactionList.get(i).getPrice()))));
             }
-
-            // 평가손익 textEvaluationProfitCount.setText(String.format("%.0f", evaluationProfitCount - totalBuyCount));
-            //
-
         }
-            return view;
+        return view;
     }
 }
