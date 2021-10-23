@@ -25,14 +25,16 @@ import kr.or.mrhi.myCoin.model.Transaction;
 
 public class WalletAdapter extends BaseAdapter {
     List<String> myCoinNameList;
+    List<String> priceList;
     private List<Transaction> transactionList;
     private TickerData tickerCoin;
     Context context;
-    TextView myCoinName, myCoinMarginCount, myCoinPercentCount, myCoinAmountCount, myCoinAveragePriceCount, myCoinValueCount, myCoinTicker, myCoinBuyPriceCount;
+    TextView myCoinName, myCoinMarginCount,myCoinAmountTicker, myCoinPercentCount, myCoinAmountCount, myCoinAveragePriceCount, myCoinValueCount, myCoinTicker, myCoinBuyPriceCount;
 
-    public WalletAdapter(List<Transaction> transactionList, List<String> myCoinNameList) {
+    public WalletAdapter(List<Transaction> transactionList, List<String> myCoinNameList, List<String> priceList) {
         this.transactionList = transactionList;
         this.myCoinNameList = myCoinNameList;
+        this.priceList=priceList;
 
     }
 
@@ -57,6 +59,7 @@ public class WalletAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        double buyPrice = 0.0;
         double currentPrice = 0.0;
 
         context = viewGroup.getContext();
@@ -71,10 +74,12 @@ public class WalletAdapter extends BaseAdapter {
         myCoinBuyPriceCount = view.findViewById(R.id.myCoinBuyPriceCount);
         //
         myCoinTicker = view.findViewById(R.id.myCoinTicker);
+        myCoinAmountTicker = view.findViewById(R.id.myCoinAmountTicker);
 
 
-        if (i < transactionList.size() && tickerCoin != null && !myCoinNameList.isEmpty()) {
-            currentPrice = Double.parseDouble(transactionList.get(i).getPrice());
+        if (i < transactionList.size() && tickerCoin != null && !myCoinNameList.isEmpty() &&!priceList.isEmpty()) {
+            currentPrice = Double.parseDouble(priceList.get(i));
+            myCoinAmountTicker.setText(myCoinNameList.get(i));
             myCoinTicker.setText("(" + myCoinNameList.get(i) + ")");
             if (myCoinNameList.get(i).equals("BTC")) {
                 myCoinName.setText("비트코인");
@@ -125,18 +130,18 @@ public class WalletAdapter extends BaseAdapter {
 
             double among = Double.parseDouble(transactionList.get(i).getQuantity());
             double price = Double.parseDouble(transactionList.get(i).getPrice());
-
             double valueCount = currentPrice * among;
-            double priceCount = among * price;
 
 
+//mycoinvaluecount
 
-            myCoinMarginCount.setText(String.format("%.0f", priceCount - valueCount));
+            myCoinMarginCount.setText(String.format("%.0f",price-valueCount));
             myCoinAmountCount.setText(String.format("%.0f", among));
             myCoinAveragePriceCount.setText(String.format("%.0f", price / among));
+//            myCoinAveragePriceCount.setText(String.format("%.0f", valuecount / among));
             myCoinValueCount.setText(String.format("%.0f", valueCount));
-            myCoinBuyPriceCount.setText(String.format("%.0f", priceCount));
-            myCoinPercentCount.setText(String.format("%.0f", (valueCount -  priceCount) / valueCount*100));
+            myCoinBuyPriceCount.setText(String.format("%.0f", price));
+            myCoinPercentCount.setText(String.format("%.2f%%", (valueCount -  price) / valueCount*100));
         }
         return view;
     }

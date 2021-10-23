@@ -92,7 +92,7 @@ public class DBController extends SQLiteOpenHelper {
                 balance += cursor.getInt(5);//잔액
                 if (transactionForm.equals("buy")) {
                     count++;
-                    price = price + Double.parseDouble(currentPrice);
+                    price = price + Double.parseDouble(currentPrice)*tradeQualtity;
                     quantity = quantity + tradeQualtity;
                 } else if (transactionForm.equals("sell")) {
                     quantity = quantity - tradeQualtity;

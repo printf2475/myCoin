@@ -75,7 +75,7 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
         listView = view.findViewById(R.id.mycoinlist);
         pieChart = view.findViewById(R.id.pieChart);
         transactionList = dbController.getMyWallet();
-
+        priceList = new ArrayList<>();
         for (Transaction tran : transactionList){
             if (!tran.getCoinName().equals("포인트")){
                 transactions.add(tran);
@@ -86,7 +86,7 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
             myCoinName.add(transactionList.get(i).getCoinName());
         }
 
-        walletAdapter = new WalletAdapter(transactions, myCoinName);
+        walletAdapter = new WalletAdapter(transactions, myCoinName, priceList);
         listView.setAdapter(walletAdapter);
 
 
@@ -108,10 +108,11 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
                 int balance = 0;
                 totalBuyCount = 0.0;
                 evaluationProfitCount = 0.0;
-                priceList = new ArrayList<>();
+
                 myCoinAmong = new ArrayList<>();
                 myCoinPrice = new ArrayList<String>();
                 myCoinBalance = new ArrayList<Integer>();
+                priceList.removeAll(priceList);
 
                 transactionList = dbController.getMyWallet();
                 //코인별 거래들을 각각 list에 넣음
@@ -136,7 +137,7 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
                         buyCount = Double.parseDouble(myCoinAmong.get(i));
                         buyPrice = Double.parseDouble(myCoinPrice.get(i));
                         curruntPrice = Double.parseDouble(priceList.get(i));
-                        totalBuyCount += buyPrice * buyCount;//총매수
+                        totalBuyCount += buyPrice;//총매수
                         evaluationProfitCount += curruntPrice * buyCount;//총평가
                     }
                     textTotalBuyCount.setText(String.format("%.0f", totalBuyCount));//총매수

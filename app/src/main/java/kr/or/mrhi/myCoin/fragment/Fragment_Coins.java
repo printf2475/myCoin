@@ -112,7 +112,7 @@ public class Fragment_Coins extends Fragment {
                         buyPrice = Double.parseDouble(myCoinPrice.get(i));
                         curruntPrice = Double.parseDouble(priceList.get(i));
 
-                        totalBuyCount += buyPrice * buyCount;//총매수
+                        totalBuyCount += buyPrice;//총매수
                         evaluationProfitCount += curruntPrice * buyCount;//총평가
                     }
                     tvTotalBuyCount.setText(String.format("%.0f", totalBuyCount));//총매수
