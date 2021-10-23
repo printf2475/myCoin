@@ -200,7 +200,6 @@ public class DBController extends SQLiteOpenHelper {
 
         for (String str : list) {
             transactionList.add(getCoinTransaction(str));
-            Log.e("값!", getCoinTransaction(str).toString());
         }
         return transactionList;
     }

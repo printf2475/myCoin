@@ -72,6 +72,7 @@ public class Fragment_Coins extends Fragment {
         edtTextSearchCoin = view.findViewById(R.id.edtText_SearchCoin);
 
         for (int i = 0; i < transactionList.size(); i++) {
+
             myCoinName.add(transactionList.get(i).getCoinName());
         }
 
