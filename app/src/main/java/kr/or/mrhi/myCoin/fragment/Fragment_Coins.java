@@ -47,7 +47,7 @@ public class Fragment_Coins extends Fragment {
     private CoinViewModel model;
     private List<String> myCoinName;
     private List<String> myCoinAmong;
-    private List<Integer> myCoinPrice;
+    private List<String> myCoinPrice;
     private List<String> priceList;
 
     private final static String[] tabElement = {"전체", "관심"};
@@ -61,51 +61,7 @@ public class Fragment_Coins extends Fragment {
         model = new ViewModelProvider(requireActivity()).get(CoinViewModel.class);
         dbController = new DBController(requireActivity());
         transactionList = dbController.getMyWallet();
-        priceList = new ArrayList<>();
         myCoinName = new ArrayList<>();
-        myCoinAmong = new ArrayList<>();
-        for (int i = 0; i < transactionList.size(); i++) {
-            myCoinName.add(transactionList.get(i).getCoinName());
-            myCoinAmong.add(transactionList.get(i).getQuantity());
-        }
-
-
-        model.getTransactionCoinData("BTC").observe(requireActivity(), new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> transactionData) {
-                double transactionPrice = 0.0;
-                double buyCount = 0.0;
-                double curruntPrice = 0.0;
-
-                totalBuyCount = 0.00;
-                evaluationProfitCount = 0.00;
-
-
-
-                for (int i = 0; i < transactionList.size(); i++) {
-                    if (namePositionMap.get(myCoinName.get(i))!=null){
-                        priceList.add(transactionData.get(namePositionMap.get(myCoinName.get(i))));
-                    }
-                }
-
-                if (!priceList.isEmpty() && transactionList.size() != 0) {
-                    for (int i = 0; i < priceList.size(); i++) {
-                        transactionPrice = Double.parseDouble(priceList.get(i));
-                        buyCount = Double.parseDouble(myCoinAmong.get(i));
-
-                        totalBuyCount += transactionPrice * buyCount;//총매수
-                        curruntPrice = Double.parseDouble(transactionData.get(namePositionMap.get(myCoinName.get(i))));
-                        evaluationProfitCount += curruntPrice * buyCount;//총평가
-                        Log.i("총매수", transactionPrice + "/" + buyCount);
-                    }
-                    tvTotalBuyCount.setText(String.format("%.2f", totalBuyCount));//총매수
-                    tvTotalEvaluationCount.setText(String.format("%.0f", evaluationProfitCount));//총평가
-                    tvEvaluationProfitCount.setText(String.format("%.0f", evaluationProfitCount - totalBuyCount));
-                    tvYieldCount.setText(String.format("%.2f%%", ((evaluationProfitCount - totalBuyCount) / totalBuyCount * 100)));
-                }
-            }
-        });
-        model.refrashTransactionDataThread(myCoinName.toArray(new String[myCoinName.size()]));
 
         tabLayout = view.findViewById(R.id.tabLayout2);
         pager = view.findViewById(R.id.pager);
@@ -114,6 +70,59 @@ public class Fragment_Coins extends Fragment {
         tvTotalEvaluationCount = view.findViewById(R.id.tvTotalEvaluationCount);
         tvYieldCount = view.findViewById(R.id.tvYieldCount);
         edtTextSearchCoin = view.findViewById(R.id.edtText_SearchCoin);
+
+        for (int i = 0; i < transactionList.size(); i++) {
+            myCoinName.add(transactionList.get(i).getCoinName());
+        }
+
+        model.getTransactionCoinData("BTC").observe(requireActivity(), new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> currentData) {
+                double transactionPrice = 0.0;
+                double buyCount = 0.0;
+                double buyPrice = 0.0;
+                double curruntPrice = 0.0;
+                priceList = new ArrayList<>();
+                myCoinAmong = new ArrayList<>();
+                myCoinPrice = new ArrayList<String>();
+                totalBuyCount = 0.00;
+                evaluationProfitCount = 0.00;
+                //코인별 거래들을 각각 list에 넣음
+                for (int i = 0; i < transactionList.size(); i++) {
+                    myCoinAmong.add(transactionList.get(i).getQuantity());
+                    myCoinPrice.add(transactionList.get(i).getPrice());
+                }
+
+
+                for (String price : myCoinPrice){
+                    transactionPrice+=Double.parseDouble(price);
+                }
+
+                //보유코인의 현재가격
+                for (int i = 0; i < myCoinName.size(); i++) {
+                    if (namePositionMap.get(myCoinName.get(i))!=null){
+                        priceList.add(currentData.get(namePositionMap.get(myCoinName.get(i))));
+                    }
+                }
+
+                if (!priceList.isEmpty() && transactionList.size() != 0) {
+                    for (int i = 0; i < priceList.size(); i++) {
+                        buyCount = Double.parseDouble(myCoinAmong.get(i));
+                        buyPrice = Double.parseDouble(myCoinPrice.get(i));
+                        curruntPrice = Double.parseDouble(priceList.get(i));
+
+                        totalBuyCount += buyPrice * buyCount;//총매수
+                        evaluationProfitCount += curruntPrice * buyCount;//총평가
+                    }
+                    tvTotalBuyCount.setText(String.format("%.0f", totalBuyCount));//총매수
+                    tvTotalEvaluationCount.setText(String.format("%.0f", evaluationProfitCount));//총평가
+                    tvEvaluationProfitCount.setText(String.format("%.0f", evaluationProfitCount - totalBuyCount));
+                    tvYieldCount.setText(String.format("%.2f%%", ((evaluationProfitCount - totalBuyCount) / totalBuyCount * 100)));
+                }
+            }
+        });
+        model.refrashTransactionDataThread(myCoinName.toArray(new String[myCoinName.size()]));
+
 
 
         CoinListAdapter screenSlidePagerAdapter = new CoinListAdapter(getActivity());

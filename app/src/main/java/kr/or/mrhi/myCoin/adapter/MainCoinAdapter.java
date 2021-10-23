@@ -70,13 +70,15 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//
                     int position = getAdapterPosition();
-                    Intent intent = new Intent(view.getContext(), CoinMain.class);
-                    intent.putExtra("CoinID", stringSymbol[namePositionMap.get(searchList.get(position))]);
-                    intent.putExtra("CoinData", transactionCoin.get(position));
-                    intent.putExtra("Position", namePositionMap.get(stringSymbol[position]));
-                    view.getContext().startActivity(intent);
+                    if (position > 0 && position < searchList.size()) {
+                        Intent intent = new Intent(view.getContext(), CoinMain.class);
+                        intent.putExtra("CoinID", stringSymbol[namePositionMap.get(searchList.get(position))]);
+                        intent.putExtra("CoinData", transactionCoin.get(position));
+                        intent.putExtra("Position", namePositionMap.get(stringSymbol[position]));
+                        view.getContext().startActivity(intent);
+                    }
+
                 }
             });
         }
@@ -152,8 +154,6 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
                     prevClosingPrice = tickerCoin.getQtum().getPrevClosingPrice();
                     volumeList = Double.parseDouble(tickerCoin.getQtum().getAccTradeValue24H());
                 }
-//                Log.i("대체 왜",prevClosingPrice));
-//                Log.i("대체 왜",currentPrice);
                 changeRate = (Double.parseDouble(currentPrice) - Double.parseDouble(prevClosingPrice)) / Double.parseDouble(prevClosingPrice) * 100;
                 tvChangeRateList.setText(String.format("%.2f", changeRate));
                 totalVolumeList = String.format("%.0f", volumeList);
@@ -172,17 +172,7 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
                     tvCurrentPriceList.setTextColor(Color.RED);
                     tvTotalVolumeList.setTextColor(Color.RED);
                 }
-
-//                tvChangeRateList.setText(String.valueOf((Double.parseDouble(transactionCoin.get(position)) - Double.parseDouble(tickerPOJOData.getPrevClosingPrice(tvCoinNameList)))/Double.parseDouble(tickerPOJOData.getPrevClosingPrice())*100));
-//                tvTotalVolumeList.setText(tickerPOJOData.getAccTradeValue24H().toString());
-                //                mainChangePrice = Double.parseDouble(stringList.get(position)) - Double.parseDouble(prevClosingPrice);
-//                mainPercent = Double.parseDouble(String.format("%.2f", (mainChangePrice) / Double.parseDouble(prevClosingPrice) * 100));변동률
-                //acc trade value
             }
-//            coinCompareYesterday.setText(String.valueOf(currentPrice/closingPrice*100-100));
         }
     }
-//    private void startActivity(Intent intent) {
-//        startActivity(intent);
-//    }
 }

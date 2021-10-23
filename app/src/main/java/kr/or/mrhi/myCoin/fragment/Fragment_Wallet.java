@@ -74,7 +74,7 @@ public class Fragment_Wallet extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         if(view ==initialCapital){
             dbController.insertBalanceTransactionTBL(1000000);
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemChanged(1);
         }
     }
 }
