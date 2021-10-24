@@ -1,5 +1,6 @@
 package kr.or.mrhi.myCoin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -11,7 +12,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.HashMap;
 import java.util.Map;
 
-import kr.or.mrhi.myCoin.R;
 import kr.or.mrhi.myCoin.fragment.FragmentRss;
 import kr.or.mrhi.myCoin.fragment.Fragment_Wallet;
 import kr.or.mrhi.myCoin.fragment.Fragment_Coins;
@@ -33,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = new Intent(this, LoadingActivity.class);
+        startActivity(intent);
+
         TRANSACTIONFLAG = true;
         namePositionMap = new HashMap<>();
         for (int i = 0; i < stringSymbol.length; i++) {
