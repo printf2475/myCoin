@@ -83,7 +83,6 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
         ACD_CoinPrice = findViewById(R.id.ACD_CoinPrice);
         totalAmountCount = findViewById(R.id.totalAmountCount);
         orderAvailableCount = findViewById(R.id.orderAvailableCount);
-        lineChart = findViewById(R.id.lineChart);
         candleChart = findViewById(R.id.candleChart);
         btnFavorite = findViewById(R.id.btnFavorite);
         btnBuy = findViewById(R.id.btnBuy);
@@ -234,26 +233,26 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
 
         candleChart.setBackgroundColor(Color.WHITE);
 
-        candleChart.getDescription().setEnabled(false);
+        candleChart.getDescription().setEnabled(true);
 
         // if more than 60 entries are displayed in the chart, no values will be
         // drawn
         candleChart.setMaxVisibleValueCount(60);
 
         // scaling can now only be done on x- and y-axis separately
-        candleChart.setPinchZoom(true);
+        candleChart.setPinchZoom(false);
 
-        candleChart.setDrawGridBackground(false);
+        candleChart.setDrawGridBackground(true);
 
         XAxis xAxis = candleChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
+        xAxis.setDrawGridLines(true);
 
         YAxis leftAxis = candleChart.getAxisLeft();
 //        leftAxis.setEnabled(false);
         leftAxis.setLabelCount(7, false);
-        leftAxis.setDrawGridLines(false);
-        leftAxis.setDrawAxisLine(false);
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setDrawAxisLine(true);
 
         YAxis rightAxis = candleChart.getAxisRight();
         rightAxis.setEnabled(false);
@@ -271,7 +270,7 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
         set1.setDecreasingColor(Color.RED);
         set1.setDecreasingPaintStyle(Paint.Style.FILL);
         set1.setIncreasingColor(Color.rgb(122, 242, 84));
-        set1.setIncreasingPaintStyle(Paint.Style.STROKE);
+        set1.setIncreasingPaintStyle(Paint.Style.FILL);
         set1.setNeutralColor(Color.BLUE);
         //set1.setHighlightLineWidth(1f);
 

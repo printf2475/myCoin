@@ -175,7 +175,7 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
-        data.setValueTextColor(Color.WHITE);
+        data.setValueTextColor(Color.BLACK);
 
         // add a lot of colors
 
@@ -251,7 +251,7 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
         l.setYOffset(0f);
 
         // entry label styling
-        pieChart.setEntryLabelColor(Color.WHITE);
+        pieChart.setEntryLabelColor(Color.BLACK);
         pieChart.setEntryLabelTextSize(12f);
         return view;
     }

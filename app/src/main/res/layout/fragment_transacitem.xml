@@ -20,49 +20,54 @@
 
             <TextView
                 android:id="@+id/transactionItemTime"
-                android:layout_width="wrap_content"
+                android:layout_width="70sp"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:text="체결시간" />
+                android:text="체결시간"
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/transactionItemCoin"
-                android:layout_width="wrap_content"
+                android:layout_width="5sp"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:text="종류" />
+                android:text="종류"
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/transactionItemAmount"
-                android:layout_width="wrap_content"
+                android:layout_width="50sp"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:text="거래수량" />
+                android:text="거래수량"
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/transactionItemPrice"
-                android:layout_width="wrap_content"
+                android:layout_width="50sp"
 
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:text="거래단가" />
+                android:text="거래단가"
+                android:textSize="10sp" />
 
             <TextView
                 android:id="@+id/transactionItemTotalPrice"
-                android:layout_width="wrap_content"
+                android:layout_width="50sp"
                 android:layout_height="wrap_content"
                 android:layout_margin="1dp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:text="거래금액" />
+                android:text="거래금액"
+                android:textSize="10sp" />
 
         </TableRow>
 

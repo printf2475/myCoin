@@ -52,14 +52,20 @@
 
     <Button
         android:id="@+id/initialCapital"
+        style="@android:style/Widget.Holo.Button.Small"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="2dp"
-        android:text="100만원 지급"
+        android:layout_height="30sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:insetLeft="0sp"
+        android:insetTop="0sp"
+        android:insetRight="0sp"
+        android:insetBottom="0sp"
+        android:text="100만원 충전"
         app:layout_constraintBottom_toTopOf="@+id/tabLayout2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.375" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
