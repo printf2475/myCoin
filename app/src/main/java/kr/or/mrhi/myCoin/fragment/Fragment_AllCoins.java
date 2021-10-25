@@ -51,6 +51,7 @@ public class Fragment_AllCoins extends Fragment {
         mainCoinAdapter = new MainCoinAdapter(priceList, searchList);
         recyclerView2.setAdapter(mainCoinAdapter);
 
+
         model.getTickerCoinData().observe(requireActivity(), new Observer<TickerData>() {
             @Override
             public void onChanged(TickerData tickerData) {
@@ -90,12 +91,6 @@ public class Fragment_AllCoins extends Fragment {
         });
         return view;
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     @Override
     public void onPause() {
         super.onPause();

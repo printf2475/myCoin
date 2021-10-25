@@ -2,12 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/main"
-        android:title="모의투자" />
+        android:title="모의투자"
+        android:icon="@drawable/home"/>
 
     <item
         android:id="@+id/news"
-        android:title="코인동향" />
+        android:title="코인동향"
+        android:icon="@drawable/graph"/>
     <item
         android:id="@+id/sub"
-        android:title="모의투자" />
+        android:title="지갑"
+        android:icon="@drawable/wallet"/>
 </menu>

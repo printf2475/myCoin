@@ -45,12 +45,10 @@ public class Fragment_LikeCoin extends Fragment {
         priceList = new ArrayList<>();
         favoriteList = new ArrayList<>();
         favoriteListTemp = new ArrayList<>();
-
         favoriteList = dbController.getFavoritesList();
+
         favoriteListTemp.addAll(favoriteList);
         priceList.removeAll(priceList);
-
-
 
         recyclerView = view.findViewById(R.id.recyclerView1);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
@@ -60,7 +58,7 @@ public class Fragment_LikeCoin extends Fragment {
         model.getTickerCoinData().observe(requireActivity(), new Observer<TickerData>() {
             @Override
             public void onChanged(TickerData tickerData) {
-                ticker = tickerData;
+                likeCoinAdapter.setTickerData(tickerData);
                 likeCoinAdapter.notifyDataSetChanged();
             }
         });
@@ -88,9 +86,7 @@ public class Fragment_LikeCoin extends Fragment {
                 likeCoinAdapter.notifyDataSetChanged();
             }
         });
-
         model.refrashTransactionDataThread(stringSymbol);
-
         return view;
     }
 

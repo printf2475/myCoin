@@ -53,13 +53,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:text="총매수"
             android:textColor="@color/black"
-            android:textSize="10sp"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvEvaluationProfit"
@@ -68,10 +66,11 @@
             android:layout_marginTop="8dp"
             android:text="평가손익"
             android:textColor="@color/black"
-            android:textSize="10sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvEvaluationProfitCount"
             app:layout_constraintStart_toStartOf="@+id/tvYield"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/tvTotalEvaluation"
@@ -81,7 +80,7 @@
             android:layout_marginBottom="8dp"
             android:text="총평가"
             android:textColor="@color/black"
-            android:textSize="10sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -89,11 +88,11 @@
             android:id="@+id/tvYield"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="40dp"
+            android:layout_marginEnd="24dp"
             android:layout_marginBottom="8dp"
             android:text="수익률"
             android:textColor="@color/black"
-            android:textSize="10sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/tvYieldCount"
             app:layout_constraintTop_toTopOf="@+id/tvYieldCount" />
@@ -102,14 +101,15 @@
             android:id="@+id/tvTotalBuyCount"
             android:layout_width="110sp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
+            android:layout_marginStart="28dp"
             android:gravity="right"
-            android:text="100,000,000"
+            android:text="0"
             android:textColor="@color/black"
-            android:textSize="10sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/tvTotalBuy"
             app:layout_constraintStart_toEndOf="@+id/tvTotalBuy"
-            app:layout_constraintTop_toTopOf="@+id/tvTotalBuy" />
+            app:layout_constraintTop_toTopOf="@+id/tvTotalBuy"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/tvEvaluationProfitCount"
@@ -117,9 +117,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="right"
-            android:text="200,000,000"
+            android:text="0"
             android:textColor="@color/black"
-            android:textSize="10sp"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/tvYieldCount"
             app:layout_constraintStart_toStartOf="@+id/tvYieldCount"
             app:layout_constraintTop_toTopOf="parent" />
@@ -129,12 +129,13 @@
             android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:gravity="right"
-            android:text="300,000,000"
+            android:text="0"
             android:textColor="@color/black"
-            android:textSize="10sp"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="@+id/tvTotalBuyCount"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/tvTotalEvaluation"
             app:layout_constraintTop_toBottomOf="@+id/tvTotalBuyCount" />
 
@@ -142,13 +143,13 @@
             android:id="@+id/tvYieldCount"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
             android:gravity="right"
-            android:text="200.00%"
+            android:text="NaN%"
             android:textColor="@color/black"
-            android:textSize="10sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvEvaluationProfitCount" />
@@ -255,7 +256,10 @@
         android:layout_width="match_parent"
         android:layout_height="0sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view"
-        tools:layout_editor_absoluteX="-56dp" />
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

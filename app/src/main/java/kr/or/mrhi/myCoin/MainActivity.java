@@ -1,5 +1,6 @@
 package kr.or.mrhi.myCoin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -11,7 +12,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.HashMap;
 import java.util.Map;
 
-import kr.or.mrhi.myCoin.R;
 import kr.or.mrhi.myCoin.fragment.FragmentRss;
 import kr.or.mrhi.myCoin.fragment.Fragment_Wallet;
 import kr.or.mrhi.myCoin.fragment.Fragment_Coins;
@@ -24,15 +24,18 @@ public class MainActivity extends AppCompatActivity {
             "ETC", "DOT", "ATOM", "WAVES", "LINK", "REP", "OMG", "QTUM"};
 
     public static final String[] stringName = new String[]{"비트코인", "이더리움", "비트코인캐시", "라이트코인",
-            "비트코인SV", "엑시인피니티", "비트코인골드","이더리움클래식", "폴카닷", "코스모스", "웨이브",
+            "비트코인에스브이", "엑시인피니티", "비트코인골드","이더리움클래식", "폴카닷", "코스모스", "웨이브",
             "체인링크", "어거", "오미세고", "퀀텀"};
 
     public static Boolean TRANSACTIONFLAG = false;
-    public static Map<String, Integer> namePositionMap = null;
+    public static Map<String, Integer> namePositionMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = new Intent(this, LoadingActivity.class);
+        startActivity(intent);
+
         TRANSACTIONFLAG = true;
         namePositionMap = new HashMap<>();
         for (int i = 0; i < stringSymbol.length; i++) {

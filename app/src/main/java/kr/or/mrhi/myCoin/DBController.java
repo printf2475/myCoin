@@ -32,6 +32,10 @@ public class DBController extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
+    public void insertBalanceTransactionTBL(int balance) {
+        insertTransaction(new Transaction("포인트", "add", null, "0.0", "0.0", balance, null));
+    }
+
     public void insertFavorite(String name) {
         SQLiteDatabase sqlDB = getWritableDatabase();
         try {
@@ -88,16 +92,12 @@ public class DBController extends SQLiteOpenHelper {
                 balance += cursor.getInt(5);//잔액
                 if (transactionForm.equals("buy")) {
                     count++;
-                    price = price + Double.parseDouble(currentPrice);
+                    price = price + Double.parseDouble(currentPrice)*tradeQualtity;
                     quantity = quantity + tradeQualtity;
                 } else if (transactionForm.equals("sell")) {
                     quantity = quantity - tradeQualtity;
                 }
                 //보유수량 ,구매횟수, 구매당시가격, 구매당시가격*갯수
-
-
-
-
             }
 
             double avgPrice = price / count;
@@ -132,7 +132,7 @@ public class DBController extends SQLiteOpenHelper {
                         new Transaction(coinName, transaction, transactionTime, quantity, price, balance, null));
             }
         } catch (Exception e) {
-            Log.e("데이터베이스", "select에러1" + e.toString());
+            Log.e("데이터베이스", "select에러 : getTransactionList" + e.toString());
         } finally {
             sqlDB.close();
             if (cursor != null) {
@@ -152,7 +152,7 @@ public class DBController extends SQLiteOpenHelper {
                 favoritesList.add(cursor.getString(0));
             }
         } catch (Exception e) {
-            Log.e("데이터베이스", "select에러2" + e.toString());
+            Log.e("데이터베이스", "select에러 : getFavoritesList" + e.toString());
         } finally {
             sqlDB.close();
             if (cursor != null) {
@@ -165,11 +165,9 @@ public class DBController extends SQLiteOpenHelper {
     public void deleteFavoritesList(String coinName) {
         SQLiteDatabase sqlDB = getWritableDatabase();
         try {
-            sqlDB.execSQL("delete from favoritesTBL where coinName = '" + coinName + "'" +
-                    ";");
-            Log.e("데이터베이스", "delete성공");
+            sqlDB.execSQL("delete from favoritesTBL where coinName = '" + coinName + "';");
         } catch (Exception e) {
-            Log.e("데이터베이스", "delete에러" + e.toString());
+            Log.e("데이터베이스", "delete에러 : deleteFavoritesList" + e.toString());
         } finally {
             sqlDB.close();
         }
@@ -187,14 +185,16 @@ public class DBController extends SQLiteOpenHelper {
             while (cursor.moveToNext()) {
                 list.add(cursor.getString(0));
             }
+
         } catch (Exception e) {
-            Log.e("데이터베이스", "GROUP BY SELECT에러" + e.toString());
+            Log.e("데이터베이스", "SELECT 에러 : getMyWallet" + e.toString());
         } finally {
             sqlDB.close();
             if (cursor != null) {
                 cursor.close();
             }
         }
+
         for (String str : list) {
             transactionList.add(getCoinTransaction(str));
         }

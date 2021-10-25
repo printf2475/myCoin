@@ -28,16 +28,15 @@
             android:text="비트코인(BTC/KRW)"
             android:textColor="@color/black"
             android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/lineChart"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/ACD_CoinName"
-            app:layout_constraintEnd_toEndOf="@+id/lineChart"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
@@ -67,8 +66,6 @@
             android:layout_marginTop="8dp"
             android:text="전일대비"
             android:textColor="@color/black"
-            app:layout_constraintEnd_toStartOf="@+id/lineChart"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/ACD_CoinName"
             app:layout_constraintTop_toBottomOf="@+id/ACD_CoinPrice" />
 
@@ -91,21 +88,9 @@
             android:text="70000000"
             android:textColor="#DE3E3E"
             android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/lineChart"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/ACD_CoinName"
             app:layout_constraintTop_toBottomOf="@+id/ACD_CoinName" />
 
-
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/lineChart"
-            android:layout_width="165dp"
-            android:layout_height="55dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/ACD_PriceChange"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/ACD_CoinPrice"
-            app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
             android:id="@+id/ivUpDown"
@@ -223,17 +208,17 @@
 
         <EditText
             android:id="@+id/orderAmount_edttext"
-            android:layout_width="155sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:gravity="right"
-            android:text="0"
+            android:inputType="number"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:inputType="number"
             app:layout_constraintBottom_toBottomOf="@+id/orderAmount"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/orderAmount" />
+            app:layout_constraintTop_toTopOf="@+id/orderAmount"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <TextView
             android:id="@+id/tvKRW1"
