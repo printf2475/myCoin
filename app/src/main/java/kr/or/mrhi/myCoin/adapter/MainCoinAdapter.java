@@ -71,7 +71,7 @@ public class MainCoinAdapter extends RecyclerView.Adapter<MainCoinAdapter.ViewHo
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
-                    if (position > 0 && position < searchList.size()) {
+                    if (position >= 0 && position < searchList.size()) {
                         Intent intent = new Intent(view.getContext(), CoinMain.class);
                         intent.putExtra("CoinID", stringSymbol[namePositionMap.get(searchList.get(position))]);
                         intent.putExtra("CoinData", transactionCoin.get(position));
