@@ -1,6 +1,5 @@
 package kr.or.mrhi.myCoin.fragment;
 
-
 import static kr.or.mrhi.myCoin.MainActivity.namePositionMap;
 
 import android.os.Bundle;
@@ -33,7 +32,6 @@ import kr.or.mrhi.myCoin.adapter.CoinListAdapter;
 import kr.or.mrhi.myCoin.model.Transaction;
 import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
 
-
 public class Fragment_Coins extends Fragment {
     private TextView tvTotalBuyCount, tvEvaluationProfitCount, tvTotalEvaluationCount, tvYieldCount;
     private EditText edtTextSearchCoin;
@@ -43,15 +41,15 @@ public class Fragment_Coins extends Fragment {
     private double totalBuyCount, evaluationProfitCount, totalEvaluationCount, yieldCount;
 
     private DBController dbController;
-    private List<Transaction> transactionList;
     private CoinViewModel model;
+
+    private List<Transaction> transactionList;
     private List<String> myCoinName;
     private List<String> myCoinAmong;
     private List<String> myCoinPrice;
     private List<String> priceList;
 
     private final static String[] tabElement = {"전체", "관심"};
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,7 +70,6 @@ public class Fragment_Coins extends Fragment {
         edtTextSearchCoin = view.findViewById(R.id.edtText_SearchCoin);
 
         for (int i = 0; i < transactionList.size(); i++) {
-
             myCoinName.add(transactionList.get(i).getCoinName());
         }
 
@@ -115,7 +112,7 @@ public class Fragment_Coins extends Fragment {
                         totalBuyCount += buyPrice;//총매수
                         evaluationProfitCount += curruntPrice * buyCount;//총평가
                     }
-                    tvTotalBuyCount.setText(String.format("%.0f", totalBuyCount));//총매수
+                    tvTotalBuyCount.setText(String.format("%.0f", totalBuyCount) );//총매수
                     tvTotalEvaluationCount.setText(String.format("%.0f", evaluationProfitCount));//총평가
                     tvEvaluationProfitCount.setText(String.format("%.0f", evaluationProfitCount - totalBuyCount));
                     tvYieldCount.setText(String.format("%.2f%%", ((evaluationProfitCount - totalBuyCount) / totalBuyCount * 100)));

@@ -51,7 +51,7 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
     private List<Integer> myCoinPrice;
     private int KRWHoldings = 0;
 
-    private String mainCoinName, mainCoinPrice;
+    private String mainCoinName, mainCoinPrice,mainCoinValue;
     private double mainPercent, mainChangePrice, totalPriceTemp = 0.00;
     private int position;
 
@@ -73,8 +73,10 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
 
         Intent intent = getIntent();
         mainCoinName = intent.getStringExtra("CoinID");
-        mainCoinPrice = intent.getStringExtra("CoinData");
+        mainCoinValue = intent.getStringExtra("CoinData");
         position = intent.getIntExtra("Position", DEFAULTVALUE);
+
+        mainCoinPrice = String.format("%.0f",(Double.parseDouble(mainCoinValue)));
 
         ACD_CoinName = findViewById(R.id.ACD_CoinName);
         ACD_PriceChange = findViewById(R.id.ACD_PriceChange);
@@ -100,9 +102,9 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
 
         transactionList = dbController.getMyWallet();
 
-
         btnBuy.setOnClickListener(this);
         btnFavorite.setOnClickListener(this);
+
         transaction = dbController.getCoinTransaction(mainCoinName);
         tabLayoutPosition = tabLayout.getSelectedTabPosition();
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -167,7 +169,6 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
                     orderAvailableCount.setText(String.valueOf(myCoinAmong*Integer.parseInt(ACD_CoinPrice.getText().toString())));
                 }
 
-
                 ACD_CoinPrice.setText(stringList.get(position));
                 mainChangePrice = Double.parseDouble(stringList.get(position)) - Double.parseDouble(prevClosingPrice);
                 mainPercent = Double.parseDouble(String.format("%.2f", (mainChangePrice) / Double.parseDouble(prevClosingPrice) * 100));
@@ -190,7 +191,7 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
                 ACD_Percent.setText(String.valueOf(mainPercent) + "%");
                 ACD_PriceChange.setText(String.valueOf(mainChangePrice));
 
-                totalAmountCount.setText(String.valueOf((int) totalPriceTemp * Double.parseDouble(stringList.get(position))));
+                totalAmountCount.setText(String.valueOf((int) totalPriceTemp * Long.parseLong(stringList.get(position))));
 //                Log.i("값이 오나", stringList.get(position).toString());
 //                Log.i("전일대비", String.valueOf((Double.parseDouble(stringList.get(position)) - Double.parseDouble(prevClosingPrice)) / Double.parseDouble(prevClosingPrice) * 100));//전일대비 변동률 작동 확인 완료!
             }
@@ -249,14 +250,12 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
         xAxis.setDrawGridLines(true);
 
         YAxis leftAxis = candleChart.getAxisLeft();
-//        leftAxis.setEnabled(false);
         leftAxis.setLabelCount(7, false);
         leftAxis.setDrawGridLines(true);
         leftAxis.setDrawAxisLine(true);
 
         YAxis rightAxis = candleChart.getAxisRight();
         rightAxis.setEnabled(false);
-//        rightAxis.setStartAtZero(false);
 
         candleChart.getLegend().setEnabled(false);
 
@@ -264,7 +263,6 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
 
         set1.setDrawIcons(false);
         set1.setAxisDependency(YAxis.AxisDependency.LEFT);
-//        set1.setColor(Color.rgb(80, 80, 80));
         set1.setShadowColor(Color.DKGRAY);
         set1.setShadowWidth(0.7f);
         set1.setDecreasingColor(Color.RED);
@@ -300,6 +298,7 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
 
                 String buyCoinNumber = orderAmount_edttext.getText().toString();
                 String buyCoinPrice = ACD_CoinPrice.getText().toString();
+
                 int balance = Integer.parseInt(String.format("%.0f", Double.parseDouble(buyCoinNumber) * Double.parseDouble(buyCoinPrice)));
                 if (tabLayoutPosition == 0) {
                     orderAvailableCount.setText(String.valueOf(balance));
@@ -320,7 +319,6 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
                     double myCoinAmong = Double.parseDouble(dbController.getCoinTransaction(mainCoinName).getQuantity());
                     orderAvailableCount.setText(String.valueOf(myCoinAmong*Integer.parseInt(buyCoinPrice)));
                     if (myCoinAmong < buyAmong) {
-//                        btnBuy.setEnabled(true);
                         AlertDialog.Builder dialog2 = new AlertDialog.Builder(this);
                         dialog2.setTitle("매도주문 오류");
                         dialog2.setTitle("주문가능 금액이 부족합니다.");
