@@ -342,6 +342,8 @@ public class CoinMain extends AppCompatActivity implements View.OnClickListener 
         model.stopThread();
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("flag", "flag");
+
         startActivity(intent);
     }
 }

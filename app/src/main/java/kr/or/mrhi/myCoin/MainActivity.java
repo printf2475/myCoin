@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import kr.or.mrhi.myCoin.fragment.FragmentRss;
-import kr.or.mrhi.myCoin.fragment.Fragment_Wallet;
 import kr.or.mrhi.myCoin.fragment.Fragment_Coins;
+import kr.or.mrhi.myCoin.fragment.Fragment_Wallet;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,8 +33,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent = new Intent(this, LoadingActivity.class);
-        startActivity(intent);
+
+        Intent intent = getIntent();
+        String str = intent.getStringExtra("flag");
+        if(str==null){
+        Intent intent2 = new Intent(getBaseContext(), LoadingActivity.class);
+        startActivity(intent2);
+        }
 
         TRANSACTIONFLAG = true;
         namePositionMap = new HashMap<>();
