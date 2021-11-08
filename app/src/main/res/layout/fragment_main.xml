@@ -5,7 +5,7 @@
     android:id="@+id/fragmentMain_ConstraintView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="kr.or.mrhi.myCoin.MainActivity">
+    tools:context="kr.or.mrhi.myCoin.activity.MainActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout_SearchCoin"

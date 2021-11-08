@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import kr.or.mrhi.myCoin.DBController;
+import kr.or.mrhi.myCoin.network.DBController;
 import kr.or.mrhi.myCoin.R;
 import kr.or.mrhi.myCoin.adapter.TransactionHistoryAdapter;
 import kr.or.mrhi.myCoin.model.Transaction;

@@ -17,7 +17,8 @@ import kr.or.mrhi.myCoin.fragment.Fragment_LikeCoin;
 public class CoinListAdapter extends FragmentStateAdapter {
     private final static int NUM_PAGES = 2;
     String searchName;
-
+    Fragment fragment1;
+    Fragment fragment2;
     public CoinListAdapter(FragmentActivity fa) {
         super(fa);
     }
@@ -25,8 +26,8 @@ public class CoinListAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        fragment1 = new Fragment_AllCoins();
         if (position == 0) {
-            Fragment fragment1 = new Fragment_AllCoins();
             if (searchName!=null){
                 Bundle bundle = new Bundle();
                 bundle.putString("searchName", searchName);
@@ -35,7 +36,7 @@ public class CoinListAdapter extends FragmentStateAdapter {
             return fragment1;
 
         } else if (position == 1) {
-            Fragment fragment2 = new Fragment_LikeCoin();
+            fragment2 = new Fragment_LikeCoin();
             if (searchName!=null){
                 Bundle bundle = new Bundle();
                 bundle.putString("searchName", searchName);
@@ -58,5 +59,7 @@ public class CoinListAdapter extends FragmentStateAdapter {
         this.searchName=searchName;
 
     }
+
+
 }//end of adapter
 

@@ -16,7 +16,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import kr.or.mrhi.myCoin.R;
-import kr.or.mrhi.myCoin.RssItemActivity;
+import kr.or.mrhi.myCoin.activity.RssItemActivity;
 import kr.or.mrhi.myCoin.model.NewsItem;
 
 public class NewsAdapter extends RecyclerView.Adapter {

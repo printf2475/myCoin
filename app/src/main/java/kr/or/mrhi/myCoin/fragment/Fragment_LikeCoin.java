@@ -1,8 +1,10 @@
 package kr.or.mrhi.myCoin.fragment;
 
-import static kr.or.mrhi.myCoin.MainActivity.namePositionMap;
-import static kr.or.mrhi.myCoin.MainActivity.stringSymbol;
 
+import static kr.or.mrhi.myCoin.activity.MainActivity.namePositionMap;
+import static kr.or.mrhi.myCoin.activity.MainActivity.stringSymbol;
+
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,8 +20,8 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.or.mrhi.myCoin.DBController;
-import kr.or.mrhi.myCoin.POJO.TickerData;
+import kr.or.mrhi.myCoin.network.DBController;
+import kr.or.mrhi.myCoin.model.TickerDTO;
 import kr.or.mrhi.myCoin.R;
 import kr.or.mrhi.myCoin.adapter.LikeCoinAdapter;
 import kr.or.mrhi.myCoin.viewModel.CoinViewModel;
@@ -29,7 +31,7 @@ public class Fragment_LikeCoin extends Fragment {
     private RecyclerView recyclerView;
     private LikeCoinAdapter likeCoinAdapter;
     private List<String> priceList;
-    private TickerData ticker;
+    private List<TickerDTO> tickerDataList;
     private DBController dbController;
     private List<String> favoriteList;
     private List<String> favoriteListTemp;
@@ -52,13 +54,13 @@ public class Fragment_LikeCoin extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerView1);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        likeCoinAdapter = new LikeCoinAdapter(priceList, ticker, favoriteListTemp);
+        likeCoinAdapter = new LikeCoinAdapter(priceList, tickerDataList, favoriteListTemp);
         recyclerView.setAdapter(likeCoinAdapter);
 
-        model.getTickerCoinData().observe(requireActivity(), new Observer<TickerData>() {
+        model.getTickerCoinData().observe(requireActivity(), new Observer<List<TickerDTO>>() {
             @Override
-            public void onChanged(TickerData tickerData) {
-                likeCoinAdapter.setTickerData(tickerData);
+            public void onChanged(List<TickerDTO> tickerDataList) {
+                likeCoinAdapter.setTickerData(tickerDataList);
                 likeCoinAdapter.notifyDataSetChanged();
             }
         });
@@ -67,8 +69,8 @@ public class Fragment_LikeCoin extends Fragment {
             @Override
             public void onChanged(List<String> transactionData) {
                 priceList.removeAll(priceList);
-                for (int i=0; i<favoriteListTemp.size(); i++){
-                   priceList.add(transactionData.get(namePositionMap.get(favoriteListTemp.get(i))));
+                for (int i = 0; i < favoriteListTemp.size(); i++) {
+                    priceList.add(transactionData.get(namePositionMap.get(favoriteListTemp.get(i))));
                 }
                 likeCoinAdapter.notifyDataSetChanged();
             }
@@ -76,16 +78,17 @@ public class Fragment_LikeCoin extends Fragment {
 
         model.getSearchName().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
-            public void onChanged(String s) {
+            public void onChanged(String name) {
                 favoriteListTemp.removeAll(favoriteListTemp);
-                for (int i=0; i<favoriteList.size(); i++){
-                    if (favoriteList.get(i).contains(s)){
+                for (int i = 0; i < favoriteList.size(); i++) {
+                    if (favoriteList.get(i).contains(name)) {
                         favoriteListTemp.add(favoriteList.get(i));
                     }
                 }
                 likeCoinAdapter.notifyDataSetChanged();
             }
         });
+
         model.refrashTransactionDataThread(stringSymbol);
         return view;
     }

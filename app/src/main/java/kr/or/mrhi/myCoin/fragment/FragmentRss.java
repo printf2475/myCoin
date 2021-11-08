@@ -31,9 +31,10 @@ import kr.or.mrhi.myCoin.model.NewsItem;
 
 public class FragmentRss extends Fragment {
 
-    RecyclerView recyclerView;
-    ArrayList<NewsItem> items= new ArrayList<>();
-    NewsAdapter adapter;
+    private RecyclerView recyclerView;
+    private ArrayList<NewsItem> items= new ArrayList<>();
+   private NewsAdapter adapter;
+   private RssFeedTask task;
 
     SwipeRefreshLayout swipeRefreshLayout;
 
@@ -79,7 +80,7 @@ public class FragmentRss extends Fragment {
             //스트림역할하여 데이터 읽어오기 : 인터넷 작업은 반드시 퍼미션 작성해야함.
             //Network작업은 반드시 별도의 Thread만 할 수 있다.
             //별도의 Thread 객체 생성
-            RssFeedTask task= new RssFeedTask();
+            task= new RssFeedTask();
             task.execute(url); //doInBackground()메소드가 발동[thread의 start()와 같은 역할]
         } catch (MalformedURLException e) { e.printStackTrace();}
 
@@ -199,4 +200,10 @@ public class FragmentRss extends Fragment {
 
 
     }//RssFeedTask class
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        task.cancel(true);
+    }
 }//MainActivity class ..

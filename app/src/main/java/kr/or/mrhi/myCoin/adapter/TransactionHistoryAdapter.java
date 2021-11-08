@@ -11,18 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import kr.or.mrhi.myCoin.DBController;
 import kr.or.mrhi.myCoin.R;
 import kr.or.mrhi.myCoin.model.Transaction;
 
 public class TransactionHistoryAdapter extends RecyclerView.Adapter<TransactionHistoryAdapter.ViewHolders> {
-
     Context context;
     List<Transaction> transactionList;
 
     public TransactionHistoryAdapter(List<Transaction> transactionList){
         this.transactionList = transactionList;
     }
+
     @NonNull
     @Override
     public ViewHolders onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

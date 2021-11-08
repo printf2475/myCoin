@@ -1,25 +1,15 @@
 package kr.or.mrhi.myCoin.adapter;
 
-import static kr.or.mrhi.myCoin.MainActivity.namePositionMap;
-
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.List;
 
-import kr.or.mrhi.myCoin.POJO.TickerData;
-import kr.or.mrhi.myCoin.POJO.TickerPOJOData;
-import kr.or.mrhi.myCoin.POJO.TransactionData;
+import kr.or.mrhi.myCoin.model.TickerDTO;
 import kr.or.mrhi.myCoin.R;
 import kr.or.mrhi.myCoin.model.Transaction;
 
@@ -27,7 +17,7 @@ public class WalletAdapter extends BaseAdapter {
     List<String> myCoinNameList;
     List<String> priceList;
     private List<Transaction> transactionList;
-    private TickerData tickerCoin;
+    private List<TickerDTO> tickerDataList;
     Context context;
     TextView myCoinName, myCoinMarginCount,myCoinAmountTicker, myCoinPercentCount, myCoinAmountCount, myCoinAveragePriceCount, myCoinValueCount, myCoinTicker, myCoinBuyPriceCount;
 
@@ -35,7 +25,6 @@ public class WalletAdapter extends BaseAdapter {
         this.transactionList = transactionList;
         this.myCoinNameList = myCoinNameList;
         this.priceList=priceList;
-
     }
 
     @Override
@@ -53,8 +42,8 @@ public class WalletAdapter extends BaseAdapter {
         return 0;
     }
 
-    public void setTickerData(TickerData tickerData) {
-        this.tickerCoin = tickerData;
+    public void setTickerData(List<TickerDTO> tickerDataList) {
+        this.tickerDataList =tickerDataList;
     }
 
     @Override
@@ -72,60 +61,44 @@ public class WalletAdapter extends BaseAdapter {
         myCoinAveragePriceCount = view.findViewById(R.id.myCoinAveragePriceCount);
         myCoinValueCount = view.findViewById(R.id.myCoinValueCount);
         myCoinBuyPriceCount = view.findViewById(R.id.myCoinBuyPriceCount);
-        //
         myCoinTicker = view.findViewById(R.id.myCoinTicker);
         myCoinAmountTicker = view.findViewById(R.id.myCoinAmountTicker);
 
 
-        if (i < transactionList.size() && tickerCoin != null && !myCoinNameList.isEmpty() &&!priceList.isEmpty()) {
+        if (i < transactionList.size() && tickerDataList != null && !myCoinNameList.isEmpty() &&!priceList.isEmpty()) {
             currentPrice = Double.parseDouble(priceList.get(i));
             myCoinAmountTicker.setText(myCoinNameList.get(i));
             myCoinTicker.setText("(" + myCoinNameList.get(i) + ")");
             if (myCoinNameList.get(i).equals("BTC")) {
                 myCoinName.setText("비트코인");
-
             } else if (myCoinNameList.get(i).equals("ETH")) {
                 myCoinName.setText("이더리움");
-
             } else if (myCoinNameList.get(i).equals("BCH")) {
                 myCoinName.setText("비트코인캐시");
-
             } else if (myCoinNameList.get(i).equals("LTC")) {
                 myCoinName.setText("라이트코인");
-
             } else if (myCoinNameList.get(i).equals("BSV")) {
                 myCoinName.setText("비트코인에스브이");
-
             } else if (myCoinNameList.get(i).equals("AXS")) {
                 myCoinName.setText("엑시인피니티");
-
             } else if (myCoinNameList.get(i).equals("BTG")) {
                 myCoinName.setText("비트코인골드");
-
             } else if (myCoinNameList.get(i).equals("ETC")) {
                 myCoinName.setText("이더리움클래식");
-
             } else if (myCoinNameList.get(i).equals("DOT")) {
                 myCoinName.setText("폴카닷");
-
             } else if (myCoinNameList.get(i).equals("ATOM")) {
                 myCoinName.setText("코스모스");
-
             } else if (myCoinNameList.get(i).equals("WAVES")) {
                 myCoinName.setText("웨이브");
-
             } else if (myCoinNameList.get(i).equals("LINK")) {
                 myCoinName.setText("체인링크");
-
             } else if (myCoinNameList.get(i).equals("REP")) {
                 myCoinName.setText("어거");
-
             } else if (myCoinNameList.get(i).equals("OMG")) {
                 myCoinName.setText("오미세고");
-
             } else if (myCoinNameList.get(i).equals("QTUM")) {
                 myCoinName.setText("퀀텀");
-
             }
 
             double among = Double.parseDouble(transactionList.get(i).getQuantity());

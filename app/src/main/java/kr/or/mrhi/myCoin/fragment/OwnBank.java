@@ -1,6 +1,6 @@
 package kr.or.mrhi.myCoin.fragment;
 
-import static kr.or.mrhi.myCoin.MainActivity.namePositionMap;
+import static kr.or.mrhi.myCoin.activity.MainActivity.namePositionMap;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -31,8 +31,8 @@ import com.github.mikephil.charting.utils.MPPointF;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.or.mrhi.myCoin.DBController;
-import kr.or.mrhi.myCoin.POJO.TickerData;
+import kr.or.mrhi.myCoin.network.DBController;
+import kr.or.mrhi.myCoin.model.TickerDTO;
 import kr.or.mrhi.myCoin.R;
 import kr.or.mrhi.myCoin.adapter.WalletAdapter;
 import kr.or.mrhi.myCoin.model.Transaction;
@@ -58,13 +58,10 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
     private ListView listView;
     private WalletAdapter walletAdapter;
     private  ArrayList<PieEntry> entries;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_own_bank, container, false);
-        dbController = new DBController(getActivity().getApplicationContext());
-        model = new ViewModelProvider(requireActivity()).get(CoinViewModel.class);
-        priceList = new ArrayList<>();
-        transactions = new ArrayList<>();
         textTotalBuyCount = view.findViewById(R.id.textTotalBuyCount);
         textTotalEvaluationCount = view.findViewById(R.id.textTotalEvaluationCount);
         textEvaluationProfitCount = view.findViewById(R.id.textEvaluationProfitCount);
@@ -73,7 +70,13 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
         KRWHoldings = view.findViewById(R.id.KRWHoldings);
         listView = view.findViewById(R.id.mycoinlist);
         pieChart = view.findViewById(R.id.pieChart);
+
+        dbController = new DBController(getActivity().getApplicationContext());
         transactionList = dbController.getMyWallet();
+        model = new ViewModelProvider(requireActivity()).get(CoinViewModel.class);
+
+        priceList = new ArrayList<>();
+        transactions = new ArrayList<>();
         priceList = new ArrayList<>();
         for (Transaction tran : transactionList){
             if (!tran.getCoinName().equals("포인트")){
@@ -90,10 +93,10 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
 
 
 
-        model.getTickerCoinData().observe(requireActivity(), new Observer<TickerData>() {
+        model.getTickerCoinData().observe(requireActivity(), new Observer<List<TickerDTO>>() {
             @Override
-            public void onChanged(TickerData tickerData) {
-                walletAdapter.setTickerData(tickerData);
+            public void onChanged(List<TickerDTO> tickerDataList) {
+                walletAdapter.setTickerData(tickerDataList);
                 walletAdapter.notifyDataSetChanged();
             }
         });
@@ -139,6 +142,7 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
                         totalBuyCount += buyPrice;//총매수
                         evaluationProfitCount += curruntPrice * buyCount;//총평가
                     }
+
                     textTotalBuyCount.setText(String.format("%.0f", totalBuyCount));//총매수
                     textTotalEvaluationCount.setText(String.format("%.0f", evaluationProfitCount));//총평가
                     textEvaluationProfitCount.setText(String.format("%.0f", evaluationProfitCount - totalBuyCount));
@@ -147,23 +151,25 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
 
                 KRWHoldings.setText(String.valueOf(balance));
                 holdings.setText(String.format("%.0f", evaluationProfitCount + Double.parseDouble(KRWHoldings.getText().toString())));
-
-
-
             }
         });
         model.refrashTransactionDataThread(myCoinName.toArray(new String[myCoinName.size()]));
 
         entries = new ArrayList<>();
 
-
-
         for (int i = 0; i < transactionList.size(); i++) {
             entries.add(new PieEntry(Float.parseFloat(transactionList.get(i).getQuantity()),
                     transactionList.get(i).getCoinName(), null));
         }
 
+        setChart();
 
+
+
+        return view;
+    }
+
+    private void setChart() {
         PieDataSet dataSet = new PieDataSet(entries, "purchase");
         dataSet.setDrawIcons(false);
 
@@ -198,49 +204,30 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
         colors.add(ColorTemplate.getHoloBlue());
 
         dataSet.setColors(colors);
-        //dataSet.setSelectionShift(0f);
 
         pieChart.setData(data);
-
-        // undo all highlights
         pieChart.highlightValues(null);
-
         pieChart.invalidate();
-
         pieChart.setUsePercentValues(false);
         pieChart.getDescription().setEnabled(false);
         pieChart.setExtraOffsets(5, 10, 5, 5);
-
         pieChart.setDragDecelerationFrictionCoef(0.95f);
-
         pieChart.setCenterText("구매내역");
-
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleColor(Color.WHITE);
-
         pieChart.setTransparentCircleColor(Color.WHITE);
         pieChart.setTransparentCircleAlpha(110);
-
         pieChart.setHoleRadius(58f);
         pieChart.setTransparentCircleRadius(61f);
-
         pieChart.setDrawCenterText(true);
-
         pieChart.setDrawEntryLabels(true);
-
         pieChart.setRotationAngle(0);
-        // enable rotation of the chart by touch
         pieChart.setRotationEnabled(true);
         pieChart.setHighlightPerTapEnabled(true);
-
-        // chart.setUnit(" €");
-        // chart.setDrawUnitsInChart(true);
-
-        // add a selection listener
         pieChart.setOnChartValueSelectedListener(this);
-
         pieChart.animateY(1400, Easing.EaseInOutQuad);
-        // chart.spin(2000, 0, 360);
+        pieChart.setEntryLabelColor(Color.BLACK);
+        pieChart.setEntryLabelTextSize(12f);
 
         Legend l = pieChart.getLegend();
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
@@ -250,16 +237,10 @@ public class OwnBank extends Fragment implements OnChartValueSelectedListener {
         l.setXEntrySpace(7f);
         l.setYEntrySpace(0f);
         l.setYOffset(0f);
-
-        // entry label styling
-        pieChart.setEntryLabelColor(Color.BLACK);
-        pieChart.setEntryLabelTextSize(12f);
-        return view;
     }
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-
         if (e == null)
             return;
         Log.i("VAL SELECTED",
